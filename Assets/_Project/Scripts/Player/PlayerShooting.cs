@@ -13,29 +13,11 @@ namespace _Project.Scripts.Player
 
         private Pool<Missile> _missilesPool;
         private LaserBeam _laserBeam;
-        private PlayerInputControls _inputActions;
 
         private void Awake()
         {
-            _inputActions = new PlayerInputControls();
             _laserBeam = transform.GetComponentInChildren<LaserBeam>();
             _missilesPool = new Pool<Missile>(_missilePrefab, _missilePoolInitialSize);
-        }
-
-        private void OnEnable()
-        {
-            _inputActions.Enable();
-
-            _inputActions.Player.ShootMissile.performed += Shoot;
-            _inputActions.Player.ShootLaser.performed += ShootLaser;
-        }
-
-        private void OnDisable()
-        {
-            _inputActions.Disable();
-
-            _inputActions.Player.ShootMissile.performed -= Shoot;
-            _inputActions.Player.ShootLaser.performed -= ShootLaser;
         }
 
         public void Shoot(InputAction.CallbackContext context)
@@ -46,7 +28,6 @@ namespace _Project.Scripts.Player
                 missile.transform.position = _shootingPoint.position;
                 missile.transform.rotation = _shootingPoint.rotation;
                 missile.SetPool(_missilesPool);
-
                 missile.gameObject.SetActive(true);
             }
         }

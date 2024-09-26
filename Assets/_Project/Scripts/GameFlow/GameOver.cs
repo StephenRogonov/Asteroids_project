@@ -7,11 +7,9 @@ namespace _Project.Scripts.GameFlow
     public class GameOver : MonoBehaviour
     {
         [SerializeField] private Button _restartButton;
-        [SerializeField] private GameObject _obstaclesSpawner;
 
         private void OnEnable()
         {
-            _obstaclesSpawner.SetActive(false);
             _restartButton.onClick.AddListener(RestartGame);
         }
 

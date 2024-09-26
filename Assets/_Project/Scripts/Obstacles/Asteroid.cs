@@ -21,17 +21,9 @@ namespace _Project.Scripts.Obstacles
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            if (gameObject.transform.localScale.x > _shardSize)
-            {
-                Move(transform.up);
-            }
-            else
-            {
-                Move(Random.insideUnitCircle.normalized);
-            }
-
+            Move(transform.up);
             StartCoroutine(DisableObject());
         }
 
@@ -39,8 +31,7 @@ namespace _Project.Scripts.Obstacles
         {
             yield return new WaitForSeconds(_destroyTimeout);
 
-            gameObject.SetActive(false);
-            _pool.Return(this);
+            DestroyObject();
         }
 
         public void SetPool(Pool<Asteroid> pool)
@@ -53,9 +44,22 @@ namespace _Project.Scripts.Obstacles
             _type = type;
         }
 
-        private void Move(Vector2 direction)
+        public void Move(Vector2 direction)
         {
             _rigidbody.AddForce(direction * _speed);
+        }
+
+        public void TakeHit(WeaponType hitType)
+        {
+            if (hitType == WeaponType.Missile && _type == AsteroidType.Asteroid)
+            {
+                for (int i = 0; i < _shardsAmount; i++)
+                {
+                    CreateShard();
+                }
+            }
+
+            DestroyObject();
         }
 
         private void CreateShard()
@@ -64,26 +68,19 @@ namespace _Project.Scripts.Obstacles
             position += Random.insideUnitCircle * 0.5f;
 
             Asteroid shard = Instantiate(this, position, transform.rotation);
+            shard.Move(Random.insideUnitCircle.normalized);
             shard.SetType(AsteroidType.Shard);
             shard.transform.localScale = new Vector2(_shardSize, _shardSize);
         }
 
-        public void TakeHit(WeaponType hitType)
+        private void DestroyObject()
         {
             if (_type == AsteroidType.Shard)
             {
                 Destroy(gameObject);
             }
-            else
+            else if (_type == AsteroidType.Asteroid)
             {
-                if (hitType == WeaponType.Missile)
-                {
-                    for (int i = 0; i < _shardsAmount; i++)
-                    {
-                        CreateShard();
-                    }
-                }
-
                 gameObject.SetActive(false);
                 _pool.Return(this);
             }
