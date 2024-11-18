@@ -1,18 +1,28 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace _Project.Scripts.Player
 {
-    public class ShipMovement : MonoBehaviour
+    public class ShipMovement : MonoBehaviour, IEnemyTarget
     {
-        [Header("Player Movement Variables")]
-        [SerializeField] private float _acceleration = 5f;
-        [SerializeField] private float _maxSpeed = 5f;
-        [SerializeField] private float _rotationSpeed = 2f;
+        private float _acceleration;
+        private float _maxSpeed;
+        private float _rotationSpeed;
 
         private bool _isMoving;
         private float _rotateDirection;
         private Rigidbody2D _rigidbody;
+
+        public Vector3 Position => transform.position;
+
+        [Inject]
+        private void Construct(ShipMovementConfig shipMovementConfig)
+        {
+            _acceleration = shipMovementConfig.Acceleration;
+            _maxSpeed = shipMovementConfig.MaxSpeed;
+            _rotationSpeed = shipMovementConfig.RotationSpeed;
+        }
 
         private void Awake()
         {
@@ -66,7 +76,7 @@ namespace _Project.Scripts.Player
             if (_isMoving)
             {
                 _rigidbody.AddForce(transform.up * _acceleration);
-                _rigidbody.velocity = Vector2.ClampMagnitude(_rigidbody.velocity, _maxSpeed);
+                _rigidbody.linearVelocity = Vector2.ClampMagnitude(_rigidbody.linearVelocity, _maxSpeed);
             }
         }
 

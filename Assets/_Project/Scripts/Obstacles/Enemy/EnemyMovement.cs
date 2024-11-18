@@ -1,8 +1,8 @@
-using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
-using _Project.Scripts.Player;
 using _Project.Scripts.PlayerWeapons;
+using System;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Enemy
 {
@@ -11,10 +11,18 @@ namespace _Project.Scripts.Enemy
         [SerializeField] private float _speed;
         [SerializeField] private float _rotationSpeed;
 
+        private IEnemyTarget _shipToFollow;
         private Rigidbody2D _rigidbody;
-        private Transform _player;
+        //private Transform _player;
         private Vector2 _playerDirection;
-        private Pool<EnemyMovement> _pool;
+
+        public event Action<EnemyMovement> Destroyed;
+
+        [Inject]
+        private void Construct(IEnemyTarget target)
+        {
+            _shipToFollow = target;
+        }
 
         private void Awake()
         {
@@ -34,7 +42,7 @@ namespace _Project.Scripts.Enemy
 
         private void GetPlayerDirection()
         {
-            _playerDirection = (_player.position - transform.position).normalized;
+            _playerDirection = (_shipToFollow.Position - transform.position).normalized;
         }
 
         private void RotateTowardsPlayer()
@@ -54,28 +62,23 @@ namespace _Project.Scripts.Enemy
         {
             if (_playerDirection == Vector2.zero)
             {
-                _rigidbody.velocity = Vector2.zero;
+                _rigidbody.linearVelocity = Vector2.zero;
             }
             else
             {
-                _rigidbody.velocity = transform.up * _speed;
+                _rigidbody.linearVelocity = transform.up * _speed;
             }
         }
 
-        public void SetPool(Pool<EnemyMovement> pool)
-        {
-            _pool = pool;
-        }
-
-        public void Setup(ShipMovement shipMovement)
-        {
-            _player = shipMovement.transform;
-        }
+        //public void Setup(ShipCollision shipCollision)
+        //{
+        //    _player = shipCollision.transform;
+        //}
 
         public void TakeHit(WeaponType hitType)
         {
             gameObject.SetActive(false);
-            _pool.Return(this);
+            Destroyed?.Invoke(this);
         }
     }
 }

@@ -1,5 +1,6 @@
 using _Project.Scripts.Common;
 using _Project.Scripts.PlayerWeapons;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,8 +14,9 @@ namespace _Project.Scripts.Obstacles
         [SerializeField] private int _shardsAmount = 2;
 
         private Rigidbody2D _rigidbody;
-        private Pool<Asteroid> _pool;
         private AsteroidType _type;
+
+        public event Action<Asteroid> Destroyed;
 
         private void Awake()
         {
@@ -32,11 +34,6 @@ namespace _Project.Scripts.Obstacles
             yield return new WaitForSeconds(_destroyTimeout);
 
             DestroyObject();
-        }
-
-        public void SetPool(Pool<Asteroid> pool)
-        {
-            _pool = pool;
         }
 
         public void SetType(AsteroidType type)
@@ -65,10 +62,10 @@ namespace _Project.Scripts.Obstacles
         private void CreateShard()
         {
             Vector2 position = transform.position;
-            position += Random.insideUnitCircle * 0.5f;
+            position += UnityEngine.Random.insideUnitCircle * 0.5f;
 
             Asteroid shard = Instantiate(this, position, transform.rotation);
-            shard.Move(Random.insideUnitCircle.normalized);
+            shard.Move(UnityEngine.Random.insideUnitCircle.normalized);
             shard.SetType(AsteroidType.Shard);
             shard.transform.localScale = new Vector2(_shardSize, _shardSize);
         }
@@ -82,7 +79,7 @@ namespace _Project.Scripts.Obstacles
             else if (_type == AsteroidType.Asteroid)
             {
                 gameObject.SetActive(false);
-                _pool.Return(this);
+                Destroyed?.Invoke(this);
             }
         }
     }

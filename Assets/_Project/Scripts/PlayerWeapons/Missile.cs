@@ -1,5 +1,5 @@
-using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
+using System;
 using UnityEngine;
 
 namespace _Project.Scripts.PlayerWeapons
@@ -9,9 +9,10 @@ namespace _Project.Scripts.PlayerWeapons
         [SerializeField] private float _bulletSpeed = 500f;
 
         private Rigidbody2D _rigidbody;
-        private Pool<Missile> _pool; 
         private Vector2 _screenPosition;
         private Camera _mainCamera;
+
+        public event Action<Missile> Destroyed;
 
         private void Awake()
         {
@@ -22,11 +23,6 @@ namespace _Project.Scripts.PlayerWeapons
         private void OnEnable()
         {
             Move();
-        }
-
-        public void SetPool(Pool<Missile> pool)
-        {
-            _pool = pool;
         }
 
         private void Update()
@@ -42,7 +38,7 @@ namespace _Project.Scripts.PlayerWeapons
                 _screenPosition.y >= Screen.height || _screenPosition.y <= 0)
             {
                 gameObject.SetActive(false);
-                _pool.Return(this);
+                Destroyed?.Invoke(this);
             }
         }
 
@@ -59,7 +55,7 @@ namespace _Project.Scripts.PlayerWeapons
             }
 
             gameObject.SetActive(false);
-            _pool.Return(this);
+            Destroyed?.Invoke(this);
         }
     }
 }

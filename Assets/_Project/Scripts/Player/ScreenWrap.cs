@@ -29,19 +29,19 @@ namespace _Project.Scripts.Player
         {
             _screenPosition = _mainCamera.WorldToScreenPoint(transform.position);
 
-            if (_screenPosition.x <= 0 && _rigidbody.velocity.x < 0)
+            if (_screenPosition.x <= 0 && _rigidbody.linearVelocity.x < 0)
             {
                 transform.position = new Vector2(_rightSideOfTheScreen, transform.position.y);
             }
-            else if (_screenPosition.x >= Screen.width && _rigidbody.velocity.x > 0)
+            else if (_screenPosition.x >= Screen.width && _rigidbody.linearVelocity.x > 0)
             {
                 transform.position = new Vector2(_leftSideOfTheScreen, transform.position.y);
             }
-            else if (_screenPosition.y >= Screen.height && _rigidbody.velocity.y > 0)
+            else if (_screenPosition.y >= Screen.height && _rigidbody.linearVelocity.y > 0)
             {
                 transform.position = new Vector2(transform.position.x, _bottomOfTheScreen);
             }
-            else if (_screenPosition.y <= 0 && _rigidbody.velocity.y < 0)
+            else if (_screenPosition.y <= 0 && _rigidbody.linearVelocity.y < 0)
             {
                 transform.position = new Vector2(transform.position.x, _topOfTheScreen);
             }

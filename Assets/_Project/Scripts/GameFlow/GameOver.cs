@@ -22,5 +22,10 @@ namespace _Project.Scripts.GameFlow
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+        }
     }
 }
