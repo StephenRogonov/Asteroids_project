@@ -6,7 +6,6 @@ namespace _Project.Scripts.UI
         private int _laserShotsAvailable;
 
         public bool CanShootLaser { get; private set; }
-        public int LaserShotsAvailable => _laserShotsAvailable;
 
         public HUD_DataModel(HUD_View view)
         {
@@ -15,9 +14,9 @@ namespace _Project.Scripts.UI
             _laserShotsAvailable = 0;
         }
 
-        public void SetLaserShots(int shots)
+        public void ChangeLaserShotsCount(int shots)
         {
-            _laserShotsAvailable = shots;
+            _laserShotsAvailable += shots;
 
             CanShootLaser = _laserShotsAvailable > 0;
 

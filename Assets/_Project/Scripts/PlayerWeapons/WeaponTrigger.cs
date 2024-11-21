@@ -30,6 +30,7 @@ namespace _Project.Scripts.PlayerWeapons
             if (context.performed && _hudModel.CanShootLaser)
             {
                 _shipLaserAttack.PerformShot();
+                _hudModel.ChangeLaserShotsCount(-1);
             }
         }
     }

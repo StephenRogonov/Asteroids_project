@@ -1402,7 +1402,6 @@ GameObject:
   - component: {fileID: 1767617508}
   - component: {fileID: 1767617510}
   - component: {fileID: 1767617509}
-  - component: {fileID: 1767617512}
   - component: {fileID: 1767617513}
   m_Layer: 5
   m_Name: GameInfoPanel
@@ -1473,22 +1472,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1767617507}
   m_CullTransparentMesh: 1
---- !u!114 &1767617512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767617507}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6653b3f2bcd86943a241118aec6b806, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shipMovement: {fileID: 0}
-  _playerPositionText: {fileID: 1727967041}
-  _playerRotationText: {fileID: 155580456}
-  _playerSpeedText: {fileID: 1027176614}
 --- !u!114 &1767617513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1501,7 +1484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc4b732ab16bd84687b7298f6b76117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _restorationTimerText: {fileID: 0}
+  _restorationTimerText: {fileID: 1186107135}
   _shotsAvailableText: {fileID: 822810716}
   _playerPositionText: {fileID: 0}
   _playerRotationText: {fileID: 0}

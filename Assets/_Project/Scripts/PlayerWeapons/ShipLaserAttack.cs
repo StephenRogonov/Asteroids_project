@@ -24,6 +24,13 @@ namespace _Project.Scripts.PlayerWeapons
             HitTargetsWithLaser();
         }
 
+        public IEnumerator DisplayLaserBeam()
+        {
+            _laserBeam.SetActive(true);
+            yield return new WaitForSeconds(_config.BeamLifetime);
+            _laserBeam.SetActive(false);
+        }
+
         private void HitTargetsWithLaser()
         {
             _obstaclesToDestroy = Physics2D.RaycastAll(transform.position, transform.up, _config.LaserDistance, _config.LayersToDestroy);
@@ -32,13 +39,6 @@ namespace _Project.Scripts.PlayerWeapons
             {
                 obstacle.transform.GetComponent<IDamageable>().TakeHit(WeaponType.Laser);
             }
-        }
-
-        public IEnumerator DisplayLaserBeam()
-        {
-            _laserBeam.SetActive(true);
-            yield return new WaitForSeconds(_config.BeamLifetime);
-            _laserBeam.SetActive(false);
         }
     }
 }
