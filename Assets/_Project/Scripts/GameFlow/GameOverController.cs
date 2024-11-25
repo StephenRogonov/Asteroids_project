@@ -1,4 +1,5 @@
 using _Project.Scripts.Obstacles;
+using _Project.Scripts.Player;
 using System;
 
 namespace _Project.Scripts.GameFlow
@@ -14,10 +15,7 @@ namespace _Project.Scripts.GameFlow
             _shipCollision = shipCollision;
             _obstaclesSpawner = obstaclesSpawner;
             _gameOverPanel = gameOverPanel;
-        }
 
-        public void Init()
-        {
             _shipCollision.Crashed += GameOver;
         }
 

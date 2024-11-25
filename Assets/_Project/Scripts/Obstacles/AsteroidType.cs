@@ -1,5 +1,8 @@
-public enum AsteroidType
+namespace _Project.Scripts.Obstacles
 {
-    Asteroid,
-    Shard
+    public enum AsteroidType
+    {
+        Asteroid,
+        Shard
+    }
 }

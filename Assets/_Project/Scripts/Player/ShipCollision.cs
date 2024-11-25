@@ -3,16 +3,19 @@ using _Project.Scripts.Obstacles;
 using System;
 using UnityEngine;
 
-public class ShipCollision : MonoBehaviour
+namespace _Project.Scripts.Player
 {
-    public event Action Crashed;
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public class ShipCollision : MonoBehaviour
     {
-        if (collision.gameObject.GetComponent<Asteroid>() != null || collision.gameObject.GetComponent<EnemyMovement>() != null)
+        public event Action Crashed;
+
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            gameObject.SetActive(false);
-            Crashed?.Invoke();
+            if (collision.gameObject.GetComponent<Asteroid>() != null || collision.gameObject.GetComponent<EnemyMovement>() != null)
+            {
+                gameObject.SetActive(false);
+                Crashed?.Invoke();
+            }
         }
     }
 }

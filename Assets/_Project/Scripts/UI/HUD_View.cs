@@ -23,5 +23,12 @@ namespace _Project.Scripts.UI
         {
             _shotsAvailableText.text = "Laser Shots: " + count;
         }
+
+        public void DisplayShipStats(string position, int rotation, float speed)
+        {
+            _playerPositionText.text = "Position: " + position;
+            _playerRotationText.text = "Rotation: " + rotation;
+            _playerSpeedText.text = "Speed: " + speed;
+        }
     }
 }

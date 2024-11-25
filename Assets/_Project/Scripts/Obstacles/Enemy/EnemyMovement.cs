@@ -1,8 +1,8 @@
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.PlayerWeapons;
+using _Project.Scripts.Player;
 using System;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Enemy
 {
@@ -11,18 +11,11 @@ namespace _Project.Scripts.Enemy
         [SerializeField] private float _speed;
         [SerializeField] private float _rotationSpeed;
 
-        private IEnemyTarget _shipToFollow;
         private Rigidbody2D _rigidbody;
-        //private Transform _player;
+        private Transform _player;
         private Vector2 _playerDirection;
 
         public event Action<EnemyMovement> Destroyed;
-
-        [Inject]
-        private void Construct(IEnemyTarget target)
-        {
-            _shipToFollow = target;
-        }
 
         private void Awake()
         {
@@ -42,7 +35,7 @@ namespace _Project.Scripts.Enemy
 
         private void GetPlayerDirection()
         {
-            _playerDirection = (_shipToFollow.Position - transform.position).normalized;
+            _playerDirection = (_player.position - transform.position).normalized;
         }
 
         private void RotateTowardsPlayer()
@@ -70,10 +63,10 @@ namespace _Project.Scripts.Enemy
             }
         }
 
-        //public void Setup(ShipCollision shipCollision)
-        //{
-        //    _player = shipCollision.transform;
-        //}
+        public void SetPlayerTransform(ShipCollision shipCollision)
+        {
+            _player = shipCollision.transform;
+        }
 
         public void TakeHit(WeaponType hitType)
         {

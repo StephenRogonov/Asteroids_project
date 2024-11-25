@@ -14,7 +14,7 @@ public class ShipInstaller : MonoInstaller
     public override void InstallBindings()
     {
         BindConfig();
-        BindShipInstanceAndComponents();
+        BindShipInstance();
     }
 
     private void BindConfig()
@@ -24,11 +24,22 @@ public class ShipInstaller : MonoInstaller
         Container.Bind<ShipShootingLaserConfig>().FromInstance(_shipShootingLaserConfig).AsSingle();
     }
 
-    private void BindShipInstanceAndComponents()
+    private void BindShipInstance()
     {
-        ShipMovement ship = Container.InstantiatePrefabForComponent<ShipMovement>(_shipPrefab, _shipSpawnPoint.position, Quaternion.identity, null);
-        Container.BindInterfacesAndSelfTo<ShipMovement>().FromInstance(ship).AsSingle();
+        Container
+            .BindInterfacesAndSelfTo<ShipMovement>()
+            .FromComponentInNewPrefab(_shipPrefab)
+            .AsSingle()
+            .OnInstantiated<ShipMovement>(OnShipInstantiated)
+            .NonLazy();
+    }
+
+    private void OnShipInstantiated(InjectContext context, ShipMovement ship)
+    {
+        ship.transform.position = _shipSpawnPoint.position;
+
         Container.Bind<ShipMissilesAttack>().FromComponentInHierarchy(ship).AsSingle();
         Container.Bind<ShipLaserAttack>().FromComponentInHierarchy(ship).AsSingle();
+        Container.Bind<ShipCollision>().FromComponentInHierarchy(ship).AsSingle();
     }
 }

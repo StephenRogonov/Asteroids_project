@@ -29,7 +29,9 @@ namespace _Project.Scripts.Common
                 return _queue.Dequeue();
             }
 
-            return Object.Instantiate(_prefab);
+            T item = Object.Instantiate(_prefab);
+            item.gameObject.SetActive(false);
+            return item;
         }
 
         public void Return(T item)

@@ -4,7 +4,7 @@ using Zenject;
 
 namespace _Project.Scripts.Player
 {
-    public class ShipMovement : MonoBehaviour, IEnemyTarget
+    public class ShipMovement : MonoBehaviour
     {
         private float _acceleration;
         private float _maxSpeed;
@@ -15,6 +15,8 @@ namespace _Project.Scripts.Player
         private Rigidbody2D _rigidbody;
 
         public Vector3 Position => transform.position;
+        public Vector3 Rotation => transform.eulerAngles;
+        public Rigidbody2D Rigidbody => _rigidbody;
 
         [Inject]
         private void Construct(ShipMovementConfig shipMovementConfig)

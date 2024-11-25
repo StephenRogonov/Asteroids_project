@@ -18,10 +18,4 @@ public class ObstacleSpawnerSettings : ScriptableObject
 
     [Header("Common")]
     public float SpawnDistance = 13f;
-
-    public ObstacleSpawnerSettings(Asteroid asteroidPrefab, EnemyMovement enemyPrefab)
-    {
-        AsteroidPrefab = asteroidPrefab;
-        EnemyPrefab = enemyPrefab;
-    }
 }

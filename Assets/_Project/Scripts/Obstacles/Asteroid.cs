@@ -1,4 +1,3 @@
-using _Project.Scripts.Common;
 using _Project.Scripts.PlayerWeapons;
 using System;
 using System.Collections;

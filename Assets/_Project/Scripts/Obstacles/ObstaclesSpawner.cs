@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Obstacles
 {
@@ -10,7 +11,8 @@ namespace _Project.Scripts.Obstacles
         private Coroutine _asteroidsSpawnCoroutine;
         private Coroutine _enemiesSpawnCoroutine;
 
-        public void Run(ObstacleSpawnerSettings settings, ObstaclesFactory obstaclesFactory)
+        [Inject]
+        public void Construct(ObstacleSpawnerSettings settings, ObstaclesFactory obstaclesFactory)
         {
             _obstaclesFactory = obstaclesFactory;
             _settings = settings;

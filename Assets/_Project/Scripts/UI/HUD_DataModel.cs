@@ -3,6 +3,7 @@ namespace _Project.Scripts.UI
     public class HUD_DataModel
     {
         private HUD_View _hudView;
+
         private int _laserShotsAvailable;
 
         public bool CanShootLaser { get; private set; }
