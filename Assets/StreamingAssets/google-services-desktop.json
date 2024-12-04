@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1009656252644",
+    "project_id": "asteroids-105b6",
+    "storage_bucket": "asteroids-105b6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009656252644:android:2ffa2345a904dd621644f1",
+        "android_client_info": {
+          "package_name": "com.BlinkeiT.Asteroids"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB__o3agXpTyq8cFsNFG2NSGGILyKEOXCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

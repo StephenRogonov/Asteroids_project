@@ -9,13 +9,22 @@ namespace _Project.Scripts.PlayerWeapons
     {
         [SerializeField] private GameObject _laserBeam;
 
-        private ShipShootingLaserConfig _config;
+        private ShipLaserConfig _config;
         private RaycastHit2D[] _obstaclesToDestroy;
 
+        private int _asteroidsDestroyed;
+        private int _enemiesDestroyed;
+
+        public int AsteroidsDestroyed => _asteroidsDestroyed;
+        public int EnemiesDestroyed => _enemiesDestroyed;
+
         [Inject]
-        private void Construct(ShipShootingLaserConfig config)
+        private void Construct(ShipLaserConfig config)
         {
             _config = config;
+
+            _asteroidsDestroyed = 0;
+            _enemiesDestroyed = 0;
         }
 
         public void PerformShot()
@@ -34,10 +43,25 @@ namespace _Project.Scripts.PlayerWeapons
         private void HitTargetsWithLaser()
         {
             _obstaclesToDestroy = Physics2D.RaycastAll(transform.position, transform.up, _config.LaserDistance, _config.LayersToDestroy);
+            IDamageable damageable = null;
 
             foreach (RaycastHit2D obstacle in _obstaclesToDestroy)
             {
-                obstacle.transform.GetComponent<IDamageable>().TakeHit(WeaponType.Laser);
+                damageable = obstacle.transform.GetComponent<IDamageable>();
+                CountDestroyedObstacles(damageable);
+                damageable.TakeHit(WeaponType.Laser);
+            }
+        }
+
+        private void CountDestroyedObstacles(IDamageable obstacle)
+        {
+            if (obstacle.ObstacleType == ObstacleType.Asteroid)
+            {
+                _asteroidsDestroyed++;
+            }
+            else if (obstacle.ObstacleType == ObstacleType.Enemy)
+            {
+                _enemiesDestroyed++;
             }
         }
     }

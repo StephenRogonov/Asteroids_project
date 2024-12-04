@@ -6,19 +6,14 @@ namespace _Project.Scripts.Player
     public class ShipMissilesAttack : MonoBehaviour
     {
         [SerializeField] private Transform _shootingPoint;
-        
-        private ShipShootingMissilesConfig _shipShootingMissilesConfig;
+
+        private ShipMissilesConfig _shipShootingMissilesConfig;
         private MissilesFactory _missilesFactory;
 
         [Inject]
-        private void Construct(ShipShootingMissilesConfig config)
+        private void Construct(MissilesFactory missilesFactory)
         {
-            _shipShootingMissilesConfig = config;
-        }
-
-        private void Awake()
-        {
-            _missilesFactory = new MissilesFactory(_shipShootingMissilesConfig, _shootingPoint);
+            _missilesFactory = missilesFactory;
         }
 
         public void PerformShot()

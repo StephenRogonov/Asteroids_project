@@ -14,12 +14,16 @@ namespace _Project.Scripts.Enemy
         private Rigidbody2D _rigidbody;
         private Transform _player;
         private Vector2 _playerDirection;
+        private ObstacleType _obstacleType;
+
+        public ObstacleType ObstacleType => _obstacleType;
 
         public event Action<EnemyMovement> Destroyed;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _obstacleType = ObstacleType.Enemy;
         }
 
         private void Update()

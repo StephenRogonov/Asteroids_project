@@ -8,8 +8,8 @@ public class ShipInstaller : MonoInstaller
     [SerializeField] private ShipMovement _shipPrefab;
     [SerializeField] private Transform _shipSpawnPoint;
     [SerializeField] private ShipMovementConfig _shipConfig;
-    [SerializeField] private ShipShootingMissilesConfig _shipShootingMissilesConfig;
-    [SerializeField] private ShipShootingLaserConfig _shipShootingLaserConfig;
+    [SerializeField] private ShipMissilesConfig _shipShootingMissilesConfig;
+    [SerializeField] private ShipLaserConfig _shipShootingLaserConfig;
 
     public override void InstallBindings()
     {
@@ -20,8 +20,8 @@ public class ShipInstaller : MonoInstaller
     private void BindConfig()
     {
         Container.Bind<ShipMovementConfig>().FromInstance(_shipConfig).AsSingle();
-        Container.Bind<ShipShootingMissilesConfig>().FromInstance(_shipShootingMissilesConfig).AsSingle();
-        Container.Bind<ShipShootingLaserConfig>().FromInstance(_shipShootingLaserConfig).AsSingle();
+        Container.Bind<ShipMissilesConfig>().FromInstance(_shipShootingMissilesConfig).AsSingle();
+        Container.Bind<ShipLaserConfig>().FromInstance(_shipShootingLaserConfig).AsSingle();
     }
 
     private void BindShipInstance()
@@ -32,14 +32,15 @@ public class ShipInstaller : MonoInstaller
             .AsSingle()
             .OnInstantiated<ShipMovement>(OnShipInstantiated)
             .NonLazy();
+        Container.Bind<MissilesFactory>().AsSingle();
     }
 
     private void OnShipInstantiated(InjectContext context, ShipMovement ship)
     {
         ship.transform.position = _shipSpawnPoint.position;
 
-        Container.Bind<ShipMissilesAttack>().FromComponentInHierarchy(ship).AsSingle();
-        Container.Bind<ShipLaserAttack>().FromComponentInHierarchy(ship).AsSingle();
-        Container.Bind<ShipCollision>().FromComponentInHierarchy(ship).AsSingle();
+        Container.Bind<ShipMissilesAttack>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<ShipLaserAttack>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<ShipCollision>().FromComponentInHierarchy().AsSingle();
     }
 }

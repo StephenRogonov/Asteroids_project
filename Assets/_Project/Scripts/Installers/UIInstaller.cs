@@ -6,14 +6,20 @@ using Zenject;
 
 public class UIInstaller : MonoInstaller
 {
-    [SerializeField] private HUD_View _hudPrefab;
+    [SerializeField] private HudView _hudPrefab;
     [SerializeField] private GameOver _gameOverPanelPrefab;
+    [SerializeField] private MobileButtons _mobileButtonsPrefab;
 
     public override void InstallBindings()
     {
         Container
-            .Bind<HUD_View>()
+            .Bind<HudView>()
             .FromComponentInNewPrefab(_hudPrefab)
+            .AsSingle()
+            .NonLazy();
+        Container
+            .Bind<MobileButtons>()
+            .FromComponentInNewPrefab(_mobileButtonsPrefab)
             .AsSingle()
             .NonLazy();
         Container
@@ -22,8 +28,9 @@ public class UIInstaller : MonoInstaller
             .AsSingle()
             .NonLazy();
 
-        Container.Bind<HUD_DataModel>().AsSingle();
-        Container.Bind<HUD_Controller>().AsSingle();
-        Container.Bind<WeaponTrigger>().AsSingle();
+        Container.Bind<HudModel>().AsSingle();
+        Container.BindInterfacesAndSelfTo<HudController>().AsSingle();
+        //Container.Bind<ITickable>().To<HudController>().AsSingle();
+        Container.Bind<WeaponTrigger>().AsSingle().NonLazy();
     }
 }

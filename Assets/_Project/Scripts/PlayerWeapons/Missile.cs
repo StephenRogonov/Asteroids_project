@@ -13,6 +13,7 @@ namespace _Project.Scripts.PlayerWeapons
         private Camera _mainCamera;
 
         public event Action<Missile> Destroyed;
+        public event Action<IDamageable> ObstacleHit;
 
         private void Awake()
         {
@@ -49,9 +50,12 @@ namespace _Project.Scripts.PlayerWeapons
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.GetComponent<IDamageable>() != null)
+            collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obstacle);
+
+            if (obstacle != null)
             {
-                collision.gameObject.GetComponent<IDamageable>().TakeHit(WeaponType.Missile);
+                ObstacleHit?.Invoke(obstacle);
+                obstacle.TakeHit(WeaponType.Missile);
             }
 
             gameObject.SetActive(false);

@@ -13,7 +13,7 @@ public class SpawnerInstaller : MonoInstaller
         Container.Bind<ObstacleSpawnerSettings>().FromInstance(_spawnerSettings).AsSingle();
         Container.Bind<ObstaclesFactory>().AsSingle();
         Container.Bind<ObstaclesSpawner>().FromInstance(_spawner).AsSingle();
-
         Container.Bind<GameOverController>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<FirebaseEventManager>().AsSingle();
     }
 }

@@ -12,6 +12,12 @@ namespace _Project.Scripts.Obstacles
         private Pool<Asteroid> _asteroidsPool;
         private Pool<EnemyMovement> _enemiesPool;
 
+        private int _asteroidsDestroyed;
+        private int _enemiesDestroyed;
+
+        public int AsteroidsDestroyed => _asteroidsDestroyed;
+        public int EnemiesDestroyed => _enemiesDestroyed;
+
         public ObstaclesFactory(ShipCollision ship, ObstacleSpawnerSettings settings)
         {
             _ship = ship;

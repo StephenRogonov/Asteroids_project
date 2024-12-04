@@ -14,12 +14,16 @@ namespace _Project.Scripts.Obstacles
 
         private Rigidbody2D _rigidbody;
         private AsteroidType _type;
+        private ObstacleType _obstacleType;
+
+        public ObstacleType ObstacleType => _obstacleType;
 
         public event Action<Asteroid> Destroyed;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _obstacleType = ObstacleType.Asteroid;
         }
 
         private void OnEnable()
