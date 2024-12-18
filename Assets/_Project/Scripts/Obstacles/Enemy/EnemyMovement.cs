@@ -3,6 +3,7 @@ using _Project.Scripts.PlayerWeapons;
 using _Project.Scripts.Player;
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Enemy
 {
@@ -19,6 +20,12 @@ namespace _Project.Scripts.Enemy
         public ObstacleType ObstacleType => _obstacleType;
 
         public event Action<EnemyMovement> Destroyed;
+
+        [Inject]
+        private void Construct(ShipCollision shipCollision)
+        {
+            _player = shipCollision.transform;
+        }
 
         private void Awake()
         {
@@ -67,12 +74,12 @@ namespace _Project.Scripts.Enemy
             }
         }
 
-        public void SetPlayerTransform(ShipCollision shipCollision)
+        public void TakeHit(WeaponType hitType)
         {
-            _player = shipCollision.transform;
+            DestroyObject();
         }
 
-        public void TakeHit(WeaponType hitType)
+        public void DestroyObject()
         {
             gameObject.SetActive(false);
             Destroyed?.Invoke(this);

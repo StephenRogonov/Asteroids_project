@@ -30,7 +30,6 @@ public class UIInstaller : MonoInstaller
 
         Container.Bind<HudModel>().AsSingle();
         Container.BindInterfacesAndSelfTo<HudController>().AsSingle();
-        //Container.Bind<ITickable>().To<HudController>().AsSingle();
         Container.Bind<WeaponTrigger>().AsSingle().NonLazy();
     }
 }

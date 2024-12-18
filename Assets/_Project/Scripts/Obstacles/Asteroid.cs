@@ -62,18 +62,7 @@ namespace _Project.Scripts.Obstacles
             DestroyObject();
         }
 
-        private void CreateShard()
-        {
-            Vector2 position = transform.position;
-            position += UnityEngine.Random.insideUnitCircle * 0.5f;
-
-            Asteroid shard = Instantiate(this, position, transform.rotation);
-            shard.Move(UnityEngine.Random.insideUnitCircle.normalized);
-            shard.SetType(AsteroidType.Shard);
-            shard.transform.localScale = new Vector2(_shardSize, _shardSize);
-        }
-
-        private void DestroyObject()
+        public void DestroyObject()
         {
             if (_type == AsteroidType.Shard)
             {
@@ -84,6 +73,17 @@ namespace _Project.Scripts.Obstacles
                 gameObject.SetActive(false);
                 Destroyed?.Invoke(this);
             }
+        }
+
+        private void CreateShard()
+        {
+            Vector2 position = transform.position;
+            position += UnityEngine.Random.insideUnitCircle * 0.5f;
+
+            Asteroid shard = Instantiate(this, position, transform.rotation);
+            shard.Move(UnityEngine.Random.insideUnitCircle.normalized);
+            shard.SetType(AsteroidType.Shard);
+            shard.transform.localScale = new Vector2(_shardSize, _shardSize);
         }
     }
 }

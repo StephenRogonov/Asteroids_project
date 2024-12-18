@@ -2,11 +2,17 @@ using Firebase;
 using Firebase.Extensions;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Zenject;
 
 public class FirebaseSetup : MonoBehaviour
 {
-    private FirebaseApp app;
+    private SceneSwitcher _sceneSwitcher;
+
+    [Inject]
+    private void Construct(SceneSwitcher sceneSwitcher)
+    {
+        _sceneSwitcher = sceneSwitcher;
+    }
 
     void Start()
     {
@@ -15,20 +21,15 @@ public class FirebaseSetup : MonoBehaviour
             var dependencyStatus = task.Result;
             if (dependencyStatus == DependencyStatus.Available)
             {
-                // Create and hold a reference to your FirebaseApp,
-                // where app is a Firebase.FirebaseApp property of your application class.
-                app = FirebaseApp.DefaultInstance;
-
-                // Set a flag here to indicate whether Firebase is ready to use by your app.
+                FirebaseApp app = FirebaseApp.DefaultInstance;
             }
             else
             {
                 Debug.LogError(String.Format(
                   "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                // Firebase Unity SDK is not safe to use here.
             }
 
-            SceneManager.LoadScene(1);
+            _sceneSwitcher.LoadScene(SceneSwitcher.GAME);
         });
     }
 }

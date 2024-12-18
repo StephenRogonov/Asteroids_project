@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Common
 {
@@ -8,15 +9,18 @@ namespace _Project.Scripts.Common
         private readonly T _prefab;
         private readonly Queue<T> _queue = new();
 
-        public Pool(T prefab, int count)
+        private IInstantiator _instantiator;
+
+        public Pool(T prefab, int count, IInstantiator instantiator)
         {
             _prefab = prefab;
+            _instantiator = instantiator;
 
             T item;
 
             for (int i = 0; i < count; i++)
             {
-                item = Object.Instantiate(_prefab);
+                item = _instantiator.InstantiatePrefabForComponent<T>(_prefab);
                 item.gameObject.SetActive(false);
                 _queue.Enqueue(item);
             }
@@ -29,7 +33,7 @@ namespace _Project.Scripts.Common
                 return _queue.Dequeue();
             }
 
-            T item = Object.Instantiate(_prefab);
+            T item = _instantiator.InstantiatePrefabForComponent<T>(_prefab);
             item.gameObject.SetActive(false);
             return item;
         }

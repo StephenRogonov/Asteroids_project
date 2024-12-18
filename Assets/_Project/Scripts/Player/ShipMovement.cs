@@ -1,11 +1,14 @@
+using _Project.Scripts.Analytics;
+using _Project.Scripts.Common;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 namespace _Project.Scripts.Player
 {
-    public class ShipMovement : MonoBehaviour
+    public class ShipMovement : MonoBehaviour, IPause
     {
+        private AnalyticsEventManager _analyticsEventManager;
+
         private float _acceleration;
         private float _maxSpeed;
         private float _rotationSpeed;
@@ -14,63 +17,54 @@ namespace _Project.Scripts.Player
         private float _rotateDirection;
         private Rigidbody2D _rigidbody;
 
+        private PauseHandler _pauseHandler;
+
         public Vector3 Position => transform.position;
         public Vector3 Rotation => transform.eulerAngles;
         public Rigidbody2D Rigidbody => _rigidbody;
 
         [Inject]
-        private void Construct(ShipMovementConfig shipMovementConfig)
+        private void Construct(ShipMovementConfig shipMovementConfig, AnalyticsEventManager analyticsEventManager, PauseHandler pauseHandler)
         {
+            _analyticsEventManager = analyticsEventManager;
+            _pauseHandler = pauseHandler;
+            _pauseHandler.Add(this);
+
             _acceleration = shipMovementConfig.Acceleration;
             _maxSpeed = shipMovementConfig.MaxSpeed;
             _rotationSpeed = shipMovementConfig.RotationSpeed;
         }
 
+        public void Move(bool isMoving)
+        {
+            _isMoving = isMoving;
+        }
+
+        public void Rotate(float rotateDirection)
+        {
+            _rotateDirection = rotateDirection;
+        }
+
+        public void Pause()
+        {
+            //No action needed here.
+        }
+
+        public void Unpause()
+        {
+            gameObject.SetActive(true);
+        }
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
+            _analyticsEventManager.LogEventWithoutParameters(LoggingEvents.START_GAME);
         }
 
         private void FixedUpdate()
         {
             MoveCharacter();
             RotateCharacter();
-        }
-
-        public void Move(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                _isMoving = true;
-            }
-            else if (context.canceled)
-            {
-                _isMoving = false;
-            }
-        }
-
-        public void PlayerRotateLeft(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                _rotateDirection = 1f;
-            }
-            else if (context.canceled)
-            {
-                _rotateDirection = 0f;
-            }
-        }
-
-        public void PlayerRotateRight(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                _rotateDirection = -1f;
-            }
-            else if (context.canceled)
-            {
-                _rotateDirection = 0f;
-            }
         }
 
         private void MoveCharacter()

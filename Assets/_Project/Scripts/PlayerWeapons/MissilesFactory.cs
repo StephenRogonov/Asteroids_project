@@ -2,29 +2,31 @@ using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
 using _Project.Scripts.PlayerWeapons;
+using _Project.Scripts.Analytics;
 using UnityEngine;
+using Zenject;
 
 public class MissilesFactory
 {
+    private AnalyticsEventManager _analyticsEventManager;
+
     private ShipMissilesConfig _shipShootingSettings;
     private Transform _shipShootingPoint;
     private Pool<Missile> _missilesPool;
+    private IInstantiator _instantiator;
 
-    private int _asteroidsDestroyed;
-    private int _enemiesDestroyed;
-
-    public int AsteroidsDestroyed => _asteroidsDestroyed;
-    public int EnemiesDestroyed => _enemiesDestroyed;
-
-    public MissilesFactory(ShipMissilesConfig shipShootingSettings, ShipMovement shipMovement)
+    public MissilesFactory(AnalyticsEventManager analyticsEventManager, 
+        ShipMissilesConfig shipShootingSettings, 
+        ShipMovement shipMovement, 
+        IInstantiator instantiator)
     {
+        _analyticsEventManager = analyticsEventManager;
         _shipShootingSettings = shipShootingSettings;
         _shipShootingPoint = shipMovement.transform.GetComponentInChildren<ShootingPoint>().transform;
+        _instantiator = instantiator;
 
-        _missilesPool = new Pool<Missile>(_shipShootingSettings.MissilePrefab, _shipShootingSettings.MissilePoolInitialSize);
-
-        _asteroidsDestroyed = 0;
-        _enemiesDestroyed = 0;
+        _missilesPool = _instantiator.Instantiate<Pool<Missile>>(new object[] 
+        { _shipShootingSettings.MissilePrefab, _shipShootingSettings.MissilePoolInitialSize });
     }
 
     public Missile GetMissile()
@@ -46,11 +48,11 @@ public class MissilesFactory
     {
         if (obstacle.ObstacleType == ObstacleType.Asteroid)
         {
-            _asteroidsDestroyed++;
+            _analyticsEventManager.IncrementParameter(LogParameters.AsteroidsDestroyedTotal);
         }
         else if (obstacle.ObstacleType == ObstacleType.Enemy)
         {
-            _enemiesDestroyed++;
+            _analyticsEventManager.IncrementParameter(LogParameters.EnemiesDestroyedTotal);
         }
     }
 }

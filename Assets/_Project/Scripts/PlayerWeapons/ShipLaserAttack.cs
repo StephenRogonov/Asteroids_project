@@ -1,4 +1,5 @@
 using _Project.Scripts.Obstacles;
+using _Project.Scripts.Analytics;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -9,22 +10,16 @@ namespace _Project.Scripts.PlayerWeapons
     {
         [SerializeField] private GameObject _laserBeam;
 
+        private AnalyticsEventManager _analyticsEventManager;
+
         private ShipLaserConfig _config;
         private RaycastHit2D[] _obstaclesToDestroy;
 
-        private int _asteroidsDestroyed;
-        private int _enemiesDestroyed;
-
-        public int AsteroidsDestroyed => _asteroidsDestroyed;
-        public int EnemiesDestroyed => _enemiesDestroyed;
-
         [Inject]
-        private void Construct(ShipLaserConfig config)
+        private void Construct(AnalyticsEventManager analyticsEventManager, ShipLaserConfig config)
         {
+            _analyticsEventManager = analyticsEventManager;
             _config = config;
-
-            _asteroidsDestroyed = 0;
-            _enemiesDestroyed = 0;
         }
 
         public void PerformShot()
@@ -57,11 +52,11 @@ namespace _Project.Scripts.PlayerWeapons
         {
             if (obstacle.ObstacleType == ObstacleType.Asteroid)
             {
-                _asteroidsDestroyed++;
+                _analyticsEventManager.IncrementParameter(LogParameters.AsteroidsDestroyedTotal);
             }
             else if (obstacle.ObstacleType == ObstacleType.Enemy)
             {
-                _enemiesDestroyed++;
+                _analyticsEventManager.IncrementParameter(LogParameters.EnemiesDestroyedTotal);
             }
         }
     }

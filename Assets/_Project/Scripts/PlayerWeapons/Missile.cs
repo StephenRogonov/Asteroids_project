@@ -1,6 +1,7 @@
 using _Project.Scripts.Obstacles;
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.PlayerWeapons
 {
@@ -15,10 +16,15 @@ namespace _Project.Scripts.PlayerWeapons
         public event Action<Missile> Destroyed;
         public event Action<IDamageable> ObstacleHit;
 
+        [Inject]
+        private void Construct(Camera camera)
+        {
+            _mainCamera = camera;
+        }
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
-            _mainCamera = Camera.main;
         }
 
         private void OnEnable()

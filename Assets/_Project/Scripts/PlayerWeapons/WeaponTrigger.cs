@@ -1,52 +1,63 @@
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
-using System;
-using UnityEngine.InputSystem;
+using _Project.Scripts.Analytics;
+using _Project.Scripts.Common;
 
 namespace _Project.Scripts.PlayerWeapons
 {
-    public class WeaponTrigger
+    public class WeaponTrigger : IPause
     {
         private HudModel _hudModel;
         private ShipLaserAttack _shipLaserAttack;
         private ShipMissilesAttack _shipMissilesAttack;
+        private AnalyticsEventManager _analyticsEventManager;
+        private PauseHandler _pauseHandler;
 
-        private int _laserShotsTotal;
-        private int _missilesShotsTotal;
+        private bool _isPaused;
 
-        public int LaserShotsTotal => _laserShotsTotal;
-        public int MissilesShotsTotal => _missilesShotsTotal;
-
-        public event Action LaserShot;
-
-        public WeaponTrigger(HudModel hudModel, ShipLaserAttack shipLaserAttack, ShipMissilesAttack shipMissilesAttack)
+        public WeaponTrigger(HudModel hudModel, 
+            ShipLaserAttack shipLaserAttack, 
+            ShipMissilesAttack shipMissilesAttack, 
+            AnalyticsEventManager analyticsEventManager,
+            PauseHandler pauseHandler)
         {
             _hudModel = hudModel;
             _shipLaserAttack = shipLaserAttack;
             _shipMissilesAttack = shipMissilesAttack;
+            _analyticsEventManager = analyticsEventManager;
+            _pauseHandler = pauseHandler;
 
-            _laserShotsTotal = 0;
-            _missilesShotsTotal = 0;
+            _pauseHandler.Add(this);
         }
 
-        public void ShootMissile(InputAction.CallbackContext context)
+        public void ShootMissile()
         {
-            if (context.performed)
+            if (_isPaused == false)
             {
-                _missilesShotsTotal++;
+                _analyticsEventManager.IncrementParameter(LogParameters.MissilesShotsTotal);
                 _shipMissilesAttack.PerformShot();
             }
         }
 
-        public void ShootLaser(InputAction.CallbackContext context)
+        public void ShootLaser()
         {
-            if (context.performed && _hudModel.CanShootLaser)
+            if (_hudModel.CanShootLaser && _isPaused == false)
             {
-                _laserShotsTotal++;
-                LaserShot?.Invoke();
+                _analyticsEventManager.IncrementParameter(LogParameters.LaserShotsTotal);
+                _analyticsEventManager.LogEventWithoutParameters(LoggingEvents.LASER_SHOT);
                 _shipLaserAttack.PerformShot();
                 _hudModel.ChangeLaserShotsCount(-1);
             }
+        }
+
+        public void Pause()
+        {
+            _isPaused = true;
+        }
+
+        public void Unpause()
+        {
+            _isPaused = false;
         }
     }
 }

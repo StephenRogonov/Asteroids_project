@@ -1,3 +1,4 @@
+using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
 using System;
@@ -9,12 +10,14 @@ namespace _Project.Scripts.GameFlow
         private ShipCollision _shipCollision;
         private ObstaclesSpawner _obstaclesSpawner;
         private GameOver _gameOverPanel;
+        private PauseHandler _pauseHandler;
 
-        public GameOverController(ShipCollision shipCollision, ObstaclesSpawner obstaclesSpawner, GameOver gameOverPanel)
+        public GameOverController(ShipCollision shipCollision, ObstaclesSpawner obstaclesSpawner, GameOver gameOverPanel, PauseHandler pauseHandler)
         {
             _shipCollision = shipCollision;
             _obstaclesSpawner = obstaclesSpawner;
             _gameOverPanel = gameOverPanel;
+            _pauseHandler = pauseHandler;
 
             _shipCollision.Crashed += GameOver;
         }
@@ -26,8 +29,9 @@ namespace _Project.Scripts.GameFlow
 
         private void GameOver()
         {
-            _obstaclesSpawner.Stop();
-            _gameOverPanel.Enable();
+            //_obstaclesSpawner.Stop();
+            _pauseHandler.Pause();
+            _gameOverPanel.EnableCanvas();
         }
     }
 }

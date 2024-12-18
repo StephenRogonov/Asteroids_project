@@ -1,3 +1,4 @@
+using _Project.Scripts.Common;
 using _Project.Scripts.Player;
 using System;
 using UnityEngine;
@@ -5,12 +6,13 @@ using Zenject;
 
 namespace _Project.Scripts.UI
 {
-    public class HudController : ITickable
+    public class HudController : ITickable, IPause
     {
         private HudModel _model;
         private HudView _view;
         private ShipLaserConfig _laserConfig;
         private ShipMovement _shipMovement;
+        private PauseHandler _pauseHandler;
 
         private CountdownTimer _timer;
 
@@ -18,12 +20,17 @@ namespace _Project.Scripts.UI
         private int _shipRotation;
         private float _shipSpeed;
 
-        public HudController(HudModel model, HudView view, ShipLaserConfig laserConfig, ShipMovement shipMovement)
+        private bool _isPaused;
+
+        public HudController(HudModel model, HudView view, ShipLaserConfig laserConfig, ShipMovement shipMovement, PauseHandler pauseHandler)
         {
             _model = model;
             _view = view;
             _laserConfig = laserConfig;
             _shipMovement = shipMovement;
+            _pauseHandler = pauseHandler;
+
+            _pauseHandler.Add(this);
 
             _timer = new CountdownTimer();
             _timer.Reset(_laserConfig.LaserShotRestorationTime);
@@ -34,15 +41,18 @@ namespace _Project.Scripts.UI
 
         public void Tick()
         {
-            CalculateShipStats();
-
-            _timer.Tick(Time.deltaTime);
-            _view.DisplayLaserRestorationTime(TimeSpan.FromSeconds(_timer.RemainingTime).ToString("mm':'ss"));
-
-            if (_timer.RemainingTime < 0)
+            if (_isPaused == false)
             {
-                _model.ChangeLaserShotsCount(1);
-                _timer.Reset(_laserConfig.LaserShotRestorationTime);
+                CalculateShipStats();
+
+                _timer.Tick(Time.deltaTime);
+                _view.DisplayLaserRestorationTime(TimeSpan.FromSeconds(_timer.RemainingTime).ToString("mm':'ss"));
+
+                if (_timer.RemainingTime < 0)
+                {
+                    _model.ChangeLaserShotsCount(1);
+                    _timer.Reset(_laserConfig.LaserShotRestorationTime);
+                }
             }
         }
 
@@ -54,6 +64,16 @@ namespace _Project.Scripts.UI
             _shipSpeed = Mathf.Round(Vector3.Magnitude(_shipMovement.Rigidbody.linearVelocity) * 100f) / 100f;
 
             _view.DisplayShipStats(_shipPosition, _shipRotation, _shipSpeed);
+        }
+
+        public void Pause()
+        {
+            _isPaused = true;
+        }
+
+        public void Unpause()
+        {
+            _isPaused = false;
         }
     }
 }
