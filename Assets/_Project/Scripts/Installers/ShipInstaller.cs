@@ -7,7 +7,7 @@ public class ShipInstaller : MonoInstaller
 {
     [SerializeField] private ShipMovement _shipPrefab;
     [SerializeField] private Transform _shipSpawnPoint;
-    [SerializeField] private ShipMovementConfig _shipConfig;
+    //[SerializeField] private ShipMovementConfig _shipConfig;
     [SerializeField] private ShipMissilesConfig _shipShootingMissilesConfig;
     [SerializeField] private ShipLaserConfig _shipShootingLaserConfig;
 
@@ -19,7 +19,7 @@ public class ShipInstaller : MonoInstaller
 
     private void BindConfig()
     {
-        Container.Bind<ShipMovementConfig>().FromInstance(_shipConfig).AsSingle();
+        //Container.Bind<ShipMovementConfig>().FromInstance(_shipConfig).AsSingle();
         Container.Bind<ShipMissilesConfig>().FromInstance(_shipShootingMissilesConfig).AsSingle();
         Container.Bind<ShipLaserConfig>().FromInstance(_shipShootingLaserConfig).AsSingle();
     }

@@ -7,7 +7,6 @@ namespace _Project.Scripts.Player
     {
         [SerializeField] private Transform _shootingPoint;
 
-        private ShipMissilesConfig _shipShootingMissilesConfig;
         private MissilesFactory _missilesFactory;
 
         [Inject]

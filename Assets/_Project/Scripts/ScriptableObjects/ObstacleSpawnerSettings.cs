@@ -7,15 +7,15 @@ public class ObstacleSpawnerSettings : ScriptableObject
 {
     [Header("Asteroid")]
     public Asteroid AsteroidPrefab;
-    public int AsteroidsPoolInitialSize = 10;
-    public float AsteroidSpawnRate = 2f;
-    public float AsteroidAngleOffset = 20f;
+    //public int AsteroidsPoolInitialSize = 10;
+    //public float AsteroidSpawnRate = 2f;
+    //public float AsteroidAngleOffset = 20f;
 
     [Header("Enemy")]
     public EnemyMovement EnemyPrefab;
-    public int EnemiesPoolInitialSize = 5;
-    public float EnemySpawnRate = 10f;
+    //public int EnemiesPoolInitialSize = 5;
+    //public float EnemySpawnRate = 10f;
 
-    [Header("Common")]
-    public float SpawnDistance = 13f;
+    //[Header("Common")]
+    //public float SpawnDistance = 13f;
 }

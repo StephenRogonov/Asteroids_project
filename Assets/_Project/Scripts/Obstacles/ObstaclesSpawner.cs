@@ -1,4 +1,5 @@
 using _Project.Scripts.Common;
+using _Project.Scripts.Configs;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -8,6 +9,7 @@ namespace _Project.Scripts.Obstacles
     public class ObstaclesSpawner : MonoBehaviour, IPause
     {
         private ObstacleSpawnerSettings _settings;
+        private RemoteConfig _remoteConfig;
         private ObstaclesFactory _obstaclesFactory;
         private PauseHandler _pauseHandler;
 
@@ -17,10 +19,11 @@ namespace _Project.Scripts.Obstacles
         private bool _isPaused;
 
         [Inject]
-        private void Construct(ObstacleSpawnerSettings settings, ObstaclesFactory obstaclesFactory, PauseHandler pauseHandler)
+        private void Construct(ObstacleSpawnerSettings settings, RemoteConfig remoteConfig, ObstaclesFactory obstaclesFactory, PauseHandler pauseHandler)
         {
-            _obstaclesFactory = obstaclesFactory;
             _settings = settings;
+            _remoteConfig = remoteConfig;
+            _obstaclesFactory = obstaclesFactory;
             _pauseHandler = pauseHandler;
 
             _pauseHandler.Add(this);
@@ -50,7 +53,7 @@ namespace _Project.Scripts.Obstacles
 
             while (true)
             {
-                while (time < _settings.AsteroidSpawnRate)
+                while (time < _remoteConfig.AsteroidsSpawnRate)
                 {
                     if (_isPaused == false)
                     {
@@ -71,7 +74,7 @@ namespace _Project.Scripts.Obstacles
 
             while (true)
             {
-                while (time < _settings.EnemySpawnRate)
+                while (time < _remoteConfig.EnemiesSpawnRate)
                 {
                     if (_isPaused == false)
                     {

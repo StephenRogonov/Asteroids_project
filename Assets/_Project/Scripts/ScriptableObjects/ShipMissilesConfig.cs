@@ -5,5 +5,5 @@ using UnityEngine;
 public class ShipMissilesConfig : ScriptableObject
 {
     public Missile MissilePrefab;
-    public int MissilePoolInitialSize = 6;
+    //public int MissilePoolInitialSize = 6;
 }

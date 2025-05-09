@@ -1,5 +1,6 @@
 using _Project.Scripts.Analytics;
 using _Project.Scripts.Common;
+using _Project.Scripts.Configs;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +9,7 @@ namespace _Project.Scripts.Player
     public class ShipMovement : MonoBehaviour, IPause
     {
         private AnalyticsEventManager _analyticsEventManager;
+        private RemoteConfig _remoteConfig;
 
         private float _acceleration;
         private float _maxSpeed;
@@ -24,15 +26,16 @@ namespace _Project.Scripts.Player
         public Rigidbody2D Rigidbody => _rigidbody;
 
         [Inject]
-        private void Construct(ShipMovementConfig shipMovementConfig, AnalyticsEventManager analyticsEventManager, PauseHandler pauseHandler)
+        private void Construct(RemoteConfig remoteConfig, AnalyticsEventManager analyticsEventManager, PauseHandler pauseHandler)
         {
             _analyticsEventManager = analyticsEventManager;
+            _remoteConfig = remoteConfig;
             _pauseHandler = pauseHandler;
             _pauseHandler.Add(this);
 
-            _acceleration = shipMovementConfig.Acceleration;
-            _maxSpeed = shipMovementConfig.MaxSpeed;
-            _rotationSpeed = shipMovementConfig.RotationSpeed;
+            _acceleration = _remoteConfig.ShipAcceleration;
+            _maxSpeed = _remoteConfig.ShipMaxSpeed;
+            _rotationSpeed = _remoteConfig.ShipRotationSpeed;
         }
 
         public void Move(bool isMoving)

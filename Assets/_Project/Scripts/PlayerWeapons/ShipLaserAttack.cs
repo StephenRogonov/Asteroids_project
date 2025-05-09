@@ -3,6 +3,7 @@ using _Project.Scripts.Analytics;
 using System.Collections;
 using UnityEngine;
 using Zenject;
+using _Project.Scripts.Configs;
 
 namespace _Project.Scripts.PlayerWeapons
 {
@@ -12,14 +13,16 @@ namespace _Project.Scripts.PlayerWeapons
 
         private AnalyticsEventManager _analyticsEventManager;
 
-        private ShipLaserConfig _config;
+        private ShipLaserConfig _laserConfig;
+        private RemoteConfig _remoteConfig;
         private RaycastHit2D[] _obstaclesToDestroy;
 
         [Inject]
-        private void Construct(AnalyticsEventManager analyticsEventManager, ShipLaserConfig config)
+        private void Construct(AnalyticsEventManager analyticsEventManager, ShipLaserConfig config, RemoteConfig remoteConfig)
         {
             _analyticsEventManager = analyticsEventManager;
-            _config = config;
+            _laserConfig = config;
+            _remoteConfig = remoteConfig;
         }
 
         public void PerformShot()
@@ -31,13 +34,13 @@ namespace _Project.Scripts.PlayerWeapons
         public IEnumerator DisplayLaserBeam()
         {
             _laserBeam.SetActive(true);
-            yield return new WaitForSeconds(_config.BeamLifetime);
+            yield return new WaitForSeconds(_remoteConfig.LaserBeamLifetime);
             _laserBeam.SetActive(false);
         }
 
         private void HitTargetsWithLaser()
         {
-            _obstaclesToDestroy = Physics2D.RaycastAll(transform.position, transform.up, _config.LaserDistance, _config.LayersToDestroy);
+            _obstaclesToDestroy = Physics2D.RaycastAll(transform.position, transform.up, _remoteConfig.LaserDistance, _laserConfig.LayersToDestroy);
             IDamageable damageable = null;
 
             foreach (RaycastHit2D obstacle in _obstaclesToDestroy)

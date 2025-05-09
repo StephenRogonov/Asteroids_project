@@ -1,3 +1,4 @@
+using _Project.Scripts.Advertising;
 using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
 using UnityEngine;
@@ -6,13 +7,15 @@ using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
+    [RequireComponent(typeof(IInterstitial))]
+    [RequireComponent(typeof(IRewarded))]
     public class GameOver : MonoBehaviour
     {
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _continueButton;
 
-        private Interstitial _interstitial;
-        private Rewarded _rewarded;
+        private IInterstitial _interstitial;
+        private IRewarded _rewarded;
 
         private SceneSwitcher _sceneSwitcher;
         private ObstaclesFactory _obstaclesFactory;
@@ -28,8 +31,8 @@ namespace _Project.Scripts.GameFlow
 
         private void OnEnable()
         {
-            _interstitial = GetComponent<Interstitial>();
-            _rewarded = GetComponent<Rewarded>();
+            _interstitial = GetComponent<IInterstitial>();
+            _rewarded = GetComponent<IRewarded>();
             _restartButton.onClick.AddListener(_interstitial.ShowAd);
             _restartButton.onClick.AddListener(DisableCanvas);
             _continueButton.onClick.AddListener(_rewarded.ShowAd);
@@ -45,7 +48,7 @@ namespace _Project.Scripts.GameFlow
         public void RestartGame()
         {
             gameObject.SetActive(false);
-            _sceneSwitcher.LoadScene(SceneSwitcher.GAME);
+            _sceneSwitcher.LoadGame();
         }
 
         public void ContinueGame()

@@ -1,4 +1,5 @@
 using _Project.Scripts.Common;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Player;
 using System;
 using UnityEngine;
@@ -10,7 +11,8 @@ namespace _Project.Scripts.UI
     {
         private HudModel _model;
         private HudView _view;
-        private ShipLaserConfig _laserConfig;
+        //private ShipLaserConfig _laserConfig;
+        private RemoteConfig _remoteConfig;
         private ShipMovement _shipMovement;
         private PauseHandler _pauseHandler;
 
@@ -22,20 +24,21 @@ namespace _Project.Scripts.UI
 
         private bool _isPaused;
 
-        public HudController(HudModel model, HudView view, ShipLaserConfig laserConfig, ShipMovement shipMovement, PauseHandler pauseHandler)
+        public HudController(HudModel model, HudView view, RemoteConfig remoteConfig, ShipMovement shipMovement, PauseHandler pauseHandler)
         {
             _model = model;
             _view = view;
-            _laserConfig = laserConfig;
+            //_laserConfig = laserConfig;
+            _remoteConfig = remoteConfig;
             _shipMovement = shipMovement;
             _pauseHandler = pauseHandler;
 
             _pauseHandler.Add(this);
 
             _timer = new CountdownTimer();
-            _timer.Reset(_laserConfig.LaserShotRestorationTime);
+            _timer.Reset(_remoteConfig.LaserShotRestorationTime);
 
-            _model.ChangeLaserShotsCount(_laserConfig.LaserShotsStartCount);
+            _model.ChangeLaserShotsCount(_remoteConfig.LaserShotsStartCount);
             _view = view;
         }
 
@@ -51,7 +54,7 @@ namespace _Project.Scripts.UI
                 if (_timer.RemainingTime < 0)
                 {
                     _model.ChangeLaserShotsCount(1);
-                    _timer.Reset(_laserConfig.LaserShotRestorationTime);
+                    _timer.Reset(_remoteConfig.LaserShotRestorationTime);
                 }
             }
         }

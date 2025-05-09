@@ -1,4 +1,5 @@
 using _Project.Scripts.Common;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Enemy;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace _Project.Scripts.Obstacles
     public class ObstaclesFactory
     {
         private ObstacleSpawnerSettings _spawnerSettings;
+        private RemoteConfig _remoteConfig;
         private IInstantiator _instantiator;
         private Pool<Asteroid> _asteroidsPool;
         private Pool<EnemyMovement> _enemiesPool;
@@ -16,9 +18,10 @@ namespace _Project.Scripts.Obstacles
         private List<Asteroid> _asteroidsSpawned = new();
         private List<EnemyMovement> _enemiesSpawned = new();
 
-        public ObstaclesFactory(ObstacleSpawnerSettings settings, IInstantiator instantiator)
+        public ObstaclesFactory(ObstacleSpawnerSettings settings, RemoteConfig remoteConfig, IInstantiator instantiator)
         {
             _spawnerSettings = settings;
+            _remoteConfig = remoteConfig;
             _instantiator = instantiator;
 
             CreatePools();
@@ -26,10 +29,14 @@ namespace _Project.Scripts.Obstacles
 
         public void CreatePools()
         {
-            _asteroidsPool = _instantiator.Instantiate<Pool<Asteroid>>(new object[] { _spawnerSettings.AsteroidPrefab, 
-                _spawnerSettings.AsteroidsPoolInitialSize });
-            _enemiesPool = _instantiator.Instantiate<Pool<EnemyMovement>>(new object[] { _spawnerSettings.EnemyPrefab, 
-                _spawnerSettings.EnemiesPoolInitialSize });
+            //_asteroidsPool = _instantiator.Instantiate<Pool<Asteroid>>(new object[] { _spawnerSettings.AsteroidPrefab, 
+            //    _spawnerSettings.AsteroidsPoolInitialSize });
+            //_enemiesPool = _instantiator.Instantiate<Pool<EnemyMovement>>(new object[] { _spawnerSettings.EnemyPrefab, 
+            //    _spawnerSettings.EnemiesPoolInitialSize });
+            _asteroidsPool = _instantiator.Instantiate<Pool<Asteroid>>(new object[] { _spawnerSettings.AsteroidPrefab,
+                _remoteConfig.AsteroidsPoolInitialSize });
+            _enemiesPool = _instantiator.Instantiate<Pool<EnemyMovement>>(new object[] { _spawnerSettings.EnemyPrefab,
+                _remoteConfig.EnemiesPoolInitialSize });
         }
 
         public void GetAsteroid()
@@ -49,7 +56,8 @@ namespace _Project.Scripts.Obstacles
             asteroid.Destroyed += _asteroidsPool.Return;
 
             Vector3 spawnOffset = GetRandomSpawnPosition();
-            float upDirectionAngleOffset = Random.Range(-_spawnerSettings.AsteroidAngleOffset, _spawnerSettings.AsteroidAngleOffset);
+            //float upDirectionAngleOffset = Random.Range(-_spawnerSettings.AsteroidAngleOffset, _spawnerSettings.AsteroidAngleOffset);
+            float upDirectionAngleOffset = Random.Range(-_remoteConfig.AsteroidAngleOffset, _remoteConfig.AsteroidAngleOffset);
             Quaternion directionOffset = Quaternion.AngleAxis(upDirectionAngleOffset, Vector3.forward);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, -spawnOffset) * directionOffset;
 
@@ -103,7 +111,8 @@ namespace _Project.Scripts.Obstacles
 
         private Vector3 GetRandomSpawnPosition()
         {
-            return Random.insideUnitCircle.normalized * _spawnerSettings.SpawnDistance;
+            //return Random.insideUnitCircle.normalized * _spawnerSettings.SpawnDistance;
+            return Random.insideUnitCircle.normalized * _remoteConfig.SpawnDistance;
         }
     }
 }
