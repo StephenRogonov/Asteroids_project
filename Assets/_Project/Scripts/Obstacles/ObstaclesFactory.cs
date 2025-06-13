@@ -29,10 +29,6 @@ namespace _Project.Scripts.Obstacles
 
         public void CreatePools()
         {
-            //_asteroidsPool = _instantiator.Instantiate<Pool<Asteroid>>(new object[] { _spawnerSettings.AsteroidPrefab, 
-            //    _spawnerSettings.AsteroidsPoolInitialSize });
-            //_enemiesPool = _instantiator.Instantiate<Pool<EnemyMovement>>(new object[] { _spawnerSettings.EnemyPrefab, 
-            //    _spawnerSettings.EnemiesPoolInitialSize });
             _asteroidsPool = _instantiator.Instantiate<Pool<Asteroid>>(new object[] { _spawnerSettings.AsteroidPrefab,
                 _remoteConfig.AsteroidsPoolInitialSize });
             _enemiesPool = _instantiator.Instantiate<Pool<EnemyMovement>>(new object[] { _spawnerSettings.EnemyPrefab,
@@ -56,7 +52,6 @@ namespace _Project.Scripts.Obstacles
             asteroid.Destroyed += _asteroidsPool.Return;
 
             Vector3 spawnOffset = GetRandomSpawnPosition();
-            //float upDirectionAngleOffset = Random.Range(-_spawnerSettings.AsteroidAngleOffset, _spawnerSettings.AsteroidAngleOffset);
             float upDirectionAngleOffset = Random.Range(-_remoteConfig.AsteroidAngleOffset, _remoteConfig.AsteroidAngleOffset);
             Quaternion directionOffset = Quaternion.AngleAxis(upDirectionAngleOffset, Vector3.forward);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, -spawnOffset) * directionOffset;
@@ -111,7 +106,6 @@ namespace _Project.Scripts.Obstacles
 
         private Vector3 GetRandomSpawnPosition()
         {
-            //return Random.insideUnitCircle.normalized * _spawnerSettings.SpawnDistance;
             return Random.insideUnitCircle.normalized * _remoteConfig.SpawnDistance;
         }
     }

@@ -11,7 +11,6 @@ namespace _Project.Scripts.UI
     {
         private HudModel _model;
         private HudView _view;
-        //private ShipLaserConfig _laserConfig;
         private RemoteConfig _remoteConfig;
         private ShipMovement _shipMovement;
         private PauseHandler _pauseHandler;
@@ -28,7 +27,6 @@ namespace _Project.Scripts.UI
         {
             _model = model;
             _view = view;
-            //_laserConfig = laserConfig;
             _remoteConfig = remoteConfig;
             _shipMovement = shipMovement;
             _pauseHandler = pauseHandler;
