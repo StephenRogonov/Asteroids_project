@@ -1,4 +1,7 @@
-public interface IInterstitial
+namespace _Project.Scripts.Advertising
 {
-    public void ShowAd();
+    public interface IInterstitial
+    {
+        public void ShowAd();
+    }
 }

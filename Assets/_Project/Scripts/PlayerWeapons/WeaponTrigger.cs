@@ -1,7 +1,7 @@
+using _Project.Scripts.Analytics;
+using _Project.Scripts.GameFlow;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
-using _Project.Scripts.Analytics;
-using _Project.Scripts.Common;
 
 namespace _Project.Scripts.PlayerWeapons
 {

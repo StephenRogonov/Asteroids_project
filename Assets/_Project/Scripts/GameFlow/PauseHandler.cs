@@ -1,6 +1,7 @@
+using _Project.Scripts.GameFlow;
 using System.Collections.Generic;
 
-namespace _Project.Scripts.Common
+namespace _Project.Scripts.GameFlow
 {
     public class PauseHandler
     {
@@ -9,7 +10,7 @@ namespace _Project.Scripts.Common
         public void Add(IPause pausable) => _pausableObjects.Add(pausable);
         public void Remove(IPause pausable) => _pausableObjects.Remove(pausable);
 
-        public void Pause()
+        public void PauseAll()
         {
             foreach (IPause pausable in _pausableObjects)
             {
@@ -17,7 +18,7 @@ namespace _Project.Scripts.Common
             }
         }
 
-        public void Unpause()
+        public void UnpauseAll()
         {
             foreach (IPause pausable in _pausableObjects)
             {

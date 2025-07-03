@@ -25,6 +25,7 @@ namespace _Project.Scripts.Player
             {
                 _analyticsEventManager.LogEndGame();
                 gameObject.SetActive(false);
+                collision.gameObject.GetComponent<IDamageable>().DestroyObject();
                 Crashed?.Invoke();
             }
         }

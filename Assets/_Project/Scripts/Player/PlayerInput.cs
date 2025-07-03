@@ -1,4 +1,6 @@
+using _Project.Scripts.Common;
 using _Project.Scripts.PlayerWeapons;
+using _Project.Scripts.UI;
 using System;
 using UnityEngine.InputSystem;
 
@@ -9,12 +11,15 @@ namespace _Project.Scripts.Player
         private ShipMovement _shipMovement;
         private WeaponTrigger _weaponTrigger;
         private PlayerControls _playerControls;
+        //private PauseHandler _pauseHandler;
+        private PauseController _pauseController;
 
-        public PlayerInput(PlayerControls playerControls, ShipMovement shipMovement, WeaponTrigger uiController)
+        public PlayerInput(PlayerControls playerControls, ShipMovement shipMovement, WeaponTrigger uiController, PauseController pauseButton)
         {
             _playerControls = playerControls;
             _shipMovement = shipMovement;
             _weaponTrigger = uiController;
+            _pauseController = pauseButton;
 
             SubscribeToActions();
         }
@@ -34,6 +39,8 @@ namespace _Project.Scripts.Player
 
             _playerControls.Player.ShootMissile.performed += ShootMissile;
             _playerControls.Player.ShootLaser.performed += ShootLaser;
+
+            _playerControls.Player.Pause.performed += Pause;
         }
 
         public void Dispose()
@@ -51,6 +58,8 @@ namespace _Project.Scripts.Player
 
             _playerControls.Player.ShootMissile.performed -= ShootMissile;
             _playerControls.Player.ShootLaser.performed -= ShootLaser;
+
+            _playerControls.Player.Pause.performed -= Pause;
         }
 
         private void Move(InputAction.CallbackContext context)
@@ -102,6 +111,14 @@ namespace _Project.Scripts.Player
             if (context.performed)
             {
                 _weaponTrigger.ShootLaser();
+            }
+        }
+
+        private void Pause(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                _pauseController.PauseGame();
             }
         }
     }

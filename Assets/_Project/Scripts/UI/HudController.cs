@@ -1,5 +1,5 @@
-using _Project.Scripts.Common;
 using _Project.Scripts.Configs;
+using _Project.Scripts.GameFlow;
 using _Project.Scripts.Player;
 using System;
 using UnityEngine;
@@ -37,7 +37,6 @@ namespace _Project.Scripts.UI
             _timer.Reset(_remoteConfig.LaserShotRestorationTime);
 
             _model.ChangeLaserShotsCount(_remoteConfig.LaserShotsStartCount);
-            _view = view;
         }
 
         public void Tick()

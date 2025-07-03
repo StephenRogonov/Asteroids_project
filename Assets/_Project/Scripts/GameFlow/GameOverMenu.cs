@@ -1,6 +1,6 @@
 using _Project.Scripts.Advertising;
-using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
+using _Project.Scripts.Player;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -9,7 +9,7 @@ namespace _Project.Scripts.GameFlow
 {
     [RequireComponent(typeof(IInterstitial))]
     [RequireComponent(typeof(IRewarded))]
-    public class GameOver : MonoBehaviour
+    public class GameOverMenu : MonoBehaviour
     {
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _continueButton;
@@ -19,14 +19,24 @@ namespace _Project.Scripts.GameFlow
 
         private SceneSwitcher _sceneSwitcher;
         private ObstaclesFactory _obstaclesFactory;
+        private ShipMovement _ship;
         private PauseHandler _pauseHandler;
+        private CanvasGroup _mobileButtonsCanvasGroup;
 
         [Inject]
-        private void Construct(SceneSwitcher sceneSwitcher, ObstaclesFactory obstaclesFactory, PauseHandler pauseHandler)
+        private void Construct(
+            SceneSwitcher sceneSwitcher, 
+            ObstaclesFactory obstaclesFactory, 
+            ShipMovement shipMovement,
+            PauseHandler pauseHandler, 
+            MobileButtons mobileButtons)
         {
             _sceneSwitcher = sceneSwitcher;
             _obstaclesFactory = obstaclesFactory;
+            _ship = shipMovement;
             _pauseHandler = pauseHandler;
+
+            _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
         }
 
         private void OnEnable()
@@ -47,14 +57,16 @@ namespace _Project.Scripts.GameFlow
 
         public void RestartGame()
         {
-            gameObject.SetActive(false);
             _sceneSwitcher.LoadGame();
         }
 
         public void ContinueGame()
         {
+            _pauseHandler.UnpauseAll();
             _obstaclesFactory.ReturnSpawnedToPool();
-            _pauseHandler.Unpause();
+            _ship.gameObject.SetActive(true);
+            _mobileButtonsCanvasGroup.interactable = true;
+            _mobileButtonsCanvasGroup.blocksRaycasts = true;
         }
 
         public void EnableCanvas()

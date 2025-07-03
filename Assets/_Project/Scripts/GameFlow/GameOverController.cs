@@ -1,7 +1,7 @@
-using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
 using System;
+using UnityEngine;
 
 namespace _Project.Scripts.GameFlow
 {
@@ -9,15 +9,23 @@ namespace _Project.Scripts.GameFlow
     {
         private ShipCollision _shipCollision;
         private ObstaclesSpawner _obstaclesSpawner;
-        private GameOver _gameOverPanel;
+        private GameOverMenu _gameOverPanel;
         private PauseHandler _pauseHandler;
+        private CanvasGroup _mobileButtonsCanvasGroup;
 
-        public GameOverController(ShipCollision shipCollision, ObstaclesSpawner obstaclesSpawner, GameOver gameOverPanel, PauseHandler pauseHandler)
+        public GameOverController(
+            ShipCollision shipCollision, 
+            ObstaclesSpawner obstaclesSpawner, 
+            GameOverMenu gameOverPanel, 
+            PauseHandler pauseHandler,
+            MobileButtons mobileButtons)
         {
             _shipCollision = shipCollision;
             _obstaclesSpawner = obstaclesSpawner;
             _gameOverPanel = gameOverPanel;
             _pauseHandler = pauseHandler;
+
+            _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
 
             _shipCollision.Crashed += GameOver;
         }
@@ -29,8 +37,9 @@ namespace _Project.Scripts.GameFlow
 
         private void GameOver()
         {
-            //_obstaclesSpawner.Stop();
-            _pauseHandler.Pause();
+            _pauseHandler.PauseAll();
+            _mobileButtonsCanvasGroup.interactable = false;
+            _mobileButtonsCanvasGroup.blocksRaycasts = false;
             _gameOverPanel.EnableCanvas();
         }
     }

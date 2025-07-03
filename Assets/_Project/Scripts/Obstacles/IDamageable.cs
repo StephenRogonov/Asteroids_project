@@ -6,5 +6,6 @@ namespace _Project.Scripts.Obstacles
     {
         ObstacleType ObstacleType { get; }
         void TakeHit(WeaponType hitType);
+        void DestroyObject();
     }
 }

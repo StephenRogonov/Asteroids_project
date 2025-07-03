@@ -1,6 +1,6 @@
 using _Project.Scripts.Analytics;
-using _Project.Scripts.Common;
 using _Project.Scripts.Configs;
+using _Project.Scripts.GameFlow;
 using UnityEngine;
 using Zenject;
 
@@ -20,6 +20,10 @@ namespace _Project.Scripts.Player
         private Rigidbody2D _rigidbody;
 
         private PauseHandler _pauseHandler;
+
+        private Vector2 _linearVelocity;
+        private float _angularVelocity;
+        private bool _isPaused;
 
         public Vector3 Position => transform.position;
         public Vector3 Rotation => transform.eulerAngles;
@@ -50,12 +54,18 @@ namespace _Project.Scripts.Player
 
         public void Pause()
         {
-            //No action needed here.
+            _linearVelocity = _rigidbody.linearVelocity;
+            _angularVelocity = _rigidbody.angularVelocity;
+            _isPaused = true;
+            _rigidbody.bodyType = RigidbodyType2D.Static;
         }
 
         public void Unpause()
         {
-            gameObject.SetActive(true);
+            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            _isPaused = false;
+            _rigidbody.linearVelocity = _linearVelocity;
+            _rigidbody.angularVelocity = _angularVelocity;
         }
 
         private void Awake()
@@ -72,7 +82,7 @@ namespace _Project.Scripts.Player
 
         private void MoveCharacter()
         {
-            if (_isMoving)
+            if (_isMoving & _isPaused == false)
             {
                 _rigidbody.AddForce(transform.up * _acceleration);
                 _rigidbody.linearVelocity = Vector2.ClampMagnitude(_rigidbody.linearVelocity, _maxSpeed);

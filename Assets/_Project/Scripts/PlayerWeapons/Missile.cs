@@ -1,3 +1,4 @@
+using _Project.Scripts.GameFlow;
 using _Project.Scripts.Obstacles;
 using System;
 using UnityEngine;
@@ -5,21 +6,24 @@ using Zenject;
 
 namespace _Project.Scripts.PlayerWeapons
 {
-    public class Missile : MonoBehaviour
+    public class Missile : MonoBehaviour, IPause
     {
         [SerializeField] private float _bulletSpeed = 500f;
 
         private Rigidbody2D _rigidbody;
         private Vector2 _screenPosition;
         private Camera _mainCamera;
+        private PauseHandler _pauseHandler;
+        private Vector2 _linearVelocity;
 
         public event Action<Missile> Destroyed;
         public event Action<IDamageable> ObstacleHit;
 
         [Inject]
-        private void Construct(Camera camera)
+        private void Construct(Camera camera, PauseHandler pauseHandler)
         {
             _mainCamera = camera;
+            _pauseHandler = pauseHandler;
         }
 
         private void Awake()
@@ -29,7 +33,13 @@ namespace _Project.Scripts.PlayerWeapons
 
         private void OnEnable()
         {
+            _pauseHandler.Add(this);
             Move();
+        }
+
+        private void OnDisable()
+        {
+            _pauseHandler.Remove(this);
         }
 
         private void Update()
@@ -66,6 +76,18 @@ namespace _Project.Scripts.PlayerWeapons
 
             gameObject.SetActive(false);
             Destroyed?.Invoke(this);
+        }
+
+        public void Pause()
+        {
+            _linearVelocity = _rigidbody.linearVelocity;
+            _rigidbody.bodyType = RigidbodyType2D.Static;
+        }
+
+        public void Unpause()
+        {
+            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            _rigidbody.linearVelocity = _linearVelocity;
         }
     }
 }

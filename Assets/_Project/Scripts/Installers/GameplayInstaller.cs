@@ -1,8 +1,8 @@
-using _Project.Scripts.Player;
 using _Project.Scripts.Analytics;
+using _Project.Scripts.GameFlow;
+using _Project.Scripts.Player;
 using UnityEngine;
 using Zenject;
-using _Project.Scripts.Common;
 
 public class GameplayInstaller : MonoInstaller
 {

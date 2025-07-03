@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 
-public interface IAnalyticsEvents
+namespace _Project.Scripts.Analytics
 {
-    void LogEventWithoutParameters(string eventName);
-    void LogEventWithParameters(string eventName, Dictionary<string, int> parameters);
+    public interface IAnalyticsEvents
+    {
+        void LogEventWithoutParameters(string eventName);
+        void LogEventWithParameters(string eventName, Dictionary<string, int> parameters);
+    }
 }

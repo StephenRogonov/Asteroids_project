@@ -7,6 +7,5 @@ public class GlobalInstaller : MonoInstaller
     {
         Container.BindInterfacesAndSelfTo<SceneSwitcher>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<RemoteConfig>().AsSingle();
-        //Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigFetcher>().AsSingle().NonLazy();
     }
 }

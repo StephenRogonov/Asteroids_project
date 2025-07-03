@@ -1,24 +1,43 @@
+using _Project.Scripts.GameFlow;
 using _Project.Scripts.PlayerWeapons;
 using System;
-using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Obstacles
 {
-    public class Asteroid : MonoBehaviour, IDamageable
+    public class Asteroid : MonoBehaviour, IDamageable, IPause
     {
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _destroyTimeout = 30f;
         [SerializeField] private float _shardSize = 0.75f;
         [SerializeField] private int _shardsAmount = 2;
+        [SerializeField] private float _destroyDistance = 25f;
+
+        private PauseHandler _pauseHandler;
 
         private Rigidbody2D _rigidbody;
         private AsteroidType _type;
         private ObstacleType _obstacleType;
 
+        private Vector2 _startPosition;
+        private Vector2 _currentPosition;
+        private float _distancePassed;
+
+        private Vector2 _linearVelocity;
+
+        private IInstantiator _instantiator;
+
         public ObstacleType ObstacleType => _obstacleType;
 
         public event Action<Asteroid> Destroyed;
+
+        [Inject]
+        private void Construct(PauseHandler pauseHandler, IInstantiator instantiator)
+        {
+            _pauseHandler = pauseHandler;
+            _instantiator = instantiator;
+        }
 
         private void Awake()
         {
@@ -28,15 +47,24 @@ namespace _Project.Scripts.Obstacles
 
         private void OnEnable()
         {
-            Move(transform.up);
-            StartCoroutine(DisableObject());
+            _startPosition = gameObject.transform.position;
+            _pauseHandler.Add(this);
         }
 
-        private IEnumerator DisableObject()
+        private void OnDisable()
         {
-            yield return new WaitForSeconds(_destroyTimeout);
+            _pauseHandler.Remove(this);
+        }
 
-            DestroyObject();
+        private void Update()
+        {
+            _currentPosition = gameObject.transform.position;
+            _distancePassed = Vector2.Distance(_startPosition, _currentPosition);
+
+            if (_distancePassed > _destroyDistance)
+            {
+                DestroyObject();
+            }
         }
 
         public void SetType(AsteroidType type)
@@ -44,9 +72,16 @@ namespace _Project.Scripts.Obstacles
             _type = type;
         }
 
-        public void Move(Vector2 direction)
+        public void Move()
         {
-            _rigidbody.AddForce(direction * _speed);
+            if (_type == AsteroidType.Asteroid)
+            {
+                _rigidbody.AddForce(transform.up * _speed);
+            }
+            else
+            {
+                _rigidbody.AddForce(UnityEngine.Random.insideUnitCircle.normalized * _speed);
+            }
         }
 
         public void TakeHit(WeaponType hitType)
@@ -80,10 +115,22 @@ namespace _Project.Scripts.Obstacles
             Vector2 position = transform.position;
             position += UnityEngine.Random.insideUnitCircle * 0.5f;
 
-            Asteroid shard = Instantiate(this, position, transform.rotation);
-            shard.Move(UnityEngine.Random.insideUnitCircle.normalized);
+            Asteroid shard = _instantiator.InstantiatePrefabForComponent<Asteroid>(this);
             shard.SetType(AsteroidType.Shard);
+            shard.Move();
             shard.transform.localScale = new Vector2(_shardSize, _shardSize);
+        }
+
+        public void Pause()
+        {
+            _linearVelocity = _rigidbody.linearVelocity;
+            _rigidbody.bodyType = RigidbodyType2D.Static;
+        }
+
+        public void Unpause()
+        {
+            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            _rigidbody.linearVelocity = _linearVelocity;
         }
     }
 }

@@ -45,6 +45,7 @@ namespace _Project.Scripts.Obstacles
             }
 
             _asteroidsSpawned.Add(asteroid);
+            
             asteroid.Destroyed -= RemoveSpawnedAsteroid;
             asteroid.Destroyed += RemoveSpawnedAsteroid;
 
@@ -60,6 +61,7 @@ namespace _Project.Scripts.Obstacles
             asteroid.transform.rotation = rotation;
             asteroid.SetType(AsteroidType.Asteroid);
             asteroid.gameObject.SetActive(true);
+            asteroid.Move();
         }
 
         public void GetEnemy()

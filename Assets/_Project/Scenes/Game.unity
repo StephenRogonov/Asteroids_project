@@ -516,7 +516,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shipPrefab: {fileID: 384212481698703282, guid: b280be51d1907104fab0e8bd244f077d, type: 3}
   _shipSpawnPoint: {fileID: 3628318818728149750}
-  _shipConfig: {fileID: 11400000, guid: c4a95c14b78e0f841b6b6595ea435e80, type: 2}
   _shipShootingMissilesConfig: {fileID: 11400000, guid: 17052f679276bed4bbe081dee834b064, type: 2}
   _shipShootingLaserConfig: {fileID: 11400000, guid: 36ce0dda7cabc79439c0c2330666b101, type: 2}
 --- !u!114 &1707726977
@@ -532,8 +531,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hudPrefab: {fileID: 8952456853095153423, guid: eff65835b65c6ed439ebcd93addf368d, type: 3}
-  _gameOverPanelPrefab: {fileID: 2990457920654189453, guid: 56d357458ff7f2c4e963682c7c26d928, type: 3}
+  _pauseButtonPrefab: {fileID: -4934108396013263532, guid: 98364f80cf0718c44b8ea5bf3f457daa, type: 3}
   _mobileButtonsPrefab: {fileID: -5426252283847753583, guid: c0c8e9f691c8a7144aac1512315e144d, type: 3}
+  _gameOverPanelPrefab: {fileID: 289577292979052645, guid: 56d357458ff7f2c4e963682c7c26d928, type: 3}
+  _pauseMenuPrefab: {fileID: 7746537441841550335, guid: e7938d755134a0844a6271fbe5ffdc55, type: 3}
 --- !u!114 &1707726978
 MonoBehaviour:
   m_ObjectHideFlags: 0

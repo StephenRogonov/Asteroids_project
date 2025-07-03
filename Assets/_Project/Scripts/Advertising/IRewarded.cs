@@ -1,4 +1,7 @@
-public interface IRewarded
+namespace _Project.Scripts.Advertising
 {
-    public void ShowAd();
+    public interface IRewarded
+    {
+        public void ShowAd();
+    }
 }

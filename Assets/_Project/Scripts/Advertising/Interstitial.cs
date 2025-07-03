@@ -4,14 +4,14 @@ using UnityEngine.Advertisements;
 
 namespace _Project.Scripts.Advertising
 {
-    [RequireComponent(typeof(GameOver))]
+    [RequireComponent(typeof(GameOverMenu))]
     public class Interstitial : MonoBehaviour, IInterstitial, IUnityAdsLoadListener, IUnityAdsShowListener
     {
         [SerializeField] private string _androidAdUnitId = "Interstitial_Android";
         [SerializeField] private string _iOsAdUnitId = "Interstitial_iOS";
 
         private string _adUnitId;
-        private GameOver _gameOver;
+        private GameOverMenu _gameOver;
 
         private void Awake()
         {
@@ -19,7 +19,7 @@ namespace _Project.Scripts.Advertising
                 ? _iOsAdUnitId
                 : _androidAdUnitId;
 
-            _gameOver = GetComponent<GameOver>();
+            _gameOver = GetComponent<GameOverMenu>();
         }
 
         public void ShowAd()

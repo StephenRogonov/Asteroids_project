@@ -7,8 +7,9 @@ using Zenject;
 public class UIInstaller : MonoInstaller
 {
     [SerializeField] private HudView _hudPrefab;
-    [SerializeField] private GameOver _gameOverPanelPrefab;
     [SerializeField] private MobileButtons _mobileButtonsPrefab;
+    [SerializeField] private GameOverMenu _gameOverPanelPrefab;
+    [SerializeField] private PauseMenu _pauseMenuPrefab;
 
     public override void InstallBindings()
     {
@@ -23,13 +24,19 @@ public class UIInstaller : MonoInstaller
             .AsSingle()
             .NonLazy();
         Container
-            .Bind<GameOver>()
+            .Bind<GameOverMenu>()
             .FromComponentInNewPrefab(_gameOverPanelPrefab)
+            .AsSingle()
+            .NonLazy();
+        Container
+            .Bind<PauseMenu>()
+            .FromComponentInNewPrefab(_pauseMenuPrefab)
             .AsSingle()
             .NonLazy();
 
         Container.Bind<HudModel>().AsSingle();
         Container.BindInterfacesAndSelfTo<HudController>().AsSingle();
         Container.Bind<WeaponTrigger>().AsSingle().NonLazy();
+        Container.Bind<PauseController>().AsSingle().NonLazy();
     }
 }

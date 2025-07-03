@@ -1,5 +1,5 @@
-using _Project.Scripts.Common;
 using _Project.Scripts.Configs;
+using _Project.Scripts.GameFlow;
 using System.Collections;
 using UnityEngine;
 using Zenject;
@@ -40,11 +40,6 @@ namespace _Project.Scripts.Obstacles
         public void Unpause()
         {
             _isPaused = false;
-        }
-
-        private void OnDestroy()
-        {
-            _pauseHandler.Remove(this);
         }
 
         private IEnumerator AsteroidsSpawning()
