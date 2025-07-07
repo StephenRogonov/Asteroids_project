@@ -1,4 +1,5 @@
 using _Project.Scripts.Advertising;
+using _Project.Scripts.Menu;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
 using UnityEngine;
@@ -41,12 +42,20 @@ namespace _Project.Scripts.GameFlow
 
         private void OnEnable()
         {
-            _interstitial = GetComponent<IInterstitial>();
+            if (PlayerPrefs.GetString(PlayerPrefsKeys.NO_ADS_PURCHASED_KEY) == "no")
+            {
+                _interstitial = GetComponent<IInterstitial>();
+                _restartButton.onClick.AddListener(_interstitial.ShowAd);
+            }
+            else if (PlayerPrefs.GetString(PlayerPrefsKeys.NO_ADS_PURCHASED_KEY) == "yes")
+            {
+                _restartButton.onClick.AddListener(RestartGame);
+            }
+
             _rewarded = GetComponent<IRewarded>();
-            _restartButton.onClick.AddListener(_interstitial.ShowAd);
-            _restartButton.onClick.AddListener(DisableCanvas);
             _continueButton.onClick.AddListener(_rewarded.ShowAd);
             _continueButton.onClick.AddListener(DisableCanvas);
+            _restartButton.onClick.AddListener(DisableCanvas);
         }
 
         private void OnDisable()

@@ -858,7 +858,9 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Purchasing: 1
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -880,11 +882,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: da6daccc-7c5c-4f44-8398-0c18bf483fb6
+  cloudProjectId: afd87bd5-3384-4f95-9cd6-d7b592d3c6fc
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Asteroids_test_project
-  organizationId: unity_sbcckjk-ryxrmg
+  projectName: Asteroids
+  organizationId: unity_16d709c205aae2e1d300
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

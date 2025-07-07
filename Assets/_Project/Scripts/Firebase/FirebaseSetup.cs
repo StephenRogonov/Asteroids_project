@@ -35,7 +35,6 @@ namespace _Project.Scripts.Firebase
             });
 
             await _configFetcher.FetchDataAsync();
-            //_sceneSwitcher.LoadGame();
             _sceneSwitcher.LoadMenu();
         }
     }
