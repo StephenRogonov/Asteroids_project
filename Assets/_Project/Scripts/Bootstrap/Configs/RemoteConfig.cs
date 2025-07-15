@@ -1,7 +1,7 @@
 using Firebase.RemoteConfig;
 using Newtonsoft.Json.Linq;
 
-namespace _Project.Scripts.Configs
+namespace _Project.Scripts.Bootstrap.Configs
 {
     public class RemoteConfig
     {
@@ -27,6 +27,9 @@ namespace _Project.Scripts.Configs
         private float _shipMaxSpeed;
         private float _shipRotationSpeed;
 
+        private string _androidGameId;
+        private string _iOSGameId;
+
         public int AsteroidsPoolInitialSize => _asteroidsPoolInitialSize;
         public float AsteroidsSpawnRate => _asteroidsSpawnRate;
         public float AsteroidAngleOffset => _asteroidAngleOffset;
@@ -41,6 +44,9 @@ namespace _Project.Scripts.Configs
         public float ShipAcceleration => _shipAcceleration;
         public float ShipMaxSpeed => _shipMaxSpeed;
         public float ShipRotationSpeed => _shipRotationSpeed;
+        public string AndroidGameId => _androidGameId;
+        public string IosGameId => _iOSGameId;
+
 
         public void ParseJson()
         {
@@ -65,6 +71,9 @@ namespace _Project.Scripts.Configs
             _shipAcceleration = (float)JObject.Parse(_gameConfigsJson)["shipAcceleration"];
             _shipMaxSpeed = (float)JObject.Parse(_gameConfigsJson)["shipMaxSpeed"];
             _shipRotationSpeed = (float)JObject.Parse(_gameConfigsJson)["shipRotationSpeed"];
+
+            _androidGameId = (string)JObject.Parse(_gameConfigsJson)["androidGameId"];
+            _iOSGameId = (string)JObject.Parse(_gameConfigsJson)["iOSGameId"];
         }
     }
 }

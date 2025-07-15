@@ -1,7 +1,6 @@
-using _Project.Scripts.Analytics;
-using _Project.Scripts.Configs;
+using _Project.Scripts.Bootstrap.Analytics;
+using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.GameFlow;
-using _Project.Scripts.Analytics;
 using UnityEngine;
 using Zenject;
 

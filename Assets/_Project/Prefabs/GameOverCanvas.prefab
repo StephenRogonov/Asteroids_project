@@ -527,8 +527,6 @@ GameObject:
   - component: {fileID: 4120154794100556074}
   - component: {fileID: 4985286077412471665}
   - component: {fileID: 289577292979052645}
-  - component: {fileID: 5344701697371917424}
-  - component: {fileID: -7226683628337373518}
   m_Layer: 5
   m_Name: GameOverCanvas
   m_TagString: Untagged
@@ -633,34 +631,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _restartButton: {fileID: 6922255893235632510}
   _continueButton: {fileID: 268324227530883239}
---- !u!114 &5344701697371917424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5725579774610766224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71cc7e535d71d254785ac1052e4bb5a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _androidAdUnitId: Interstitial_Android
-  _iOsAdUnitId: Interstitial_iOS
---- !u!114 &-7226683628337373518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5725579774610766224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 038b169e2c070ec43b329f65d8559b3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _androidAdUnitId: Rewarded_Android
-  _iOSAdUnitId: Rewarded_iOS
 --- !u!1 &7489510252170718689
 GameObject:
   m_ObjectHideFlags: 0

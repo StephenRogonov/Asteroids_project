@@ -1,4 +1,4 @@
-using _Project.Scripts.Analytics;
+using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.GameFlow;
 using _Project.Scripts.Player;
 using UnityEngine;

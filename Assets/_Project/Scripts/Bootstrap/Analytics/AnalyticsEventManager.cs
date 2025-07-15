@@ -1,9 +1,9 @@
-using _Project.Scripts.Analytics;
+using _Project.Scripts.Bootstrap.Analytics;
 using Firebase.Analytics;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _Project.Scripts.Analytics
+namespace _Project.Scripts.Bootstrap.Analytics
 {
     public class AnalyticsEventManager : IAnalyticsEvents
     {

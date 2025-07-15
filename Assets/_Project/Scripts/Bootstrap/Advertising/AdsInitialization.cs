@@ -1,30 +1,39 @@
+using _Project.Scripts.Bootstrap.Configs;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace _Project.Scripts.Advertising
+namespace _Project.Scripts.Bootstrap.Advertising
 {
-    public class AdsInitialization : MonoBehaviour, IUnityAdsInitializationListener
+    public class AdsInitialization : IUnityAdsInitializationListener
     {
-        [SerializeField] private string _androidGameId;
-        [SerializeField] private string _iOSGameId;
-        [SerializeField] private bool _testMode = true;
+        private RemoteConfig _config;
+        private string _androidGameId;
+        private string _iOSGameId;
         private string _gameId;
+        private bool _testMode;
 
-        private void Awake()
+        public AdsInitialization(RemoteConfig config)
         {
-            InitializeAds();
+            _config = config;
+
+#if (UNITY_IOS && UNITY_ANDROID)
+            _testMode = false;
+#elif UNITY_EDITOR
+            _testMode = true;
+#endif
         }
 
-        public void InitializeAds()
+        public async Task InitializeAdsAsync()
         {
+            _androidGameId = _config.AndroidGameId;
+            _iOSGameId = _config.IosGameId;
+
 #if UNITY_IOS
             _gameId = _iOSGameId;
-#elif UNITY_ANDROID
+#elif (UNITY_ANDROID || UNITY_EDITOR)
             _gameId = _androidGameId;
-#elif UNITY_EDITOR
-            _gameId = _androidGameId; //Only for testing the functionality in the Editor
 #endif
-
             if (!Advertisement.isInitialized && Advertisement.isSupported)
             {
                 Advertisement.Initialize(_gameId, _testMode, this);

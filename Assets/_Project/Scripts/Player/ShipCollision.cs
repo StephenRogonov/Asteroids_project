@@ -1,4 +1,4 @@
-using _Project.Scripts.Analytics;
+using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.Enemy;
 using _Project.Scripts.Obstacles;
 using System;

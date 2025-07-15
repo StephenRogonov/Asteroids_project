@@ -1,5 +1,5 @@
 using _Project.Scripts.Common;
-using _Project.Scripts.Configs;
+using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.Enemy;
 using System.Collections.Generic;
 using UnityEngine;

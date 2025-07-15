@@ -1,24 +1,13 @@
-using _Project.Scripts.Configs;
 using Firebase;
 using Firebase.Extensions;
+using System.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 
-namespace _Project.Scripts.Firebase
+namespace _Project.Scripts.Bootstrap.Firebase
 {
-    public class FirebaseSetup : MonoBehaviour
+    public class FirebaseSetup
     {
-        private SceneSwitcher _sceneSwitcher;
-        private FirebaseRemoteConfigFetcher _configFetcher;
-
-        [Inject]
-        private void Construct(SceneSwitcher sceneSwitcher, FirebaseRemoteConfigFetcher configFetcher)
-        {
-            _sceneSwitcher = sceneSwitcher;
-            _configFetcher = configFetcher;
-        }
-
-        async void Start()
+        public async Task InitializeFirebase()
         {
             await FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(async task =>
             {
@@ -33,9 +22,6 @@ namespace _Project.Scripts.Firebase
                       "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 }
             });
-
-            await _configFetcher.FetchDataAsync();
-            _sceneSwitcher.LoadMenu();
         }
     }
 }

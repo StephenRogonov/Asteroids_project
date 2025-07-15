@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace _Project.Scripts.Configs
+namespace _Project.Scripts.Bootstrap.Configs
 {
     public class FirebaseRemoteConfigFetcher
     {
@@ -22,8 +22,7 @@ namespace _Project.Scripts.Configs
             Task fetchTask = FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.FromHours(24));
 #endif
             await fetchTask;
-            Task completion = FetchComplete(fetchTask);
-            await completion;
+            await FetchComplete(fetchTask);
         }
 
         private async Task FetchComplete(Task fetchTask)

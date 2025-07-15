@@ -9,7 +9,6 @@ namespace _Project.Scripts.Obstacles
     public class Asteroid : MonoBehaviour, IDamageable, IPause
     {
         [SerializeField] private float _speed = 5f;
-        [SerializeField] private float _destroyTimeout = 30f;
         [SerializeField] private float _shardSize = 0.75f;
         [SerializeField] private int _shardsAmount = 2;
         [SerializeField] private float _destroyDistance = 25f;

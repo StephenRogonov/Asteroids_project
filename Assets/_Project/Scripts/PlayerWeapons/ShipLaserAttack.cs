@@ -1,9 +1,9 @@
 using _Project.Scripts.Obstacles;
-using _Project.Scripts.Analytics;
 using System.Collections;
 using UnityEngine;
 using Zenject;
-using _Project.Scripts.Configs;
+using _Project.Scripts.Bootstrap.Configs;
+using _Project.Scripts.Bootstrap.Analytics;
 
 namespace _Project.Scripts.PlayerWeapons
 {

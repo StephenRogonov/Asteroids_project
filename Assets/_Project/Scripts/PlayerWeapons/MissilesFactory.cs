@@ -2,10 +2,10 @@ using _Project.Scripts.Common;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
 using _Project.Scripts.PlayerWeapons;
-using _Project.Scripts.Analytics;
+using _Project.Scripts.Bootstrap.Analytics;
 using UnityEngine;
 using Zenject;
-using _Project.Scripts.Configs;
+using _Project.Scripts.Bootstrap.Configs;
 
 public class MissilesFactory
 {

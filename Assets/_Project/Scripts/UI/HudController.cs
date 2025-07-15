@@ -1,4 +1,4 @@
-using _Project.Scripts.Configs;
+using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.GameFlow;
 using _Project.Scripts.Player;
 using System;

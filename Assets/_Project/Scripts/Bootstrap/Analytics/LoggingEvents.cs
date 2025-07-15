@@ -1,4 +1,4 @@
-namespace _Project.Scripts.Analytics
+namespace _Project.Scripts.Bootstrap.Analytics
 {
     public class LoggingEvents
     {
