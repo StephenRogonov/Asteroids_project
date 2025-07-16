@@ -19,7 +19,7 @@ namespace _Project.Scripts.UI
             _restorationTimerText.text = "New Laser Shot: " + time;
         }
 
-        public void DisplayAvailableLaserShotsCount(int count)
+        public void DisplayLaserShotsCount(int count)
         {
             _shotsAvailableText.text = "Laser Shots: " + count;
         }

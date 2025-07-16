@@ -1,13 +1,13 @@
+using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Extensions;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Scripts.Bootstrap.Firebase
 {
     public class FirebaseSetup
     {
-        public async Task InitializeFirebase()
+        public async UniTask InitializeFirebaseUniTask()
         {
             await FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(async task =>
             {

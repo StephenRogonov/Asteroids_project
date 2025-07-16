@@ -1,5 +1,5 @@
 using _Project.Scripts.Bootstrap.Configs;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -24,7 +24,7 @@ namespace _Project.Scripts.Bootstrap.Advertising
 #endif
         }
 
-        public async Task InitializeAdsAsync()
+        public async UniTask InitializeAdsUniTask()
         {
             _androidGameId = _config.AndroidGameId;
             _iOSGameId = _config.IosGameId;
@@ -34,6 +34,7 @@ namespace _Project.Scripts.Bootstrap.Advertising
 #elif (UNITY_ANDROID || UNITY_EDITOR)
             _gameId = _androidGameId;
 #endif
+            
             if (!Advertisement.isInitialized && Advertisement.isSupported)
             {
                 Advertisement.Initialize(_gameId, _testMode, this);

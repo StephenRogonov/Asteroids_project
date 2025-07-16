@@ -36,7 +36,7 @@ namespace _Project.Scripts.UI
             _timer = new CountdownTimer();
             _timer.Reset(_remoteConfig.LaserShotRestorationTime);
 
-            _model.ChangeLaserShotsCount(_remoteConfig.LaserShotsStartCount);
+            LaserShotsChanged(_remoteConfig.LaserShotsStartCount);
         }
 
         public void Tick()
@@ -50,10 +50,26 @@ namespace _Project.Scripts.UI
 
                 if (_timer.RemainingTime < 0)
                 {
-                    _model.ChangeLaserShotsCount(1);
+                    LaserShotsChanged(1);
                     _timer.Reset(_remoteConfig.LaserShotRestorationTime);
                 }
             }
+        }
+
+        public bool CanShootLaser()
+        {
+            if (_model.LaserShotsCount > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void LaserShotsChanged(int iterator)
+        {
+            _model.ChangeLaserShotsCount(iterator);
+            _view.DisplayLaserShotsCount(_model.LaserShotsCount);
         }
 
         public void CalculateShipStats()

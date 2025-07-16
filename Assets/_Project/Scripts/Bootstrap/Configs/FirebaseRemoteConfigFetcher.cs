@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Firebase.RemoteConfig;
 using System;
 using System.Threading.Tasks;
@@ -14,31 +15,24 @@ namespace _Project.Scripts.Bootstrap.Configs
             _configs = configs;
         }
 
-        public async Task FetchDataAsync()
+        public async UniTask FetchDataUniTask()
         {
 #if UNITY_EDITOR
-            Task fetchTask = FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero);
+            await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero).AsUniTask();
 #else
-            Task fetchTask = FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.FromHours(24));
+            await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.FromHours(24)).AsUniTask();
 #endif
-            await fetchTask;
-            await FetchComplete(fetchTask);
+            await FetchCompleteUniTask();
         }
 
-        private async Task FetchComplete(Task fetchTask)
+        private async UniTask FetchCompleteUniTask()
         {
-            if (fetchTask.IsCompleted == false)
-            {
-                Debug.LogError("Retrieval hasn't finished.");
-                return;
-            }
-
             var remoteConfig = FirebaseRemoteConfig.DefaultInstance;
             var info = remoteConfig.Info;
 
             if (info.LastFetchStatus != LastFetchStatus.Success)
             {
-                Debug.LogError($"{nameof(FetchComplete)} was unsuccessful\n{nameof(info.LastFetchStatus)}: {info.LastFetchStatus}");
+                Debug.LogError($"{nameof(FetchCompleteUniTask)} was unsuccessful\n{nameof(info.LastFetchStatus)}: {info.LastFetchStatus}");
                 return;
             }
 

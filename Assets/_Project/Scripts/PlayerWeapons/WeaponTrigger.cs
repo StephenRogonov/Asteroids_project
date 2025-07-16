@@ -7,7 +7,7 @@ namespace _Project.Scripts.PlayerWeapons
 {
     public class WeaponTrigger : IPause
     {
-        private HudModel _hudModel;
+        private HudController _hudController;
         private ShipLaserAttack _shipLaserAttack;
         private ShipMissilesAttack _shipMissilesAttack;
         private AnalyticsEventManager _analyticsEventManager;
@@ -15,13 +15,13 @@ namespace _Project.Scripts.PlayerWeapons
 
         private bool _isPaused;
 
-        public WeaponTrigger(HudModel hudModel, 
+        public WeaponTrigger(HudController hudController, 
             ShipLaserAttack shipLaserAttack, 
             ShipMissilesAttack shipMissilesAttack, 
             AnalyticsEventManager analyticsEventManager,
             PauseHandler pauseHandler)
         {
-            _hudModel = hudModel;
+            _hudController = hudController;
             _shipLaserAttack = shipLaserAttack;
             _shipMissilesAttack = shipMissilesAttack;
             _analyticsEventManager = analyticsEventManager;
@@ -41,12 +41,12 @@ namespace _Project.Scripts.PlayerWeapons
 
         public void ShootLaser()
         {
-            if (_hudModel.CanShootLaser && _isPaused == false)
+            if (_hudController.CanShootLaser() && _isPaused == false)
             {
                 _analyticsEventManager.IncrementParameter(LogParameters.LaserShotsTotal);
                 _analyticsEventManager.LogEventWithoutParameters(LoggingEvents.LASER_SHOT);
                 _shipLaserAttack.PerformShot();
-                _hudModel.ChangeLaserShotsCount(-1);
+                _hudController.LaserShotsChanged(-1);
             }
         }
 

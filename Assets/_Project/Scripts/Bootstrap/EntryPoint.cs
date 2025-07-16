@@ -1,6 +1,7 @@
 using _Project.Scripts.Bootstrap.Advertising;
 using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.Bootstrap.Firebase;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -27,9 +28,12 @@ public class EntryPoint : MonoBehaviour
 
     async void Start()
     {
-        await _firebaseSetup.InitializeFirebase();
-        await _configFetcher.FetchDataAsync();
-        await _adsInitialization.InitializeAdsAsync();
+        await UniTask.WhenAll(
+            _firebaseSetup.InitializeFirebaseUniTask(),
+            _configFetcher.FetchDataUniTask()
+            );
+
+        await _adsInitialization.InitializeAdsUniTask();
 
         _sceneSwitcher.LoadMenu();
     }

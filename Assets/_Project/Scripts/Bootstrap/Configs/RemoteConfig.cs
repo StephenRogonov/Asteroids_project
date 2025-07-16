@@ -47,7 +47,6 @@ namespace _Project.Scripts.Bootstrap.Configs
         public string AndroidGameId => _androidGameId;
         public string IosGameId => _iOSGameId;
 
-
         public void ParseJson()
         {
             _gameConfigsJson = FirebaseRemoteConfig.DefaultInstance.GetValue("gameConfigs").StringValue;
