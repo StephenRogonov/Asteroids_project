@@ -9,7 +9,7 @@ namespace _Project.Scripts.Obstacles
     public class ObstaclesSpawner : MonoBehaviour, IPause
     {
         private ObstacleSpawnerSettings _settings;
-        private RemoteConfig _remoteConfig;
+        private GameConfig _remoteConfig;
         private ObstaclesFactory _obstaclesFactory;
         private PauseHandler _pauseHandler;
 
@@ -19,7 +19,7 @@ namespace _Project.Scripts.Obstacles
         private bool _isPaused;
 
         [Inject]
-        private void Construct(ObstacleSpawnerSettings settings, RemoteConfig remoteConfig, ObstaclesFactory obstaclesFactory, PauseHandler pauseHandler)
+        private void Construct(ObstacleSpawnerSettings settings, GameConfig remoteConfig, ObstaclesFactory obstaclesFactory, PauseHandler pauseHandler)
         {
             _settings = settings;
             _remoteConfig = remoteConfig;

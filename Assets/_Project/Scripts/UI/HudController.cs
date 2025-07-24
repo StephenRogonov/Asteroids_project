@@ -11,7 +11,7 @@ namespace _Project.Scripts.UI
     {
         private HudModel _model;
         private HudView _view;
-        private RemoteConfig _remoteConfig;
+        private GameConfig _remoteConfig;
         private ShipMovement _shipMovement;
         private PauseHandler _pauseHandler;
 
@@ -23,7 +23,7 @@ namespace _Project.Scripts.UI
 
         private bool _isPaused;
 
-        public HudController(HudModel model, HudView view, RemoteConfig remoteConfig, ShipMovement shipMovement, PauseHandler pauseHandler)
+        public HudController(HudModel model, HudView view, GameConfig remoteConfig, ShipMovement shipMovement, PauseHandler pauseHandler)
         {
             _model = model;
             _view = view;

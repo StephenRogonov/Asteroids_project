@@ -12,7 +12,7 @@ public class MissilesFactory
     private AnalyticsEventManager _analyticsEventManager;
 
     private ShipMissilesConfig _shipMissilesSettings;
-    private RemoteConfig _remoteConfig;
+    private GameConfig _remoteConfig;
 
     private Transform _shipShootingPoint;
     private Pool<Missile> _missilesPool;
@@ -20,7 +20,7 @@ public class MissilesFactory
 
     public MissilesFactory(AnalyticsEventManager analyticsEventManager, 
         ShipMissilesConfig shipMissilesSettings, 
-        RemoteConfig remoteConfig,
+        GameConfig remoteConfig,
         ShipMovement shipMovement, 
         IInstantiator instantiator)
     {

@@ -9,7 +9,7 @@ namespace _Project.Scripts.Player
     public class ShipMovement : MonoBehaviour, IPause
     {
         private AnalyticsEventManager _analyticsEventManager;
-        private RemoteConfig _remoteConfig;
+        private GameConfig _remoteConfig;
 
         private float _acceleration;
         private float _maxSpeed;
@@ -30,7 +30,7 @@ namespace _Project.Scripts.Player
         public Rigidbody2D Rigidbody => _rigidbody;
 
         [Inject]
-        private void Construct(RemoteConfig remoteConfig, AnalyticsEventManager analyticsEventManager, PauseHandler pauseHandler)
+        private void Construct(GameConfig remoteConfig, AnalyticsEventManager analyticsEventManager, PauseHandler pauseHandler)
         {
             _analyticsEventManager = analyticsEventManager;
             _remoteConfig = remoteConfig;

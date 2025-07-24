@@ -7,13 +7,13 @@ namespace _Project.Scripts.Bootstrap.Advertising
 {
     public class AdsInitialization : IUnityAdsInitializationListener
     {
-        private RemoteConfig _config;
+        private GameConfig _config;
         private string _androidGameId;
         private string _iOSGameId;
         private string _gameId;
         private bool _testMode;
 
-        public AdsInitialization(RemoteConfig config)
+        public AdsInitialization(GameConfig config)
         {
             _config = config;
 

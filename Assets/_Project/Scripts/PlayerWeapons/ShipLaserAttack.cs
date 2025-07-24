@@ -14,11 +14,11 @@ namespace _Project.Scripts.PlayerWeapons
         private AnalyticsEventManager _analyticsEventManager;
 
         private ShipLaserConfig _laserConfig;
-        private RemoteConfig _remoteConfig;
+        private GameConfig _remoteConfig;
         private RaycastHit2D[] _obstaclesToDestroy;
 
         [Inject]
-        private void Construct(AnalyticsEventManager analyticsEventManager, ShipLaserConfig config, RemoteConfig remoteConfig)
+        private void Construct(AnalyticsEventManager analyticsEventManager, ShipLaserConfig config, GameConfig remoteConfig)
         {
             _analyticsEventManager = analyticsEventManager;
             _laserConfig = config;

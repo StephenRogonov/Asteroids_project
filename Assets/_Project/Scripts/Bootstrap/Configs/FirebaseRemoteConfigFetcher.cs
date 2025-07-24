@@ -1,17 +1,19 @@
+using _Project.Scripts.DataPersistence;
 using Cysharp.Threading.Tasks;
 using Firebase.RemoteConfig;
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Scripts.Bootstrap.Configs
 {
     public class FirebaseRemoteConfigFetcher
     {
-        private RemoteConfig _configs;
+        private FileDataHandler _fileDataHandler;
+        private GameConfig _configs;
 
-        public FirebaseRemoteConfigFetcher(RemoteConfig configs)
+        public FirebaseRemoteConfigFetcher(GameConfig configs, FileDataHandler fileDataHandler)
         {
+            _fileDataHandler = fileDataHandler;
             _configs = configs;
         }
 
@@ -39,7 +41,7 @@ namespace _Project.Scripts.Bootstrap.Configs
             await remoteConfig.ActivateAsync();
             Debug.Log($"Remote data loaded and ready for use. Last fetch time {info.FetchTime}.");
 
-            _configs.ParseJson();
+            await _fileDataHandler.UpdateGameConfigsUniTask(remoteConfig.GetValue("gameConfigs").StringValue);
         }
     }
 }
