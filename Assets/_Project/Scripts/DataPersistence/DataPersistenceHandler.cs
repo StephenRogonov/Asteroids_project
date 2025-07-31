@@ -1,5 +1,6 @@
 using _Project.Scripts.Bootstrap.Configs;
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,11 +9,12 @@ namespace _Project.Scripts.DataPersistence
     public class DataPersistenceHandler
     {
         private FileDataHandler _dataHandler;
-        private List<IPlayerData> _dataPersistenceObjects;
-        //private GameConfig _gameConfig;
-        private PlayerData _gameData;
+        private List<IDataPersistence> _dataPersistenceObjects = new();
 
         public GameConfig GameConfig { get; private set; }
+        public PlayerData PlayerData { get; private set; }
+
+        public event Action PlayerDataChanged;
 
         public DataPersistenceHandler(FileDataHandler dataHandler, GameConfig gameConfig)
         {
@@ -20,63 +22,60 @@ namespace _Project.Scripts.DataPersistence
             GameConfig = gameConfig;
         }
 
-        //public void Add(IDataPersistence dataPersistence) => _dataPersistenceObjects.Add(dataPersistence);
+        public void AddDataObject(IDataPersistence dataPersistence) => _dataPersistenceObjects.Add(dataPersistence);
 
-        //public void Remove(IDataPersistence dataPersistence) => _dataPersistenceObjects.Remove(dataPersistence);
-        
-        //public void NewGame()
-        //{
-        //    _gameConfig = new GameConfig();
-        //    //_gameData = new GameData();
-        //    //SaveGameDataUniTask();
-        //}
-    
+        public void RemoveDataObject(IDataPersistence dataPersistence) => _dataPersistenceObjects.Remove(dataPersistence);
+
+        public void NewGame()
+        {
+            PlayerData = new PlayerData();
+            SavePlayerDataUniTask();
+        }
+
         public async UniTask LoadGameConfigUniTask()
         {
             GameConfig configFromFile = await _dataHandler.LoadConfigUniTask();
-            //_gameConfig = await _dataHandler.LoadConfigUniTask();
             
             if (configFromFile == null)
             {
                 Debug.LogWarning("No game config loaded. Default config will be used.");
                 return;
-                //NewGame();
             }
 
             GameConfig = configFromFile;
         }
 
-        //public async UniTask LoadGameDataUniTask()
-        //{
-        //    _gameData = await _dataHandler.LoadUniTask();
-            
-        //    if (_gameData == null)
-        //    {
-        //        Debug.LogWarning("No game data found. New game data will be created.");
-        //        NewGame();
-        //    }
+        public async UniTask LoadPlayerDataUniTask()
+        {
+            Debug.Log("Load triggered.");
 
-        //    //foreach (var obj in _dataPersistenceObjects)
-        //    //{
-        //    //    obj.LoadData(_gameData);
-        //    //}
-        //}
-    
-        //public async UniTask SaveGameDataUniTask()
-        //{
-        //    if (_gameData == null)
-        //    {
-        //        Debug.LogError("No game data found. A New Game must be started before data can be loaded.");
-        //        return;
-        //    }
+            PlayerData = await _dataHandler.LoadGameUniTask();
 
-        //    //foreach (var obj in _dataPersistenceObjects)
-        //    //{
-        //    //    obj.SaveData(_gameData);
-        //    //}
-            
-        //    await _dataHandler.SaveUniTask(_gameData);
-        //}
+            if (PlayerData == null)
+            {
+                Debug.LogWarning("No game data found. New game data will be created.");
+                NewGame();
+            }
+        }
+
+        public async UniTask SavePlayerDataUniTask()
+        {
+            Debug.Log("Save triggered.");
+
+            if (PlayerData == null)
+            {
+                Debug.LogError("No player data found. A New Game must be started before data can be loaded.");
+                return;
+            }
+
+            foreach (IDataPersistence obj in _dataPersistenceObjects)
+            {
+                obj.SaveData(PlayerData);
+            }
+
+            await _dataHandler.SaveGameUniTask(PlayerData);
+            PlayerDataChanged?.Invoke();
+        }
     }
 }
 

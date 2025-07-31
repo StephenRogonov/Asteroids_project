@@ -11,6 +11,7 @@ namespace _Project.Scripts.DataPersistence
     {
         private readonly string _dataDirPath = Application.persistentDataPath;
         private readonly string _configsFileName = "config_data.game";
+        private readonly string _playerDataFileName = "player_data.game";
 
         public async UniTask UpdateGameConfigsUniTask(string remoteConfig)
         {
@@ -59,52 +60,52 @@ namespace _Project.Scripts.DataPersistence
             return loadedData;
         }
 
-        //public async UniTask<GameData> LoadUniTask()
-        //{
-        //    string fullPath = Path.Combine(_dataDirPath, _configsFileName);
-        //    GameData loadedData = null;
+        public async UniTask<PlayerData> LoadGameUniTask()
+        {
+            string fullPath = Path.Combine(_dataDirPath, _playerDataFileName);
+            PlayerData loadedData = null;
 
-        //    if (File.Exists(fullPath))
-        //    {
-        //        try
-        //        {
-        //            string dataToLoad;
-        //            using (FileStream stream = new FileStream(fullPath, FileMode.Open))
-        //            {
-        //                using StreamReader reader = new StreamReader(stream);
-        //                dataToLoad = reader.ReadToEnd();
-        //            }
+            if (File.Exists(fullPath))
+            {
+                try
+                {
+                    string dataToLoad;
+                    using (FileStream stream = new FileStream(fullPath, FileMode.Open))
+                    {
+                        using StreamReader reader = new StreamReader(stream);
+                        dataToLoad = reader.ReadToEnd();
+                    }
 
-        //            loadedData = JsonConvert.DeserializeObject<GameData>(dataToLoad);
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Debug.LogError("Can't load data from " + fullPath + "\n" + e.Message);
-        //        }
-        //    }
+                    loadedData = JsonConvert.DeserializeObject<PlayerData>(dataToLoad);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Can't load data from " + fullPath + "\n" + e.Message);
+                }
+            }
 
-        //    return loadedData;
-        //}
+            return loadedData;
+        }
 
-        //public async UniTask SaveUniTask(GameData data)
-        //{
-        //    string fullPath = Path.Combine(_dataDirPath, _configsFileName);
+        public async UniTask SaveGameUniTask(PlayerData playerData)
+        {
+            string fullPath = Path.Combine(_dataDirPath, _playerDataFileName);
 
-        //    try
-        //    {
-        //        Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? string.Empty);
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? string.Empty);
 
-        //        string dataToStore = JsonConvert.SerializeObject(data, Formatting.Indented);
+                string dataToStore = JsonConvert.SerializeObject(playerData, Formatting.Indented);
 
-        //        using FileStream stream = new FileStream(fullPath, FileMode.Create);
-        //        using StreamWriter writer = new StreamWriter(stream);
-        //        writer.Write(dataToStore);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.LogError("Can't save data to " + fullPath + "\n" + e.Message);
-        //    }
-        //}
+                using FileStream stream = new FileStream(fullPath, FileMode.Create);
+                using StreamWriter writer = new StreamWriter(stream);
+                writer.Write(dataToStore);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Can't save data to " + fullPath + "\n" + e.Message);
+            }
+        }
     }
 }
 

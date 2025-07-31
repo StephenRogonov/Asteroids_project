@@ -40,6 +40,7 @@ public class EntryPoint : MonoBehaviour
             _configFetcher.FetchDataUniTask()
             );
         await _dataPersistence.LoadGameConfigUniTask();
+        await _dataPersistence.LoadPlayerDataUniTask();
         await _adsInitialization.InitializeAdsUniTask();
 
         _sceneSwitcher.LoadMenu();

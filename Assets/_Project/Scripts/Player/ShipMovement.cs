@@ -1,5 +1,6 @@
 using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.Bootstrap.Configs;
+using _Project.Scripts.DataPersistence;
 using _Project.Scripts.GameFlow;
 using UnityEngine;
 using Zenject;
@@ -9,7 +10,8 @@ namespace _Project.Scripts.Player
     public class ShipMovement : MonoBehaviour, IPause
     {
         private AnalyticsEventManager _analyticsEventManager;
-        private GameConfig _remoteConfig;
+        private GameConfig _gameConfig;
+        private PauseHandler _pauseHandler;
 
         private float _acceleration;
         private float _maxSpeed;
@@ -18,8 +20,6 @@ namespace _Project.Scripts.Player
         private bool _isMoving;
         private float _rotateDirection;
         private Rigidbody2D _rigidbody;
-
-        private PauseHandler _pauseHandler;
 
         private Vector2 _linearVelocity;
         private float _angularVelocity;
@@ -30,16 +30,20 @@ namespace _Project.Scripts.Player
         public Rigidbody2D Rigidbody => _rigidbody;
 
         [Inject]
-        private void Construct(GameConfig remoteConfig, AnalyticsEventManager analyticsEventManager, PauseHandler pauseHandler)
+        private void Construct(
+            DataPersistenceHandler dataPersistenceHandler, 
+            AnalyticsEventManager analyticsEventManager, 
+            PauseHandler pauseHandler
+            )
         {
             _analyticsEventManager = analyticsEventManager;
-            _remoteConfig = remoteConfig;
+            _gameConfig = dataPersistenceHandler.GameConfig;
             _pauseHandler = pauseHandler;
             _pauseHandler.Add(this);
 
-            _acceleration = _remoteConfig.ShipAcceleration;
-            _maxSpeed = _remoteConfig.ShipMaxSpeed;
-            _rotationSpeed = _remoteConfig.ShipRotationSpeed;
+            _acceleration = _gameConfig.ShipAcceleration;
+            _maxSpeed = _gameConfig.ShipMaxSpeed;
+            _rotationSpeed = _gameConfig.ShipRotationSpeed;
         }
 
         public void Move(bool isMoving)

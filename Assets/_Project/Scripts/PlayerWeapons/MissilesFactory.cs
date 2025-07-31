@@ -6,32 +6,33 @@ using _Project.Scripts.Bootstrap.Analytics;
 using UnityEngine;
 using Zenject;
 using _Project.Scripts.Bootstrap.Configs;
+using _Project.Scripts.DataPersistence;
 
 public class MissilesFactory
 {
     private AnalyticsEventManager _analyticsEventManager;
-
     private ShipMissilesConfig _shipMissilesSettings;
-    private GameConfig _remoteConfig;
-
+    private GameConfig _gameConfig;
     private Transform _shipShootingPoint;
     private Pool<Missile> _missilesPool;
     private IInstantiator _instantiator;
 
-    public MissilesFactory(AnalyticsEventManager analyticsEventManager, 
+    public MissilesFactory(
+        AnalyticsEventManager analyticsEventManager, 
         ShipMissilesConfig shipMissilesSettings, 
-        GameConfig remoteConfig,
+        DataPersistenceHandler dataPersistenceHandler,
         ShipMovement shipMovement, 
-        IInstantiator instantiator)
+        IInstantiator instantiator
+        )
     {
         _analyticsEventManager = analyticsEventManager;
         _shipMissilesSettings = shipMissilesSettings;
-        _remoteConfig = remoteConfig;
+        _gameConfig = dataPersistenceHandler.GameConfig;
         _shipShootingPoint = shipMovement.transform.GetComponentInChildren<ShootingPoint>().transform;
         _instantiator = instantiator;
 
         _missilesPool = _instantiator.Instantiate<Pool<Missile>>(new object[] 
-        { _shipMissilesSettings.MissilePrefab, _remoteConfig.MissilesPoolInitialSize });
+        { _shipMissilesSettings.MissilePrefab, _gameConfig.MissilesPoolInitialSize });
     }
 
     public Missile GetMissile()

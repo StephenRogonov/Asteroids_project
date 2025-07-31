@@ -11,7 +11,6 @@ namespace _Project.Scripts.Obstacles
     public class ObstaclesFactory
     {
         private ObstacleSpawnerSettings _spawnerSettings;
-        private DataPersistenceHandler _dataPersistence;
         private GameConfig _gameConfig;
         private IInstantiator _instantiator;
         private Pool<Asteroid> _asteroidsPool;
@@ -20,13 +19,14 @@ namespace _Project.Scripts.Obstacles
         private List<Asteroid> _asteroidsSpawned = new();
         private List<EnemyMovement> _enemiesSpawned = new();
 
-        public ObstaclesFactory(ObstacleSpawnerSettings settings,
+        public ObstaclesFactory(
+            ObstacleSpawnerSettings settings,
             DataPersistenceHandler dataPersistence,
-            IInstantiator instantiator)
+            IInstantiator instantiator
+            )
         {
             _spawnerSettings = settings;
-            _dataPersistence = dataPersistence;
-            _gameConfig = _dataPersistence.GameConfig;
+            _gameConfig = dataPersistence.GameConfig;
             _instantiator = instantiator;
 
             CreatePools();

@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System;
 
 namespace _Project.Scripts.Bootstrap.Configs

@@ -9,7 +9,7 @@ public class GlobalInstaller : MonoInstaller
     {
         Container.BindInterfacesAndSelfTo<SceneSwitcher>().AsSingle().NonLazy();
         Container.Bind<FileDataHandler>().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<GameConfig>().AsSingle();
+        Container.Bind<GameConfig>().AsSingle().NonLazy();
         Container.Bind<DataPersistenceHandler>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<Interstitial>().AsSingle();
         Container.BindInterfacesAndSelfTo<Rewarded>().AsSingle();

@@ -5,11 +5,11 @@ namespace _Project.Scripts.DataPersistence
     [Serializable]
     public class PlayerData
     {
-        public bool noAdsPurchased { get; private set; }
+        public bool NoAdsPurchased { get; set; }
 
         public PlayerData()
         {
-            noAdsPurchased = false;
+            NoAdsPurchased = false;
         }
     }
 }

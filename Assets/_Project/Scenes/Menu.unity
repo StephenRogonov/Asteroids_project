@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33419850b75131f4498bd06bc84d82a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _purchaseNoAdsUIPrefab: {fileID: 972642496945458168, guid: cc7530f5ff6535b4dae0bb20cde71c2d, type: 3}
   _mainMenuPrefab: {fileID: 1888287407766793417, guid: 9bf4a17266eef244dac0091f4828d594, type: 3}
 --- !u!114 &1549552619
 MonoBehaviour:

@@ -362,8 +362,6 @@ GameObject:
   - component: {fileID: 3705558153364275097}
   - component: {fileID: 9192929566897558873}
   - component: {fileID: 8460205526386614681}
-  - component: {fileID: 1766972272710976815}
-  - component: {fileID: 4823886235814807622}
   m_Layer: 5
   m_Name: MenuPanel
   m_TagString: Untagged
@@ -429,59 +427,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1766972272710976815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6812266659257742148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  productId: 
-  buttonType: 0
-  consumePurchase: 1
-  onTransactionsRestored:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4823886235814807622}
-        m_TargetAssemblyTypeName: NoAds, Assembly-CSharp
-        m_MethodName: PurchaseNoAds
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onPurchaseFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  onProductFetched:
-    m_PersistentCalls:
-      m_Calls: []
-  button: {fileID: 4435211454551148873}
---- !u!114 &4823886235814807622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6812266659257742148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38377da1df761014a842a3b66d168893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _noAdsButton: {fileID: 4435211454551148873}
 --- !u!1 &7449079111897891677
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,3 +839,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc8b6a622341341b3e9f6454f6a21d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _noAdsButton: {fileID: 4435211454551148873}

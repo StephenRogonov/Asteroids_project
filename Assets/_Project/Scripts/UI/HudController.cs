@@ -1,4 +1,5 @@
 using _Project.Scripts.Bootstrap.Configs;
+using _Project.Scripts.DataPersistence;
 using _Project.Scripts.GameFlow;
 using _Project.Scripts.Player;
 using System;
@@ -11,7 +12,7 @@ namespace _Project.Scripts.UI
     {
         private HudModel _model;
         private HudView _view;
-        private GameConfig _remoteConfig;
+        private GameConfig _gameConfig;
         private ShipMovement _shipMovement;
         private PauseHandler _pauseHandler;
 
@@ -23,20 +24,26 @@ namespace _Project.Scripts.UI
 
         private bool _isPaused;
 
-        public HudController(HudModel model, HudView view, GameConfig remoteConfig, ShipMovement shipMovement, PauseHandler pauseHandler)
+        public HudController(
+            HudModel model, 
+            HudView view, 
+            DataPersistenceHandler dataPersistenceHandler, 
+            ShipMovement shipMovement, 
+            PauseHandler pauseHandler
+            )
         {
             _model = model;
             _view = view;
-            _remoteConfig = remoteConfig;
+            _gameConfig = dataPersistenceHandler.GameConfig;
             _shipMovement = shipMovement;
             _pauseHandler = pauseHandler;
 
             _pauseHandler.Add(this);
 
             _timer = new CountdownTimer();
-            _timer.Reset(_remoteConfig.LaserShotRestorationTime);
+            _timer.Reset(_gameConfig.LaserShotRestorationTime);
 
-            LaserShotsChanged(_remoteConfig.LaserShotsStartCount);
+            LaserShotsChanged(_gameConfig.LaserShotsStartCount);
         }
 
         public void Tick()
@@ -51,7 +58,7 @@ namespace _Project.Scripts.UI
                 if (_timer.RemainingTime < 0)
                 {
                     LaserShotsChanged(1);
-                    _timer.Reset(_remoteConfig.LaserShotRestorationTime);
+                    _timer.Reset(_gameConfig.LaserShotRestorationTime);
                 }
             }
         }

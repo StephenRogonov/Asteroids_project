@@ -1,4 +1,5 @@
 using _Project.Scripts.Bootstrap.Configs;
+using _Project.Scripts.DataPersistence;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;
@@ -7,15 +8,15 @@ namespace _Project.Scripts.Bootstrap.Advertising
 {
     public class AdsInitialization : IUnityAdsInitializationListener
     {
-        private GameConfig _config;
+        private GameConfig _gameConfig;
         private string _androidGameId;
         private string _iOSGameId;
         private string _gameId;
         private bool _testMode;
 
-        public AdsInitialization(GameConfig config)
+        public AdsInitialization(DataPersistenceHandler dataPersistenceHandler)
         {
-            _config = config;
+            _gameConfig = dataPersistenceHandler.GameConfig;
 
 #if (UNITY_IOS && UNITY_ANDROID)
             _testMode = false;
@@ -26,8 +27,8 @@ namespace _Project.Scripts.Bootstrap.Advertising
 
         public async UniTask InitializeAdsUniTask()
         {
-            _androidGameId = _config.AndroidGameId;
-            _iOSGameId = _config.IosGameId;
+            _androidGameId = _gameConfig.AndroidGameId;
+            _iOSGameId = _gameConfig.IosGameId;
 
 #if UNITY_IOS
             _gameId = _iOSGameId;
