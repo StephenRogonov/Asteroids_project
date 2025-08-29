@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class ShootingPoint : MonoBehaviour
+namespace _Project.Scripts.Player
 {
-    
+    public class ShootingPoint : MonoBehaviour
+    {
+
+    }
 }

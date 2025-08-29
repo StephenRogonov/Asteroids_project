@@ -1,3 +1,4 @@
+using _Project.Scripts.PlayerWeapons;
 using UnityEngine;
 using Zenject;
 

@@ -1,4 +1,3 @@
-using _Project.Scripts.DataPersistence;
 using Cysharp.Threading.Tasks;
 using System;
 using Unity.Services.Core;
@@ -9,20 +8,19 @@ using UnityEngine.Purchasing.Extension;
 
 namespace _Project.Scripts.InAppPurchasing
 {
-    public class IAPController : IDetailedStoreListener, IDataPersistence, IDisposable
+    public class IAPPresenter : IDetailedStoreListener
     {
-        private PurchasingUI _purchasingUI;
-        private DataPersistenceHandler _dataPersistenceHandler;
         private IStoreController _storeController;
         private IExtensionProvider _extensionProvider;
-        private Action OnPurchaseCompleted;
-        private bool _noAdsPurchased;
+        private ShopItemModel _shopItemModel;
+        private PurchaseApplier _purchaseApplier;
 
-        public IAPController(PurchasingUI purchasingUI, DataPersistenceHandler dataPersistenceHandler)
+        private Action OnPurchaseCompleted;
+
+        public IAPPresenter(ShopItemModel shopItemModel, PurchaseApplier purchaseApplier)
         {
-            _purchasingUI = purchasingUI;
-            _dataPersistenceHandler = dataPersistenceHandler;
-            _dataPersistenceHandler.AddDataObject(this);
+            _shopItemModel = shopItemModel;
+            _purchaseApplier = purchaseApplier;
 
             InitializationOptions options = new InitializationOptions()
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -32,11 +30,7 @@ namespace _Project.Scripts.InAppPurchasing
 #endif
 
             InitializeServices();
-        }
-
-        public void Dispose()
-        {
-            _dataPersistenceHandler.RemoveDataObject(this);
+            Debug.Log("IAPController constructed");
         }
 
         private async void InitializeServices()
@@ -83,17 +77,12 @@ namespace _Project.Scripts.InAppPurchasing
         {
             _storeController = controller;
             _extensionProvider = extensions;
-            SetupUI();
+
+            _shopItemModel.SetProductsCollection(_storeController.products);
+            _purchaseApplier.SetProductsCollection(_storeController.products);
         }
 
-        private void SetupUI()
-        {
-            Product noAds = _storeController.products.WithID("no_ads");
-            _purchasingUI.OnPurchase += HandlePurchase;
-            _purchasingUI.Setup(noAds);
-        }
-
-        private void HandlePurchase(Product product, Action onPurchaseCompleted)
+        public void HandlePurchase(Product product, Action onPurchaseCompleted)
         {
             OnPurchaseCompleted = onPurchaseCompleted;
             _storeController.InitiatePurchase(product);
@@ -122,8 +111,7 @@ namespace _Project.Scripts.InAppPurchasing
             OnPurchaseCompleted?.Invoke();
             OnPurchaseCompleted = null;
 
-            _noAdsPurchased = true;
-            _dataPersistenceHandler.SavePlayerDataUniTask();
+            _purchaseApplier.ApplyPurchase(purchaseEvent.purchasedProduct);
 
             return PurchaseProcessingResult.Complete;
         }
@@ -133,11 +121,6 @@ namespace _Project.Scripts.InAppPurchasing
             Debug.LogError($"Unable to purchase product {product.definition.id}. {failureDescription.message}.");
             OnPurchaseCompleted?.Invoke();
             OnPurchaseCompleted = null;
-        }
-
-        public void SaveData(PlayerData data)
-        {
-            data.NoAdsPurchased = _noAdsPurchased;
         }
     }
 }

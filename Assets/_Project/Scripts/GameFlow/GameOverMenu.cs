@@ -1,12 +1,13 @@
 using _Project.Scripts.Bootstrap.Advertising;
-using _Project.Scripts.MainMenu;
+using _Project.Scripts.Common;
+using _Project.Scripts.DataPersistence;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
+using _Project.Scripts.UI;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using System;
-using _Project.Scripts.DataPersistence;
 
 namespace _Project.Scripts.GameFlow
 {

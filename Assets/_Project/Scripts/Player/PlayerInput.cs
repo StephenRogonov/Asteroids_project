@@ -1,4 +1,3 @@
-using _Project.Scripts.Common;
 using _Project.Scripts.PlayerWeapons;
 using _Project.Scripts.UI;
 using System;
@@ -11,10 +10,14 @@ namespace _Project.Scripts.Player
         private ShipMovement _shipMovement;
         private WeaponTrigger _weaponTrigger;
         private PlayerControls _playerControls;
-        //private PauseHandler _pauseHandler;
         private PauseController _pauseController;
 
-        public PlayerInput(PlayerControls playerControls, ShipMovement shipMovement, WeaponTrigger uiController, PauseController pauseButton)
+        public PlayerInput(
+            PlayerControls playerControls, 
+            ShipMovement shipMovement, 
+            WeaponTrigger uiController, 
+            PauseController pauseButton
+            )
         {
             _playerControls = playerControls;
             _shipMovement = shipMovement;

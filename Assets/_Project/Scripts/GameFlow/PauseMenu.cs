@@ -1,3 +1,5 @@
+using _Project.Scripts.Common;
+using _Project.Scripts.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;

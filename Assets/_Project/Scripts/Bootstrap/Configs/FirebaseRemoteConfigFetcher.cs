@@ -8,40 +8,38 @@ namespace _Project.Scripts.Bootstrap.Configs
 {
     public class FirebaseRemoteConfigFetcher
     {
-        private FileDataHandler _fileDataHandler;
-        private GameConfig _configs;
+        private DataPersistenceHandler _dataPersistenceHandler;
 
-        public FirebaseRemoteConfigFetcher(GameConfig configs, FileDataHandler fileDataHandler)
+        public FirebaseRemoteConfigFetcher(DataPersistenceHandler dataPersistenceHandler)
         {
-            _fileDataHandler = fileDataHandler;
-            _configs = configs;
+            _dataPersistenceHandler = dataPersistenceHandler;
         }
 
-        public async UniTask FetchDataUniTask()
+        public async UniTask FetchData()
         {
 #if UNITY_EDITOR
             await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.Zero).AsUniTask();
 #else
             await FirebaseRemoteConfig.DefaultInstance.FetchAsync(TimeSpan.FromHours(24)).AsUniTask();
 #endif
-            await FetchCompleteUniTask();
+            await FetchComplete();
         }
 
-        private async UniTask FetchCompleteUniTask()
+        private async UniTask FetchComplete()
         {
             var remoteConfig = FirebaseRemoteConfig.DefaultInstance;
             var info = remoteConfig.Info;
 
             if (info.LastFetchStatus != LastFetchStatus.Success)
             {
-                Debug.LogError($"{nameof(FetchCompleteUniTask)} was unsuccessful\n{nameof(info.LastFetchStatus)}: {info.LastFetchStatus}");
+                Debug.LogError($"{nameof(FetchComplete)} was unsuccessful\n{nameof(info.LastFetchStatus)}: {info.LastFetchStatus}");
                 return;
             }
 
             await remoteConfig.ActivateAsync();
             Debug.Log($"Remote data loaded and ready for use. Last fetch time {info.FetchTime}.");
 
-            await _fileDataHandler.UpdateGameConfigsUniTask(remoteConfig.GetValue("gameConfigs").StringValue);
+            _dataPersistenceHandler.SaveGameConfig(remoteConfig.GetValue("gameConfigs").StringValue);
         }
     }
 }

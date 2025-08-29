@@ -7,14 +7,14 @@ namespace _Project.Scripts.Bootstrap.Firebase
 {
     public class FirebaseSetup
     {
-        public async UniTask InitializeFirebaseUniTask()
+        public async UniTask InitializeFirebase()
         {
             await FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(async task =>
             {
                 var dependencyStatus = task.Result;
                 if (dependencyStatus == DependencyStatus.Available)
                 {
-                    FirebaseApp app = FirebaseApp.DefaultInstance;
+                    Debug.Log("Firebase dependencies successfully resolved.");
                 }
                 else
                 {

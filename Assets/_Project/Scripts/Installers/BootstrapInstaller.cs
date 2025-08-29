@@ -1,18 +1,22 @@
 using _Project.Scripts.Bootstrap.Advertising;
 using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.Bootstrap.Firebase;
+using _Project.Scripts.Bootstrap;
 using UnityEngine;
 using Zenject;
 
-public class BootstrapInstaller : MonoInstaller
+namespace _Project.Scripts.Installers
 {
-    [SerializeField] private EntryPoint _entryPoint;
-
-    public override void InstallBindings()
+    public class BootstrapInstaller : MonoInstaller
     {
-        Container.Bind<FirebaseSetup>().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigFetcher>().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<AdsInitialization>().AsSingle().NonLazy();
-        Container.Bind<EntryPoint>().FromInstance(_entryPoint).AsSingle();
+        [SerializeField] private EntryPoint _entryPoint;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<FirebaseSetup>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<FirebaseRemoteConfigFetcher>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<AdsInitialization>().AsSingle().NonLazy();
+            Container.Bind<EntryPoint>().FromInstance(_entryPoint).AsSingle();
+        }
     }
 }

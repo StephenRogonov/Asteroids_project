@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class MobileButtons : MonoBehaviour
+namespace _Project.Scripts.UI
 {
-    
+    public class MobileButtons : MonoBehaviour
+    {
+
+    }
 }

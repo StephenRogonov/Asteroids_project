@@ -1,17 +1,21 @@
 using _Project.Scripts.Bootstrap.Advertising;
 using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.DataPersistence;
+using _Project.Scripts.Common;
 using Zenject;
 
-public class GlobalInstaller : MonoInstaller
+namespace _Project.Scripts.Installers
 {
-    public override void InstallBindings()
+    public class GlobalInstaller : MonoInstaller
     {
-        Container.BindInterfacesAndSelfTo<SceneSwitcher>().AsSingle().NonLazy();
-        Container.Bind<FileDataHandler>().AsSingle().NonLazy();
-        Container.Bind<GameConfig>().AsSingle().NonLazy();
-        Container.Bind<DataPersistenceHandler>().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<Interstitial>().AsSingle();
-        Container.BindInterfacesAndSelfTo<Rewarded>().AsSingle();
+        public override void InstallBindings()
+        {
+            Container.BindInterfacesAndSelfTo<SceneSwitcher>().AsSingle().NonLazy();
+            Container.Bind<FileDataHandler>().AsSingle().NonLazy();
+            Container.Bind<GameConfig>().AsSingle().NonLazy();
+            Container.Bind<DataPersistenceHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<Interstitial>().AsSingle();
+            Container.BindInterfacesAndSelfTo<Rewarded>().AsSingle();
+        }
     }
 }

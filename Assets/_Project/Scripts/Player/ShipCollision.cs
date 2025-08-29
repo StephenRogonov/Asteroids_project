@@ -1,7 +1,8 @@
 using _Project.Scripts.Bootstrap.Analytics;
-using _Project.Scripts.Enemy;
+using _Project.Scripts.GameFlow;
 using _Project.Scripts.Obstacles;
-using System;
+using _Project.Scripts.Obstacles.Asteroids;
+using _Project.Scripts.Obstacles.Enemy;
 using UnityEngine;
 using Zenject;
 
@@ -10,13 +11,17 @@ namespace _Project.Scripts.Player
     public class ShipCollision : MonoBehaviour
     {
         private AnalyticsEventManager _analyticsEventManager;
-
-        public event Action Crashed;
+        private GameOverController _gameOverController;
 
         [Inject]
         private void Construct(AnalyticsEventManager analyticsEventManager)
         {
             _analyticsEventManager = analyticsEventManager;
+        }
+
+        public void SetGameOverController(GameOverController gameOverController)
+        {
+            _gameOverController = gameOverController;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -26,7 +31,7 @@ namespace _Project.Scripts.Player
                 _analyticsEventManager.LogEndGame();
                 gameObject.SetActive(false);
                 collision.gameObject.GetComponent<IDamageable>().DestroyObject();
-                Crashed?.Invoke();
+                _gameOverController.GameOver();
             }
         }
     }

@@ -11,7 +11,7 @@ namespace _Project.Scripts.Bootstrap.Advertising
 
         private string _adUnitId;
 
-        private Action OnAdShown;
+        private Action _onAdShown;
 
         public Interstitial()
         {
@@ -22,15 +22,15 @@ namespace _Project.Scripts.Bootstrap.Advertising
 
         public void ShowAd(Action onAdShown)
         {
-            OnAdShown = onAdShown;
+            _onAdShown = onAdShown;
             Debug.Log("Showing Ad: " + _adUnitId);
             Advertisement.Show(_adUnitId, this);
         }
 
         public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
         {
-            OnAdShown?.Invoke();
-            OnAdShown = null;
+            _onAdShown?.Invoke();
+            _onAdShown = null;
         }
 
         public void OnUnityAdsFailedToLoad(string adUnitId, UnityAdsLoadError error, string message)

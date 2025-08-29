@@ -25,7 +25,7 @@ namespace _Project.Scripts.Bootstrap.Advertising
 #endif
         }
 
-        public async UniTask InitializeAdsUniTask()
+        public async UniTask InitializeAds()
         {
             _androidGameId = _gameConfig.AndroidGameId;
             _iOSGameId = _gameConfig.IosGameId;

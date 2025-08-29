@@ -1,4 +1,3 @@
-using _Project.Scripts.Bootstrap.Analytics;
 using Firebase.Analytics;
 using System.Collections.Generic;
 using System.Linq;

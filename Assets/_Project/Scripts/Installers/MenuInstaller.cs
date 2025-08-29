@@ -1,25 +1,30 @@
 using _Project.Scripts.InAppPurchasing;
-using _Project.Scripts.MainMenu;
+using _Project.Scripts.Menu;
 using UnityEngine;
 using Zenject;
 
-public class MenuInstaller : MonoInstaller
+namespace _Project.Scripts.Installers
 {
-    [SerializeField] private PurchasingUI _purchaseNoAdsUIPrefab;
-    [SerializeField] private MainMenu _mainMenuPrefab;
-
-    public override void InstallBindings()
+    public class MenuInstaller : MonoInstaller
     {
-        Container
-            .Bind<PurchasingUI>()
-            .FromComponentInNewPrefab(_purchaseNoAdsUIPrefab)
-            .AsSingle()
-            .NonLazy();
-        Container
-            .Bind<MainMenu>()
-            .FromComponentInNewPrefab(_mainMenuPrefab)
-            .AsSingle()
-            .NonLazy();
-        Container.BindInterfacesAndSelfTo<IAPController>().AsSingle().NonLazy();
+        [SerializeField] private PurchasingUI _purchaseNoAdsUIPrefab;
+        [SerializeField] private MainMenu _mainMenuPrefab;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<PurchaseApplier>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<IAPPresenter>().AsSingle().Lazy();
+            Container.Bind<ShopItemModel>().AsSingle().Lazy();
+            Container
+                .Bind<PurchasingUI>()
+                .FromComponentInNewPrefab(_purchaseNoAdsUIPrefab)
+                .AsSingle()
+                .NonLazy();
+            Container
+                .Bind<MainMenu>()
+                .FromComponentInNewPrefab(_mainMenuPrefab)
+                .AsSingle()
+                .NonLazy();
+        }
     }
 }

@@ -1,12 +1,11 @@
 using _Project.Scripts.GameFlow;
-using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
 using _Project.Scripts.PlayerWeapons;
 using System;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Enemy
+namespace _Project.Scripts.Obstacles.Enemy
 {
     public class EnemyMovement : MonoBehaviour, IDamageable, IPause
     {

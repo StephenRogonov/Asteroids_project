@@ -1,4 +1,3 @@
-using _Project.Scripts.Bootstrap.Configs;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using System;
@@ -10,57 +9,9 @@ namespace _Project.Scripts.DataPersistence
     public class FileDataHandler
     {
         private readonly string _dataDirPath = Application.persistentDataPath;
-        private readonly string _configsFileName = "config_data.game";
         private readonly string _playerDataFileName = "player_data.game";
 
-        public async UniTask UpdateGameConfigsUniTask(string remoteConfig)
-        {
-            string fullPath = Path.Combine(_dataDirPath, _configsFileName);
-
-            try
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? string.Empty);
-
-                string dataToStore = remoteConfig;
-
-                using FileStream stream = new FileStream(fullPath, FileMode.Create);
-                using StreamWriter writer = new StreamWriter(stream);
-                writer.Write(dataToStore);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Can't save data to " + fullPath + "\n" + e.Message);
-            }
-        }
-
-        public async UniTask<GameConfig> LoadConfigUniTask()
-        {
-            string fullPath = Path.Combine(_dataDirPath, _configsFileName);
-            GameConfig loadedData = null;
-
-            if (File.Exists(fullPath))
-            {
-                try
-                {
-                    string dataToLoad;
-                    using (FileStream stream = new FileStream(fullPath, FileMode.Open))
-                    {
-                        using StreamReader reader = new StreamReader(stream);
-                        dataToLoad = reader.ReadToEnd();
-                    }
-
-                    loadedData = JsonConvert.DeserializeObject<GameConfig>(dataToLoad);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError("Can't load data from " + fullPath + "\n" + e.Message);
-                }
-            }
-
-            return loadedData;
-        }
-
-        public async UniTask<PlayerData> LoadGameUniTask()
+        public async UniTask<PlayerData> LoadGame()
         {
             string fullPath = Path.Combine(_dataDirPath, _playerDataFileName);
             PlayerData loadedData = null;
@@ -87,7 +38,7 @@ namespace _Project.Scripts.DataPersistence
             return loadedData;
         }
 
-        public async UniTask SaveGameUniTask(PlayerData playerData)
+        public async UniTask SaveGame(PlayerData playerData)
         {
             string fullPath = Path.Combine(_dataDirPath, _playerDataFileName);
 

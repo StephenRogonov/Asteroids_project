@@ -1,5 +1,6 @@
 using _Project.Scripts.Bootstrap.Configs;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,27 +30,19 @@ namespace _Project.Scripts.DataPersistence
         public void NewGame()
         {
             PlayerData = new PlayerData();
-            SavePlayerDataUniTask();
+            SavePlayerData();
         }
 
-        public async UniTask LoadGameConfigUniTask()
+        public void SaveGameConfig(string config)
         {
-            GameConfig configFromFile = await _dataHandler.LoadConfigUniTask();
-            
-            if (configFromFile == null)
-            {
-                Debug.LogWarning("No game config loaded. Default config will be used.");
-                return;
-            }
-
-            GameConfig = configFromFile;
+            GameConfig = JsonConvert.DeserializeObject<GameConfig>(config);
         }
 
-        public async UniTask LoadPlayerDataUniTask()
+        public async UniTask LoadPlayerData()
         {
             Debug.Log("Load triggered.");
 
-            PlayerData = await _dataHandler.LoadGameUniTask();
+            PlayerData = await _dataHandler.LoadGame();
 
             if (PlayerData == null)
             {
@@ -58,7 +51,7 @@ namespace _Project.Scripts.DataPersistence
             }
         }
 
-        public async UniTask SavePlayerDataUniTask()
+        public async UniTask SavePlayerData()
         {
             Debug.Log("Save triggered.");
 
@@ -73,7 +66,7 @@ namespace _Project.Scripts.DataPersistence
                 obj.SaveData(PlayerData);
             }
 
-            await _dataHandler.SaveGameUniTask(PlayerData);
+            await _dataHandler.SaveGame(PlayerData);
             PlayerDataChanged?.Invoke();
         }
     }

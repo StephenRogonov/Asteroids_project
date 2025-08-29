@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace _Project.Scripts.MainMenu
+namespace _Project.Scripts.Menu
 {
     public class MainMenu : MonoBehaviour
     {
@@ -12,13 +12,19 @@ namespace _Project.Scripts.MainMenu
 
         private DataPersistenceHandler _dataPersistenceHandler;
         private PlayerData _playerData;
+        private ShopItemModel _shopItemModel;
         private GameObject _purchaseNoAdsPopup;
 
         [Inject]
-        private void Construct(PurchasingUI noAdsPopup, DataPersistenceHandler dataPersistenceHandler)
+        private void Construct(
+            PurchasingUI noAdsPopup, 
+            DataPersistenceHandler dataPersistenceHandler,
+            ShopItemModel shopItemModel
+            )
         {
             _playerData = dataPersistenceHandler.PlayerData;
             _dataPersistenceHandler = dataPersistenceHandler;
+            _shopItemModel = shopItemModel;
 
             if (_playerData.NoAdsPurchased == true)
             {
@@ -26,13 +32,12 @@ namespace _Project.Scripts.MainMenu
                 return;
             }
 
-            _dataPersistenceHandler.PlayerDataChanged += UpdateUI;
-
             _purchaseNoAdsPopup = noAdsPopup.gameObject;
         }
 
         private void OnEnable()
         {
+            _dataPersistenceHandler.PlayerDataChanged += UpdateUI;
             _noAdsButton?.onClick.AddListener(ActivateNoAdsPopup);
         }
 
@@ -52,6 +57,7 @@ namespace _Project.Scripts.MainMenu
 
         private void ActivateNoAdsPopup()
         {
+            _shopItemModel.SetupProductPurchasePopup(ProductsIDs.NO_ADS);
             _purchaseNoAdsPopup?.SetActive(true);
         }
     }

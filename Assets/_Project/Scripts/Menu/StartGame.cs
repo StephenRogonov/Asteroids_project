@@ -1,8 +1,9 @@
+using _Project.Scripts.Common;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace _Project.Scripts.MainMenu
+namespace _Project.Scripts.Menu
 {
     public class StartGame : MonoBehaviour
     {

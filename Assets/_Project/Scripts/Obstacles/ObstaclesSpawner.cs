@@ -44,6 +44,7 @@ namespace _Project.Scripts.Obstacles
 
             while (true)
             {
+                Debug.Log("asteroids spawn rate" + _gameConfig.AsteroidsSpawnRate);
                 while (time < _gameConfig.AsteroidsSpawnRate)
                 {
                     if (_isPaused == false)

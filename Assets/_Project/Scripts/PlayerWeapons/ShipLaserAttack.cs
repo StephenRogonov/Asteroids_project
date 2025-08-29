@@ -5,6 +5,7 @@ using Zenject;
 using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.DataPersistence;
+using _Project.Scripts.ScriptableObjects;
 
 namespace _Project.Scripts.PlayerWeapons
 {

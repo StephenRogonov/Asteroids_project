@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
+using Zenject;
 
 namespace _Project.Scripts.InAppPurchasing
 {
@@ -12,11 +13,18 @@ namespace _Project.Scripts.InAppPurchasing
         [SerializeField] private Button _purchaseButton;
         [SerializeField] private Button _backgroundButton;
         [SerializeField] private GameObject _loadingOverlay;
+        private IAPPresenter _iAPpresenter;
 
         public delegate void PurchaseEvent(Product model, Action onComplete);
         public event PurchaseEvent OnPurchase;
 
-        private Product _productModel;
+        private Product _product;
+
+        [Inject]
+        private void Construct(IAPPresenter iAPController)
+        {
+            _iAPpresenter = iAPController;
+        }
 
         private void OnEnable()
         {
@@ -35,20 +43,20 @@ namespace _Project.Scripts.InAppPurchasing
             gameObject.SetActive(false);
         }
 
-        public void Setup(Product product)
+        public void SetupPurchasePopup(Product product)
         {
-            _productModel = product;
-            _priceText.text = $"{_productModel.metadata.localizedPriceString}";
+            _priceText.text = $"{product.metadata.localizedPriceString}";
+            _product = product;
         }
 
         public void Purchase()
         {
             _purchaseButton.enabled = false;
             _loadingOverlay.SetActive(true);
-            OnPurchase?.Invoke(_productModel, HandlePurchaseComplete);
+            _iAPpresenter.HandlePurchase(_product, HandlePurchaseComplete);
         }
 
-        private void HandlePurchaseComplete() //bool successful
+        private void HandlePurchaseComplete()
         {
             ClosePopup();
             _purchaseButton.enabled = true;

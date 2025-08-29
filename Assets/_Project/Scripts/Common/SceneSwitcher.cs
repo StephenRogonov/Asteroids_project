@@ -1,17 +1,20 @@
 using UnityEngine.SceneManagement;
 
-public class SceneSwitcher
+namespace _Project.Scripts.Common
 {
-    public const int GAME = 2;
-    public const int MENU = 1;
-
-    public void LoadGame()
+    public class SceneSwitcher
     {
-        SceneManager.LoadScene(GAME);
-    }
+        public const int GAME = 2;
+        public const int MENU = 1;
 
-    public void LoadMenu()
-    {
-        SceneManager.LoadScene(MENU);
+        public void LoadGame()
+        {
+            SceneManager.LoadScene(GAME);
+        }
+
+        public void LoadMenu()
+        {
+            SceneManager.LoadScene(MENU);
+        }
     }
 }

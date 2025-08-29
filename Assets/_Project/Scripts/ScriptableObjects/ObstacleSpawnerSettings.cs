@@ -1,13 +1,16 @@
-using _Project.Scripts.Enemy;
-using _Project.Scripts.Obstacles;
+using _Project.Scripts.Obstacles.Enemy;
+using _Project.Scripts.Obstacles.Asteroids;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ObstacleSpawnerSettings", menuName = "Scriptable Objects/ObstacleSpawnerSettings")]
-public class ObstacleSpawnerSettings : ScriptableObject
+namespace _Project.Scripts.ScriptableObjects
 {
-    [Header("Asteroid")]
-    public Asteroid AsteroidPrefab;
+    [CreateAssetMenu(fileName = "ObstacleSpawnerSettings", menuName = "Scriptable Objects/ObstacleSpawnerSettings")]
+    public class ObstacleSpawnerSettings : ScriptableObject
+    {
+        [Header("Asteroid")]
+        public Asteroid AsteroidPrefab;
 
-    [Header("Enemy")]
-    public EnemyMovement EnemyPrefab;
+        [Header("Enemy")]
+        public EnemyMovement EnemyPrefab;
+    }
 }

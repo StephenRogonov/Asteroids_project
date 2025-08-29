@@ -8,7 +8,7 @@ using Zenject;
 
 namespace _Project.Scripts.UI
 {
-    public class HudController : ITickable, IPause
+    public class HudPresenter : ITickable, IPause
     {
         private HudModel _model;
         private HudView _view;
@@ -24,7 +24,7 @@ namespace _Project.Scripts.UI
 
         private bool _isPaused;
 
-        public HudController(
+        public HudPresenter(
             HudModel model, 
             HudView view, 
             DataPersistenceHandler dataPersistenceHandler, 

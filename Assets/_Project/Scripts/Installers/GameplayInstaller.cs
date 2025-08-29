@@ -4,14 +4,17 @@ using _Project.Scripts.Player;
 using UnityEngine;
 using Zenject;
 
-public class GameplayInstaller : MonoInstaller
+namespace _Project.Scripts.Installers
 {
-    public override void InstallBindings()
+    public class GameplayInstaller : MonoInstaller
     {
-        Container.Bind<PauseHandler>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerControls>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
-        Container.BindInterfacesAndSelfTo<Camera>().FromInstance(Camera.main).AsSingle();
-        Container.BindInterfacesAndSelfTo<AnalyticsEventManager>().AsSingle().NonLazy();
+        public override void InstallBindings()
+        {
+            Container.Bind<PauseHandler>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerControls>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
+            Container.BindInterfacesAndSelfTo<Camera>().FromInstance(Camera.main).AsSingle();
+            Container.BindInterfacesAndSelfTo<AnalyticsEventManager>().AsSingle().NonLazy();
+        }
     }
 }

@@ -1,4 +1,4 @@
-namespace _Project.Scripts.Obstacles
+namespace _Project.Scripts.Obstacles.Asteroids
 {
     public enum AsteroidType
     {

@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Obstacles
+namespace _Project.Scripts.Obstacles.Asteroids
 {
     public class Asteroid : MonoBehaviour, IDamageable, IPause
     {

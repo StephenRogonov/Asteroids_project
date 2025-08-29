@@ -1,41 +1,32 @@
-using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
-using System;
+using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class GameOverController : IDisposable
+    public class GameOverController
     {
         private ShipCollision _shipCollision;
-        private ObstaclesSpawner _obstaclesSpawner;
         private GameOverMenu _gameOverPanel;
         private PauseHandler _pauseHandler;
         private CanvasGroup _mobileButtonsCanvasGroup;
 
         public GameOverController(
-            ShipCollision shipCollision, 
-            ObstaclesSpawner obstaclesSpawner, 
+            ShipCollision shipCollision,
             GameOverMenu gameOverPanel, 
             PauseHandler pauseHandler,
             MobileButtons mobileButtons)
         {
             _shipCollision = shipCollision;
-            _obstaclesSpawner = obstaclesSpawner;
             _gameOverPanel = gameOverPanel;
             _pauseHandler = pauseHandler;
 
             _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
 
-            _shipCollision.Crashed += GameOver;
+            _shipCollision.SetGameOverController(this);
         }
 
-        public void Dispose()
-        {
-            _shipCollision.Crashed -= GameOver;
-        }
-
-        private void GameOver()
+        public void GameOver()
         {
             _pauseHandler.PauseAll();
             _mobileButtonsCanvasGroup.interactable = false;

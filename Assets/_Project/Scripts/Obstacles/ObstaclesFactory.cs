@@ -1,10 +1,12 @@
 using _Project.Scripts.Common;
 using _Project.Scripts.Bootstrap.Configs;
-using _Project.Scripts.Enemy;
+using _Project.Scripts.Obstacles.Enemy;
+using _Project.Scripts.Obstacles.Asteroids;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using _Project.Scripts.DataPersistence;
+using _Project.Scripts.ScriptableObjects;
 
 namespace _Project.Scripts.Obstacles
 {

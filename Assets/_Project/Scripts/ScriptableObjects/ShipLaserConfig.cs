@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ShipShootingLaserConfig", menuName = "Scriptable Objects/ShipShootingLaserConfig")]
-public class ShipLaserConfig : ScriptableObject
+namespace _Project.Scripts.ScriptableObjects
 {
-    public LayerMask LayersToDestroy;
+    [CreateAssetMenu(fileName = "ShipShootingLaserConfig", menuName = "Scriptable Objects/ShipShootingLaserConfig")]
+    public class ShipLaserConfig : ScriptableObject
+    {
+        public LayerMask LayersToDestroy;
+    }
 }
