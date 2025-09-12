@@ -10,7 +10,7 @@ namespace _Project.Scripts.Installers
     {
         [SerializeField] private HudView _hudPrefab;
         [SerializeField] private MobileButtons _mobileButtonsPrefab;
-        [SerializeField] private GameOverMenu _gameOverPanelPrefab;
+        [SerializeField] private GameOverView _gameOverMenuPrefab;
         [SerializeField] private PauseMenu _pauseMenuPrefab;
 
         public override void InstallBindings()
@@ -26,8 +26,8 @@ namespace _Project.Scripts.Installers
                 .AsSingle()
                 .NonLazy();
             Container
-                .Bind<GameOverMenu>()
-                .FromComponentInNewPrefab(_gameOverPanelPrefab)
+                .Bind<GameOverView>()
+                .FromComponentInNewPrefab(_gameOverMenuPrefab)
                 .AsSingle()
                 .NonLazy();
             Container

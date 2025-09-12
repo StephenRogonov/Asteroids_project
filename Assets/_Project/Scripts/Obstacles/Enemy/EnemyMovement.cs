@@ -25,9 +25,9 @@ namespace _Project.Scripts.Obstacles.Enemy
         public event Action<EnemyMovement> Destroyed;
 
         [Inject]
-        private void Construct(ShipCollision shipCollision, PauseHandler pauseHandler)
+        private void Construct(ShipMovement shipMovement, PauseHandler pauseHandler)
         {
-            _player = shipCollision.transform;
+            _player = shipMovement.transform;
             _pauseHandler = pauseHandler;
         }
 

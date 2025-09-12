@@ -11,16 +11,12 @@ namespace _Project.Scripts.Player
     public class ShipCollision : MonoBehaviour
     {
         private AnalyticsEventManager _analyticsEventManager;
-        private GameOverController _gameOverController;
+        private GameOverHandler _gameOverController;
 
         [Inject]
-        private void Construct(AnalyticsEventManager analyticsEventManager)
+        private void Construct(AnalyticsEventManager analyticsEventManager, GameOverHandler gameOverController)
         {
             _analyticsEventManager = analyticsEventManager;
-        }
-
-        public void SetGameOverController(GameOverController gameOverController)
-        {
             _gameOverController = gameOverController;
         }
 

@@ -100,5 +100,10 @@ namespace _Project.Scripts.Player
                 _rigidbody.AddTorque(_rotateDirection * _rotationSpeed);
             }
         }
+
+        public void ActivateObject()
+        {
+            gameObject.SetActive(true);
+        }    
     }
 }

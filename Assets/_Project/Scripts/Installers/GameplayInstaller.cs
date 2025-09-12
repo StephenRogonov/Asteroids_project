@@ -15,6 +15,8 @@ namespace _Project.Scripts.Installers
             Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
             Container.BindInterfacesAndSelfTo<Camera>().FromInstance(Camera.main).AsSingle();
             Container.BindInterfacesAndSelfTo<AnalyticsEventManager>().AsSingle().NonLazy();
+            Container.Bind<GameOverHandler>().AsSingle().Lazy();
+            Container.Bind<GameOverPresenter>().AsSingle().NonLazy();
         }
     }
 }

@@ -27,13 +27,13 @@ namespace _Project.Scripts.DataPersistence
 
         public void RemoveDataObject(IDataPersistence dataPersistence) => _dataPersistenceObjects.Remove(dataPersistence);
 
-        public void NewGame()
+        private void NewGame()
         {
             PlayerData = new PlayerData();
             SavePlayerData();
         }
 
-        public void SaveGameConfig(string config)
+        public void SetRemoteGameConfig(string config)
         {
             GameConfig = JsonConvert.DeserializeObject<GameConfig>(config);
         }

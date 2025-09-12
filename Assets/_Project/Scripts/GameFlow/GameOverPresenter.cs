@@ -6,76 +6,50 @@ using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class GameOverMenu : MonoBehaviour
+    public class GameOverPresenter : IDisposable
     {
-        [SerializeField] private Button _restartButton;
-        [SerializeField] private Button _continueButton;
-
         private IInterstitial _interstitial;
         private IRewarded _rewarded;
 
+        private GameOverView _view;
+
         private SceneSwitcher _sceneSwitcher;
         private PlayerData _playerData;
+        private PauseHandler _pauseHandler;
         private ObstaclesFactory _obstaclesFactory;
         private ShipMovement _ship;
-        private PauseHandler _pauseHandler;
         private CanvasGroup _mobileButtonsCanvasGroup;
 
         private Action OnInterstitialShown;
         private Action OnRewardedShown;
 
-        [Inject]
-        private void Construct(
+        public GameOverPresenter(
             SceneSwitcher sceneSwitcher,
             DataPersistenceHandler dataPersistenceHandler,
+            PauseHandler pauseHandler,
             ObstaclesFactory obstaclesFactory,
             ShipMovement shipMovement,
-            PauseHandler pauseHandler,
             MobileButtons mobileButtons,
             IInterstitial interstitial,
-            IRewarded rewarded)
+            IRewarded rewarded
+            )
         {
-            _playerData = dataPersistenceHandler.PlayerData;
             _sceneSwitcher = sceneSwitcher;
+            _playerData = dataPersistenceHandler.PlayerData;
+            _pauseHandler = pauseHandler;
             _obstaclesFactory = obstaclesFactory;
             _ship = shipMovement;
-            _pauseHandler = pauseHandler;
-
             _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
             _interstitial = interstitial;
             _rewarded = rewarded;
         }
 
-        private void OnEnable()
+        public void SetView(GameOverView view)
         {
-            OnRewardedShown += ContinueGame;
-
-            if (_playerData.NoAdsPurchased == false)
-            {
-                OnInterstitialShown += RestartGame;
-                _restartButton.onClick.AddListener(ShowInterstitial);
-            }
-            else if (_playerData.NoAdsPurchased == true)
-            {
-                _restartButton.onClick.AddListener(RestartGame);
-            }
-
-            _continueButton.onClick.AddListener(ShowRewarded);
-            _continueButton.onClick.AddListener(DisableCanvas);
-            _restartButton.onClick.AddListener(DisableCanvas);
-        }
-        private void OnDisable()
-        {
-            OnInterstitialShown -= RestartGame;
-            OnRewardedShown -= ContinueGame;
-
-            _restartButton.onClick.RemoveAllListeners();
-            _continueButton.onClick.RemoveAllListeners();
+            _view = view;
         }
 
         private void ShowInterstitial()
@@ -90,26 +64,47 @@ namespace _Project.Scripts.GameFlow
 
         public void RestartGame()
         {
+            if (_playerData.NoAdsPurchased == false)
+            {
+                OnInterstitialShown += ReloadScene;
+                ShowInterstitial();
+            }
+            else if (_playerData.NoAdsPurchased == true)
+            {
+                ReloadScene();
+            }
+        }
+
+        private void ReloadScene()
+        {
+            OnInterstitialShown -= ReloadScene;
             _sceneSwitcher.LoadGame();
         }
 
-        public void ContinueGame()
+        public void Continue()
+        {
+            OnRewardedShown += ContinueGame;
+            ShowRewarded();
+        }
+
+        private void ContinueGame()
         {
             _pauseHandler.UnpauseAll();
             _obstaclesFactory.ReturnSpawnedToPool();
-            _ship.gameObject.SetActive(true);
+            _ship.ActivateObject();
             _mobileButtonsCanvasGroup.interactable = true;
             _mobileButtonsCanvasGroup.blocksRaycasts = true;
         }
 
-        public void EnableCanvas()
+        public void EnableView()
         {
-            gameObject.SetActive(true);
+            _view.EnableObject();
         }
 
-        private void DisableCanvas()
+        public void Dispose()
         {
-            gameObject.SetActive(false);
+            OnInterstitialShown -= ReloadScene;
+            OnRewardedShown -= Continue;
         }
     }
 }

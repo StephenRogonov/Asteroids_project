@@ -1,29 +1,23 @@
-using _Project.Scripts.Player;
 using _Project.Scripts.UI;
 using UnityEngine;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class GameOverController
+    public class GameOverHandler
     {
-        private ShipCollision _shipCollision;
-        private GameOverMenu _gameOverPanel;
+        private GameOverPresenter _gameOverMenu;
         private PauseHandler _pauseHandler;
         private CanvasGroup _mobileButtonsCanvasGroup;
 
-        public GameOverController(
-            ShipCollision shipCollision,
-            GameOverMenu gameOverPanel, 
+        public GameOverHandler(
+            GameOverPresenter gameOverMenu, 
             PauseHandler pauseHandler,
             MobileButtons mobileButtons)
         {
-            _shipCollision = shipCollision;
-            _gameOverPanel = gameOverPanel;
+            _gameOverMenu = gameOverMenu;
             _pauseHandler = pauseHandler;
 
             _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
-
-            _shipCollision.SetGameOverController(this);
         }
 
         public void GameOver()
@@ -31,7 +25,7 @@ namespace _Project.Scripts.GameFlow
             _pauseHandler.PauseAll();
             _mobileButtonsCanvasGroup.interactable = false;
             _mobileButtonsCanvasGroup.blocksRaycasts = false;
-            _gameOverPanel.EnableCanvas();
+            _gameOverMenu.EnableView();
         }
     }
 }

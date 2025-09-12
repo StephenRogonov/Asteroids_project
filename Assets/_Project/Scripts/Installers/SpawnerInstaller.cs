@@ -1,4 +1,3 @@
-using _Project.Scripts.GameFlow;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.ScriptableObjects;
 using UnityEngine;
@@ -16,7 +15,6 @@ namespace _Project.Scripts.Installers
             Container.Bind<ObstacleSpawnerSettings>().FromInstance(_spawnerSettings).AsSingle();
             Container.Bind<ObstaclesFactory>().AsSingle();
             Container.Bind<ObstaclesSpawner>().FromInstance(_spawner).AsSingle();
-            Container.Bind<GameOverController>().AsSingle().NonLazy();
         }
     }
 }
