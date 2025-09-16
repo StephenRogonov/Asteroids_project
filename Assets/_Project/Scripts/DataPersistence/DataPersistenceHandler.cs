@@ -27,7 +27,7 @@ namespace _Project.Scripts.DataPersistence
 
         public void RemoveDataObject(IDataPersistence dataPersistence) => _dataPersistenceObjects.Remove(dataPersistence);
 
-        private void NewGame()
+        private void StartNewGame()
         {
             PlayerData = new PlayerData();
             SavePlayerData();
@@ -47,7 +47,7 @@ namespace _Project.Scripts.DataPersistence
             if (PlayerData == null)
             {
                 Debug.LogWarning("No game data found. New game data will be created.");
-                NewGame();
+                StartNewGame();
             }
         }
 

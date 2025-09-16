@@ -14,7 +14,7 @@ namespace _Project.Scripts.Installers
         {
             Container.Bind<ObstacleSpawnerSettings>().FromInstance(_spawnerSettings).AsSingle();
             Container.Bind<ObstaclesFactory>().AsSingle();
-            Container.Bind<ObstaclesSpawner>().FromInstance(_spawner).AsSingle();
+            Container.BindInterfacesAndSelfTo<ObstaclesSpawner>().FromInstance(_spawner).AsSingle();
         }
     }
 }

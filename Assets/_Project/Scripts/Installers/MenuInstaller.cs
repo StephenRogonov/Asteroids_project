@@ -12,7 +12,7 @@ namespace _Project.Scripts.Installers
 
         public override void InstallBindings()
         {
-            Container.Bind<PurchaseApplier>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PurchaseApplier>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<IAPPresenter>().AsSingle().Lazy();
             Container.Bind<ShopItemModel>().AsSingle().Lazy();
             Container

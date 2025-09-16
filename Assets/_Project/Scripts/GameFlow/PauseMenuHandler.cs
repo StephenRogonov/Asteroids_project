@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace _Project.Scripts.UI
 {
-    public class PauseController
+    public class PauseMenuHandler
     {
-        private PauseMenu _pauseMenu;
+        private PausePresenter _pausePresenter;
         private PauseHandler _pauseHandler;
         private CanvasGroup _mobileButtonsCanvasGroup;
 
-        public PauseController(PauseMenu pauseMenu, PauseHandler pauseHandler, MobileButtons mobileButtons)
+        public PauseMenuHandler(PausePresenter pausePresenter, PauseHandler pauseHandler, MobileButtons mobileButtons)
         {
-            _pauseMenu = pauseMenu;
+            _pausePresenter = pausePresenter;
             _pauseHandler = pauseHandler;
 
             _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
@@ -22,7 +22,7 @@ namespace _Project.Scripts.UI
             _pauseHandler.PauseAll();
             _mobileButtonsCanvasGroup.interactable = false;
             _mobileButtonsCanvasGroup.blocksRaycasts = false;
-            _pauseMenu.EnableCanvas();
+            _pausePresenter.EnableView();
         }
     }
 }

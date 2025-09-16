@@ -1,4 +1,4 @@
-namespace _Project.Scripts.UI
+namespace _Project.Scripts.Common
 {
     public class CountdownTimer
     {

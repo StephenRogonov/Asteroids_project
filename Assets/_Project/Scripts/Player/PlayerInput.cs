@@ -10,13 +10,13 @@ namespace _Project.Scripts.Player
         private ShipMovement _shipMovement;
         private WeaponTrigger _weaponTrigger;
         private PlayerControls _playerControls;
-        private PauseController _pauseController;
+        private PauseMenuHandler _pauseController;
 
         public PlayerInput(
             PlayerControls playerControls, 
             ShipMovement shipMovement, 
             WeaponTrigger uiController, 
-            PauseController pauseButton
+            PauseMenuHandler pauseButton
             )
         {
             _playerControls = playerControls;
