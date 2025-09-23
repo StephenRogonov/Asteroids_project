@@ -1,7 +1,7 @@
-using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.GameFlow;
 using _Project.Scripts.Player;
 using _Project.Scripts.UI;
+using System;
 
 namespace _Project.Scripts.PlayerWeapons
 {
@@ -10,21 +10,21 @@ namespace _Project.Scripts.PlayerWeapons
         private HudPresenter _hudPresenter;
         private ShipLaserAttack _shipLaserAttack;
         private ShipMissilesAttack _shipMissilesAttack;
-        private AnalyticsEventManager _analyticsEventManager;
         private PauseHandler _pauseHandler;
 
         private bool _isPaused;
 
+        public event Action MissileShot;
+        public event Action LaserShot;
+
         public WeaponTrigger(HudPresenter hudController, 
             ShipLaserAttack shipLaserAttack, 
             ShipMissilesAttack shipMissilesAttack, 
-            AnalyticsEventManager analyticsEventManager,
             PauseHandler pauseHandler)
         {
             _hudPresenter = hudController;
             _shipLaserAttack = shipLaserAttack;
             _shipMissilesAttack = shipMissilesAttack;
-            _analyticsEventManager = analyticsEventManager;
             _pauseHandler = pauseHandler;
 
             _pauseHandler.Add(this);
@@ -34,7 +34,7 @@ namespace _Project.Scripts.PlayerWeapons
         {
             if (_isPaused == false)
             {
-                _analyticsEventManager.IncrementParameter(LogParameters.MissilesShotsTotal);
+                MissileShot?.Invoke();
                 _shipMissilesAttack.PerformShot();
             }
         }
@@ -43,8 +43,7 @@ namespace _Project.Scripts.PlayerWeapons
         {
             if (_hudPresenter.CanShootLaser() && _isPaused == false)
             {
-                _analyticsEventManager.IncrementParameter(LogParameters.LaserShotsTotal);
-                _analyticsEventManager.LogEventWithoutParameters(LoggingEvents.LASER_SHOT);
+                LaserShot?.Invoke();
                 _shipLaserAttack.PerformShot();
                 _hudPresenter.LaserShotsChanged(-1);
             }

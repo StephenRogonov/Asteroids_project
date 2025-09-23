@@ -1,18 +1,40 @@
+using _Project.Scripts.Player;
+using _Project.Scripts.PlayerWeapons;
 using Firebase.Analytics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Zenject;
 
 namespace _Project.Scripts.Bootstrap.Analytics
 {
-    public class AnalyticsEventManager : IAnalyticsEvents
+    public class AnalyticsEventManager : IAnalyticsEvents, IInitializable, IDisposable
     {
+        private ShipCollision _shipCollision;
+        private ShipMovement _shipMovement;
+        private WeaponTrigger _weaponTrigger;
+        private ShipLaserAttack _shipLaserAttack;
+        private MissilesFactory _missilesFactory;
+
         private int _totalMissilesShot;
         private int _totalLaserShot;
         private int _totalAsteroidsDestroyed;
         private int _totalEnemiesDestroyed;
 
-        public AnalyticsEventManager()
+        public AnalyticsEventManager(
+            ShipCollision shipCollision,
+            ShipMovement shipMovement,
+            WeaponTrigger weaponTrigger,
+            ShipLaserAttack shipLaserAttack,
+            MissilesFactory missilesFactory
+            )
         {
+            _shipCollision = shipCollision;
+            _shipMovement = shipMovement;
+            _weaponTrigger = weaponTrigger;
+            _shipLaserAttack = shipLaserAttack;
+            _missilesFactory = missilesFactory;
+
             _totalMissilesShot = 0;
             _totalLaserShot = 0;
             _totalAsteroidsDestroyed = 0;
@@ -50,25 +72,54 @@ namespace _Project.Scripts.Bootstrap.Analytics
             LogEventWithParameters(LoggingEvents.END_GAME, parameters);
         }
 
-        public void IncrementParameter(LogParameters paramName)
+        public void Initialize()
         {
-            switch (paramName)
-            {
-                case LogParameters.MissilesShotsTotal:
-                    _totalMissilesShot++;
-                    break;
-                case LogParameters.LaserShotsTotal:
-                    _totalLaserShot++;
-                    break;
-                case LogParameters.AsteroidsDestroyedTotal:
-                    _totalAsteroidsDestroyed++;
-                    break;
-                case LogParameters.EnemiesDestroyedTotal:
-                    _totalEnemiesDestroyed++;
-                    break;
-                default:
-                    break;
-            }
+            _shipCollision.Crashed += LogEndGame;
+            _shipMovement.GameStarted += LogStartGame;
+            _weaponTrigger.MissileShot += ShipMissileShot;
+            _weaponTrigger.LaserShot += ShipLaserShot;
+            _shipLaserAttack.AsteroidDestroyed += AsteroidDestroyed;
+            _shipLaserAttack.EnemyDestroyed += EnemyDestroyed;
+            _missilesFactory.AsteroidDestroyed += AsteroidDestroyed;
+            _missilesFactory.EnemyDestroyed += EnemyDestroyed;
+        }
+
+        public void Dispose()
+        {
+            _shipCollision.Crashed -= LogEndGame;
+            _shipMovement.GameStarted -= LogStartGame;
+            _weaponTrigger.MissileShot -= ShipMissileShot;
+            _weaponTrigger.LaserShot -= ShipLaserShot;
+            _shipLaserAttack.AsteroidDestroyed -= AsteroidDestroyed;
+            _shipLaserAttack.EnemyDestroyed -= EnemyDestroyed;
+            _missilesFactory.AsteroidDestroyed -= AsteroidDestroyed;
+            _missilesFactory.EnemyDestroyed -= EnemyDestroyed;
+        }
+
+        private void LogStartGame()
+        {
+            LogEventWithoutParameters(LoggingEvents.START_GAME);
+        }
+
+        private void ShipMissileShot()
+        {
+            _totalMissilesShot++;
+        }
+
+        private void ShipLaserShot()
+        {
+            _totalLaserShot++;
+            LogEventWithoutParameters(LoggingEvents.LASER_SHOT);
+        }
+
+        private void AsteroidDestroyed()
+        {
+            _totalAsteroidsDestroyed++;
+        }
+
+        private void EnemyDestroyed()
+        {
+            _totalEnemiesDestroyed++;
         }
     }
 }

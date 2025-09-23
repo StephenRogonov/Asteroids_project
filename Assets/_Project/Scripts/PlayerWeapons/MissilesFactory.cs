@@ -1,10 +1,10 @@
-using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.Common;
 using _Project.Scripts.DataPersistence;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
 using _Project.Scripts.ScriptableObjects;
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -12,22 +12,22 @@ namespace _Project.Scripts.PlayerWeapons
 {
     public class MissilesFactory
     {
-        private AnalyticsEventManager _analyticsEventManager;
         private ShipMissilesConfig _shipMissilesSettings;
         private GameConfig _gameConfig;
         private Transform _shipShootingPoint;
         private Pool<Missile> _missilesPool;
         private IInstantiator _instantiator;
 
+        public event Action AsteroidDestroyed;
+        public event Action EnemyDestroyed;
+
         public MissilesFactory(
-            AnalyticsEventManager analyticsEventManager,
             ShipMissilesConfig shipMissilesSettings,
             DataPersistenceHandler dataPersistenceHandler,
             ShipMovement shipMovement,
             IInstantiator instantiator
             )
         {
-            _analyticsEventManager = analyticsEventManager;
             _shipMissilesSettings = shipMissilesSettings;
             _gameConfig = dataPersistenceHandler.GameConfig;
             _shipShootingPoint = shipMovement.transform.GetComponentInChildren<ShootingPoint>().transform;
@@ -56,11 +56,11 @@ namespace _Project.Scripts.PlayerWeapons
         {
             if (obstacle.ObstacleType == ObstacleType.Asteroid)
             {
-                _analyticsEventManager.IncrementParameter(LogParameters.AsteroidsDestroyedTotal);
+                AsteroidDestroyed?.Invoke();
             }
             else if (obstacle.ObstacleType == ObstacleType.Enemy)
             {
-                _analyticsEventManager.IncrementParameter(LogParameters.EnemiesDestroyedTotal);
+                EnemyDestroyed?.Invoke();
             }
         }
     }

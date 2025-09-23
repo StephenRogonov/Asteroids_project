@@ -1,3 +1,4 @@
+using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.GameFlow;
 using _Project.Scripts.Player;
 using _Project.Scripts.PlayerWeapons;
@@ -35,6 +36,7 @@ namespace _Project.Scripts.Installers
                 .OnInstantiated<ShipMovement>(OnShipInstantiated)
                 .NonLazy();
             Container.Bind<MissilesFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WeaponTrigger>().AsSingle().NonLazy();
         }
 
         private void OnShipInstantiated(InjectContext context, ShipMovement ship)
@@ -44,6 +46,9 @@ namespace _Project.Scripts.Installers
             Container.Bind<ShipMissilesAttack>().FromComponentInHierarchy().AsSingle();
             Container.Bind<ShipLaserAttack>().FromComponentInHierarchy().AsSingle();
             Container.Bind<ShipCollision>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<AnalyticsEventManager>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GameOverModel>().AsSingle().Lazy();
+            Container.BindInterfacesAndSelfTo<GameOverPresenter>().AsSingle().Lazy();
         }
     }
 }

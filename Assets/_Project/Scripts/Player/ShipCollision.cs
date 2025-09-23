@@ -1,33 +1,22 @@
-using _Project.Scripts.Bootstrap.Analytics;
-using _Project.Scripts.GameFlow;
 using _Project.Scripts.Obstacles;
-using _Project.Scripts.Obstacles.Asteroids;
-using _Project.Scripts.Obstacles.Enemy;
+using _Project.Scripts.PlayerWeapons;
 using System;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Player
 {
     public class ShipCollision : MonoBehaviour
     {
-        private AnalyticsEventManager _analyticsEventManager;
-
         public event Action Crashed;
-
-        [Inject]
-        private void Construct(AnalyticsEventManager analyticsEventManager)
-        {
-            _analyticsEventManager = analyticsEventManager;
-        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.GetComponent<Asteroid>() != null || collision.gameObject.GetComponent<EnemyMovement>() != null)
+            collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obstacle);
+
+            if (obstacle != null)
             {
-                _analyticsEventManager.LogEndGame();
                 gameObject.SetActive(false);
-                collision.gameObject.GetComponent<IDamageable>().DestroyObject();
+                obstacle.TakeHit(HitType.Ship);
                 Crashed?.Invoke();
             }
         }

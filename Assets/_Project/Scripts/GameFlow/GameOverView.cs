@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
@@ -9,21 +9,15 @@ namespace _Project.Scripts.GameFlow
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _continueButton;
 
-        private GameOverPresenter _presenter;
-
-        [Inject]
-        private void Construct(GameOverPresenter presenter)
-        {
-            _presenter = presenter;
-            _presenter.SetView(this);
-        }
+        public event Action RestartClicked;
+        public event Action ContinueClicked;
 
         private void OnEnable()
         {
             _restartButton.onClick.AddListener(Restart);
+            _restartButton.onClick.AddListener(DisableObject);
             _continueButton.onClick.AddListener(Continue);
             _continueButton.onClick.AddListener(DisableObject);
-            _restartButton.onClick.AddListener(DisableObject);
         }
 
         private void OnDisable()
@@ -34,12 +28,12 @@ namespace _Project.Scripts.GameFlow
 
         private void Restart()
         {
-            _presenter.RestartGame();
+            RestartClicked?.Invoke();
         }
 
         private void Continue()
         {
-            _presenter.Continue();
+            ContinueClicked?.Invoke();
         }
 
         public void EnableObject()

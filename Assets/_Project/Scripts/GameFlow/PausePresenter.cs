@@ -1,25 +1,17 @@
-﻿using _Project.Scripts.Common;
-using _Project.Scripts.UI;
-using UnityEngine;
+﻿using _Project.Scripts.UI;
+using System;
+using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class PausePresenter
+    public class PausePresenter : IInitializable, IDisposable
     {
-        private PauseHandler _pauseHandler;
-        private SceneSwitcher _sceneSwitcher;
-        private CanvasGroup _mobileButtonsCanvasGroup;
+        private PauseModel _model;
         private PauseView _view;
 
-        public PausePresenter(PauseHandler pauseHandler, SceneSwitcher sceneSwitcher, MobileButtons mobileButtons)
+        public PausePresenter(PauseView view, PauseModel model)
         {
-            _pauseHandler = pauseHandler;
-            _sceneSwitcher = sceneSwitcher;
-            _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
-        }
-
-        public void SetView(PauseView view)
-        {
+            _model = model;
             _view = view;
         }
 
@@ -30,14 +22,26 @@ namespace _Project.Scripts.GameFlow
 
         public void ContinueGame()
         {
-            _mobileButtonsCanvasGroup.interactable = true;
-            _mobileButtonsCanvasGroup.blocksRaycasts = true;
-            _pauseHandler.UnpauseAll();
+            _model.UnpauseGame();
         }
 
-        public void ExitToMenu()
+        public void Exit()
         {
-            _sceneSwitcher.LoadMenu();
+            _model.ExitToMainMenu();
+        }
+
+        public void Initialize()
+        {
+            _model.Paused += EnableView;
+            _view.ContinueClicked += ContinueGame;
+            _view.ExitClicked += Exit;
+        }
+
+        public void Dispose()
+        {
+            _model.Paused -= EnableView;
+            _view.ContinueClicked -= ContinueGame;
+            _view.ExitClicked -= Exit;
         }
     }
 }

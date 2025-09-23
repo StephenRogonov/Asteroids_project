@@ -71,7 +71,7 @@ namespace _Project.Scripts.PlayerWeapons
             if (obstacle != null)
             {
                 ObstacleHit?.Invoke(obstacle);
-                obstacle.TakeHit(WeaponType.Missile);
+                obstacle.TakeHit(HitType.Missile);
             }
 
             gameObject.SetActive(false);

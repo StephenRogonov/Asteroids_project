@@ -92,7 +92,7 @@ namespace _Project.Scripts.Obstacles.Enemy
             }
         }
 
-        public void TakeHit(WeaponType hitType)
+        public void TakeHit(HitType hitType)
         {
             DestroyObject();
         }

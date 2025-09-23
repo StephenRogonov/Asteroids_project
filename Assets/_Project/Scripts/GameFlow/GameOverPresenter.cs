@@ -1,99 +1,30 @@
-using _Project.Scripts.Bootstrap.Advertising;
-using _Project.Scripts.Common;
-using _Project.Scripts.DataPersistence;
-using _Project.Scripts.Obstacles;
-using _Project.Scripts.Player;
-using _Project.Scripts.UI;
 using System;
-using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class GameOverPresenter : IDisposable
+    public class GameOverPresenter : IInitializable, IDisposable
     {
-        private IInterstitial _interstitial;
-        private IRewarded _rewarded;
-
+        private GameOverModel _model;
         private GameOverView _view;
 
-        private SceneSwitcher _sceneSwitcher;
-        private PlayerData _playerData;
-        private PauseHandler _pauseHandler;
-        private ObstaclesFactory _obstaclesFactory;
-        private ShipMovement _ship;
-        private CanvasGroup _mobileButtonsCanvasGroup;
-
-        private Action OnInterstitialShown;
-        private Action OnRewardedShown;
-
         public GameOverPresenter(
-            SceneSwitcher sceneSwitcher,
-            DataPersistenceHandler dataPersistenceHandler,
-            PauseHandler pauseHandler,
-            ObstaclesFactory obstaclesFactory,
-            ShipMovement shipMovement,
-            MobileButtons mobileButtons,
-            IInterstitial interstitial,
-            IRewarded rewarded
+            GameOverModel model,
+            GameOverView view
             )
         {
-            _sceneSwitcher = sceneSwitcher;
-            _playerData = dataPersistenceHandler.PlayerData;
-            _pauseHandler = pauseHandler;
-            _obstaclesFactory = obstaclesFactory;
-            _ship = shipMovement;
-            _mobileButtonsCanvasGroup = mobileButtons.GetComponent<CanvasGroup>();
-            _interstitial = interstitial;
-            _rewarded = rewarded;
-        }
-
-        public void SetView(GameOverView view)
-        {
+            _model = model;
             _view = view;
-        }
-
-        private void ShowInterstitial()
-        {
-            _interstitial.ShowAd(OnInterstitialShown);
-        }
-
-        private void ShowRewarded()
-        {
-            _rewarded.ShowAd(OnRewardedShown);
         }
 
         public void RestartGame()
         {
-            if (_playerData.NoAdsPurchased == false)
-            {
-                OnInterstitialShown += ReloadScene;
-                ShowInterstitial();
-            }
-            else if (_playerData.NoAdsPurchased == true)
-            {
-                ReloadScene();
-            }
-        }
-
-        private void ReloadScene()
-        {
-            OnInterstitialShown -= ReloadScene;
-            _sceneSwitcher.LoadGame();
-        }
-
-        public void Continue()
-        {
-            OnRewardedShown += ContinueGame;
-            ShowRewarded();
+            _model.RestartGame();
         }
 
         private void ContinueGame()
         {
-            _pauseHandler.UnpauseAll();
-            _obstaclesFactory.ReturnSpawnedToPool();
-            _ship.ActivateObject();
-            _mobileButtonsCanvasGroup.interactable = true;
-            _mobileButtonsCanvasGroup.blocksRaycasts = true;
+            _model.Continue();
         }
 
         public void EnableView()
@@ -101,10 +32,18 @@ namespace _Project.Scripts.GameFlow
             _view.EnableObject();
         }
 
+        public void Initialize()
+        {
+            _model.GameOverTriggered += EnableView;
+            _view.RestartClicked += RestartGame;
+            _view.ContinueClicked += ContinueGame;
+        }
+
         public void Dispose()
         {
-            OnInterstitialShown -= ReloadScene;
-            OnRewardedShown -= Continue;
+            _model.GameOverTriggered -= EnableView;
+            _view.RestartClicked -= RestartGame;
+            _view.ContinueClicked -= ContinueGame;
         }
     }
 }

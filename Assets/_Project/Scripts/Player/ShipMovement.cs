@@ -1,7 +1,7 @@
-using _Project.Scripts.Bootstrap.Analytics;
 using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.DataPersistence;
 using _Project.Scripts.GameFlow;
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -9,7 +9,6 @@ namespace _Project.Scripts.Player
 {
     public class ShipMovement : MonoBehaviour, IPause
     {
-        private AnalyticsEventManager _analyticsEventManager;
         private GameConfig _gameConfig;
         private PauseHandler _pauseHandler;
 
@@ -29,14 +28,14 @@ namespace _Project.Scripts.Player
         public Vector3 Rotation => transform.eulerAngles;
         public Rigidbody2D Rigidbody => _rigidbody;
 
+        public event Action GameStarted;
+
         [Inject]
         private void Construct(
             DataPersistenceHandler dataPersistenceHandler, 
-            AnalyticsEventManager analyticsEventManager, 
             PauseHandler pauseHandler
             )
         {
-            _analyticsEventManager = analyticsEventManager;
             _gameConfig = dataPersistenceHandler.GameConfig;
             _pauseHandler = pauseHandler;
             _pauseHandler.Add(this);
@@ -75,7 +74,7 @@ namespace _Project.Scripts.Player
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
-            _analyticsEventManager.LogEventWithoutParameters(LoggingEvents.START_GAME);
+            GameStarted?.Invoke();
         }
 
         private void FixedUpdate()

@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
@@ -9,14 +9,8 @@ namespace _Project.Scripts.GameFlow
         [SerializeField] private Button _continueButton;
         [SerializeField] private Button _exitButton;
 
-        private PausePresenter _presenter;
-
-        [Inject]
-        private void Construct(PausePresenter presenter)
-        {
-            _presenter = presenter;
-            _presenter.SetView(this);
-        }
+        public event Action ContinueClicked;
+        public event Action ExitClicked;
 
         private void OnEnable()
         {
@@ -34,12 +28,12 @@ namespace _Project.Scripts.GameFlow
 
         private void Continue()
         {
-            _presenter.ContinueGame();
+            ContinueClicked?.Invoke();
         }
 
         private void Exit()
         {
-            _presenter.ExitToMenu();
+            ExitClicked?.Invoke();
         }
 
         public void EnableObject()

@@ -5,7 +5,7 @@ namespace _Project.Scripts.Obstacles
     public interface IDamageable
     {
         ObstacleType ObstacleType { get; }
-        void TakeHit(WeaponType hitType);
+        void TakeHit(HitType hitType);
         void DestroyObject();
     }
 }

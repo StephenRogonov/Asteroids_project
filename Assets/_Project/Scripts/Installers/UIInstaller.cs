@@ -1,5 +1,4 @@
 using _Project.Scripts.GameFlow;
-using _Project.Scripts.PlayerWeapons;
 using _Project.Scripts.UI;
 using UnityEngine;
 using Zenject;
@@ -36,9 +35,10 @@ namespace _Project.Scripts.Installers
                 .AsSingle()
                 .NonLazy();
 
-            Container.Bind<HudModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<HudModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<HudPresenter>().AsSingle();
-            Container.BindInterfacesAndSelfTo<WeaponTrigger>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PauseModel>().AsSingle().Lazy();
+            Container.BindInterfacesAndSelfTo<PausePresenter>().AsSingle().NonLazy();
         }
     }
 }

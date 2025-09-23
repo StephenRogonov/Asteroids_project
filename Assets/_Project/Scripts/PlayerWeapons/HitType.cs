@@ -1,8 +1,9 @@
 namespace _Project.Scripts.PlayerWeapons
 {
-    public enum WeaponType
+    public enum HitType
     {
         Missile,
-        Laser
+        Laser,
+        Ship
     }
 }

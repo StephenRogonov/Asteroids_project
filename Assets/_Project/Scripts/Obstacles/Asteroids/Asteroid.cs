@@ -83,9 +83,9 @@ namespace _Project.Scripts.Obstacles.Asteroids
             }
         }
 
-        public void TakeHit(WeaponType hitType)
+        public void TakeHit(HitType hitType)
         {
-            if (hitType == WeaponType.Missile && _type == AsteroidType.Asteroid)
+            if (hitType == HitType.Missile && _type == AsteroidType.Asteroid)
             {
                 for (int i = 0; i < _shardsAmount; i++)
                 {
