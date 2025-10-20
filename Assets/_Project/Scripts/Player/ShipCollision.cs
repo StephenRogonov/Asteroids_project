@@ -11,9 +11,7 @@ namespace _Project.Scripts.Player
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obstacle);
-
-            if (obstacle != null)
+            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obstacle))
             {
                 gameObject.SetActive(false);
                 obstacle.TakeHit(HitType.Ship);

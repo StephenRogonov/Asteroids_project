@@ -4,6 +4,7 @@ using _Project.Scripts.Bootstrap.Firebase;
 using _Project.Scripts.Bootstrap;
 using UnityEngine;
 using Zenject;
+using _Project.Scripts.AddressablesHandling;
 
 namespace _Project.Scripts.Installers
 {

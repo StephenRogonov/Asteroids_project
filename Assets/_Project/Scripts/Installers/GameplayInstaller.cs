@@ -9,7 +9,7 @@ namespace _Project.Scripts.Installers
     {
         public override void InstallBindings()
         {
-            Container.Bind<PauseHandler>().AsSingle();
+            Container.Bind<PauseSwitcher>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerControls>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
             Container.BindInterfacesAndSelfTo<Camera>().FromInstance(Camera.main).AsSingle();

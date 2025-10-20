@@ -4,11 +4,10 @@ using Firebase.Analytics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Zenject;
 
 namespace _Project.Scripts.Bootstrap.Analytics
 {
-    public class AnalyticsEventManager : IAnalyticsEvents, IInitializable, IDisposable
+    public class AnalyticsEventManager : IAnalyticsEvents, IDisposable
     {
         private ShipCollision _shipCollision;
         private ShipMovement _shipMovement;
@@ -22,23 +21,26 @@ namespace _Project.Scripts.Bootstrap.Analytics
         private int _totalEnemiesDestroyed;
 
         public AnalyticsEventManager(
-            ShipCollision shipCollision,
-            ShipMovement shipMovement,
             WeaponTrigger weaponTrigger,
-            ShipLaserAttack shipLaserAttack,
             MissilesFactory missilesFactory
             )
         {
-            _shipCollision = shipCollision;
-            _shipMovement = shipMovement;
             _weaponTrigger = weaponTrigger;
-            _shipLaserAttack = shipLaserAttack;
             _missilesFactory = missilesFactory;
 
             _totalMissilesShot = 0;
             _totalLaserShot = 0;
             _totalAsteroidsDestroyed = 0;
             _totalEnemiesDestroyed = 0;
+        }
+
+        public void Init(ShipMovement shipMovement, ShipLaserAttack shipLaserAttack, ShipCollision shipCollision)
+        {
+            _shipMovement = shipMovement;
+            _shipLaserAttack = shipLaserAttack;
+            _shipCollision = shipCollision;
+
+            SubscribeToAnalyticsEvents();
         }
 
         public void LogEventWithoutParameters(string eventName)
@@ -72,7 +74,7 @@ namespace _Project.Scripts.Bootstrap.Analytics
             LogEventWithParameters(LoggingEvents.END_GAME, parameters);
         }
 
-        public void Initialize()
+        public void SubscribeToAnalyticsEvents()
         {
             _shipCollision.Crashed += LogEndGame;
             _shipMovement.GameStarted += LogStartGame;

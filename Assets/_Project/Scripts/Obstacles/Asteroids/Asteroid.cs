@@ -13,7 +13,7 @@ namespace _Project.Scripts.Obstacles.Asteroids
         [SerializeField] private int _shardsAmount = 2;
         [SerializeField] private float _destroyDistance = 25f;
 
-        private PauseHandler _pauseHandler;
+        private PauseSwitcher _pauseHandler;
 
         private Rigidbody2D _rigidbody;
         private AsteroidType _type;
@@ -32,7 +32,7 @@ namespace _Project.Scripts.Obstacles.Asteroids
         public event Action<Asteroid> Destroyed;
 
         [Inject]
-        private void Construct(PauseHandler pauseHandler, IInstantiator instantiator)
+        private void Construct(PauseSwitcher pauseHandler, IInstantiator instantiator)
         {
             _pauseHandler = pauseHandler;
             _instantiator = instantiator;

@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.Purchasing;
+﻿using UnityEngine.Purchasing;
 
 namespace _Project.Scripts.InAppPurchasing
 {
@@ -8,10 +7,9 @@ namespace _Project.Scripts.InAppPurchasing
         private ProductCollection _products;
         private PurchasingUI _purchasingUI;
 
-        public ShopItemModel(PurchasingUI purchasingUI)
+        public void Init(PurchasingUI purchasingUI)
         {
             _purchasingUI = purchasingUI;
-            Debug.Log("ShopItemModel constructed");
         }
 
         public void SetProductsCollection(ProductCollection productCollection)

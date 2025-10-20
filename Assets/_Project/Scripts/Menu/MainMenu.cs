@@ -1,30 +1,32 @@
+using _Project.Scripts.Common;
 using _Project.Scripts.DataPersistence;
 using _Project.Scripts.InAppPurchasing;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.Menu
 {
     public class MainMenu : MonoBehaviour
     {
+        [SerializeField] private StartGame _startGame;
         [SerializeField] private Button _noAdsButton;
 
         private DataPersistenceHandler _dataPersistenceHandler;
         private PlayerData _playerData;
         private ShopItemModel _shopItemModel;
-        private GameObject _purchaseNoAdsPopup;
+        private PurchasingUI _purchasingUI;
 
-        [Inject]
-        private void Construct(
-            PurchasingUI noAdsPopup, 
+        public void Init(
             DataPersistenceHandler dataPersistenceHandler,
-            ShopItemModel shopItemModel
+            ShopItemModel shopItemModel,
+            PurchasingUI purchasingUI,
+            SceneSwitcher sceneSwitcher
             )
         {
-            _playerData = dataPersistenceHandler.PlayerData;
             _dataPersistenceHandler = dataPersistenceHandler;
+            _playerData = _dataPersistenceHandler.PlayerData;
             _shopItemModel = shopItemModel;
+            _startGame.Init(sceneSwitcher);
 
             if (_playerData.NoAdsPurchased == true)
             {
@@ -32,11 +34,8 @@ namespace _Project.Scripts.Menu
                 return;
             }
 
-            _purchaseNoAdsPopup = noAdsPopup.gameObject;
-        }
+            _purchasingUI = purchasingUI;
 
-        private void OnEnable()
-        {
             _dataPersistenceHandler.PlayerDataChanged += UpdateUI;
             _noAdsButton?.onClick.AddListener(ActivateNoAdsPopup);
         }
@@ -58,7 +57,7 @@ namespace _Project.Scripts.Menu
         private void ActivateNoAdsPopup()
         {
             _shopItemModel.SetupProductPurchasePopup(ProductsIDs.NO_ADS);
-            _purchaseNoAdsPopup?.SetActive(true);
+            _purchasingUI.EnableObject();
         }
     }
 }

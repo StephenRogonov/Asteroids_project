@@ -10,24 +10,27 @@ namespace _Project.Scripts.PlayerWeapons
         private HudPresenter _hudPresenter;
         private ShipLaserAttack _shipLaserAttack;
         private ShipMissilesAttack _shipMissilesAttack;
-        private PauseHandler _pauseHandler;
+        private PauseSwitcher _pauseHandler;
 
         private bool _isPaused;
 
         public event Action MissileShot;
         public event Action LaserShot;
 
-        public WeaponTrigger(HudPresenter hudController, 
-            ShipLaserAttack shipLaserAttack, 
-            ShipMissilesAttack shipMissilesAttack, 
-            PauseHandler pauseHandler)
+        public WeaponTrigger(
+            HudPresenter hudController, 
+            PauseSwitcher pauseHandler)
         {
             _hudPresenter = hudController;
-            _shipLaserAttack = shipLaserAttack;
-            _shipMissilesAttack = shipMissilesAttack;
             _pauseHandler = pauseHandler;
 
             _pauseHandler.Add(this);
+        }
+
+        public void Init(ShipLaserAttack shipLaserAttack, ShipMissilesAttack shipMissilesAttack)
+        {
+            _shipLaserAttack = shipLaserAttack;
+            _shipMissilesAttack = shipMissilesAttack;
         }
 
         public void ShootMissile()

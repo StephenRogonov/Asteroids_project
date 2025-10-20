@@ -13,18 +13,21 @@ namespace _Project.Scripts.Player
         private PauseModel _pauseController;
 
         public PlayerInput(
-            PlayerControls playerControls, 
-            ShipMovement shipMovement, 
+            PlayerControls playerControls,
             WeaponTrigger uiController, 
             PauseModel pauseButton
             )
         {
             _playerControls = playerControls;
-            _shipMovement = shipMovement;
             _weaponTrigger = uiController;
             _pauseController = pauseButton;
 
             SubscribeToActions();
+        }
+
+        public void Init(ShipMovement shipMovement)
+        {
+            _shipMovement = shipMovement;
         }
 
         private void SubscribeToActions()

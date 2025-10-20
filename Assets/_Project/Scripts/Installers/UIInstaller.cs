@@ -7,38 +7,15 @@ namespace _Project.Scripts.Installers
 {
     public class UIInstaller : MonoInstaller
     {
-        [SerializeField] private HudView _hudPrefab;
-        [SerializeField] private MobileButtons _mobileButtonsPrefab;
-        [SerializeField] private GameOverView _gameOverMenuPrefab;
-        [SerializeField] private PauseView _pauseMenuPrefab;
+        [SerializeField] private GameLoader _gameLoader;
 
         public override void InstallBindings()
         {
-            Container
-                .Bind<HudView>()
-                .FromComponentInNewPrefab(_hudPrefab)
-                .AsSingle()
-                .NonLazy();
-            Container
-                .Bind<MobileButtons>()
-                .FromComponentInNewPrefab(_mobileButtonsPrefab)
-                .AsSingle()
-                .NonLazy();
-            Container
-                .Bind<GameOverView>()
-                .FromComponentInNewPrefab(_gameOverMenuPrefab)
-                .AsSingle()
-                .NonLazy();
-            Container
-                .Bind<PauseView>()
-                .FromComponentInNewPrefab(_pauseMenuPrefab)
-                .AsSingle()
-                .NonLazy();
-
             Container.BindInterfacesAndSelfTo<HudModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<HudPresenter>().AsSingle();
             Container.BindInterfacesAndSelfTo<PauseModel>().AsSingle().Lazy();
             Container.BindInterfacesAndSelfTo<PausePresenter>().AsSingle().NonLazy();
+            Container.Bind<GameLoader>().FromInstance(_gameLoader).AsSingle().NonLazy();
         }
     }
 }

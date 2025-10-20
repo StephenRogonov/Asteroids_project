@@ -1,18 +1,25 @@
 ﻿using _Project.Scripts.UI;
 using System;
-using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class PausePresenter : IInitializable, IDisposable
+    public class PausePresenter : IDisposable
     {
         private PauseModel _model;
         private PauseView _view;
 
-        public PausePresenter(PauseView view, PauseModel model)
+        public PausePresenter(PauseModel model)
         {
             _model = model;
-            _view = view;
+        }
+
+        public void Init(PauseView pauseView)
+        {
+            _view = pauseView;
+
+            _model.Paused += EnableView;
+            _view.ContinueClicked += ContinueGame;
+            _view.ExitClicked += Exit;
         }
 
         public void EnableView()
@@ -28,13 +35,6 @@ namespace _Project.Scripts.GameFlow
         public void Exit()
         {
             _model.ExitToMainMenu();
-        }
-
-        public void Initialize()
-        {
-            _model.Paused += EnableView;
-            _view.ContinueClicked += ContinueGame;
-            _view.ExitClicked += Exit;
         }
 
         public void Dispose()

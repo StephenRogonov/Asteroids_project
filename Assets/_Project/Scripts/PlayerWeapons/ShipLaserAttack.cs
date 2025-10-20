@@ -5,7 +5,6 @@ using _Project.Scripts.ScriptableObjects;
 using System;
 using System.Collections;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.PlayerWeapons
 {
@@ -20,13 +19,9 @@ namespace _Project.Scripts.PlayerWeapons
         public event Action AsteroidDestroyed;
         public event Action EnemyDestroyed;
 
-        [Inject]
-        private void Construct(
-            ShipLaserConfig config, 
-            DataPersistenceHandler dataPersistenceHandler
-            )
+        public void Init(ShipLaserConfig shipLaserConfig, DataPersistenceHandler dataPersistenceHandler)
         {
-            _laserConfig = config;
+            _laserConfig = shipLaserConfig;
             _gameConfig = dataPersistenceHandler.GameConfig;
         }
 

@@ -13,14 +13,14 @@ namespace _Project.Scripts.PlayerWeapons
         private Rigidbody2D _rigidbody;
         private Vector2 _screenPosition;
         private Camera _mainCamera;
-        private PauseHandler _pauseHandler;
+        private PauseSwitcher _pauseHandler;
         private Vector2 _linearVelocity;
 
         public event Action<Missile> Destroyed;
         public event Action<IDamageable> ObstacleHit;
 
         [Inject]
-        private void Construct(Camera camera, PauseHandler pauseHandler)
+        private void Construct(Camera camera, PauseSwitcher pauseHandler)
         {
             _mainCamera = camera;
             _pauseHandler = pauseHandler;
@@ -66,9 +66,7 @@ namespace _Project.Scripts.PlayerWeapons
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obstacle);
-
-            if (obstacle != null)
+            if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable obstacle))
             {
                 ObstacleHit?.Invoke(obstacle);
                 obstacle.TakeHit(HitType.Missile);

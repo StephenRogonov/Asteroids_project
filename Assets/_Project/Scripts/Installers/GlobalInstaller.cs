@@ -1,7 +1,8 @@
+using _Project.Scripts.AddressablesHandling;
 using _Project.Scripts.Bootstrap.Advertising;
 using _Project.Scripts.Bootstrap.Configs;
-using _Project.Scripts.DataPersistence;
 using _Project.Scripts.Common;
+using _Project.Scripts.DataPersistence;
 using Zenject;
 
 namespace _Project.Scripts.Installers
@@ -10,6 +11,7 @@ namespace _Project.Scripts.Installers
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<LocalAssetLoader>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<SceneSwitcher>().AsSingle().NonLazy();
             Container.Bind<FileDataHandler>().AsSingle().NonLazy();
             Container.Bind<GameConfig>().AsSingle().NonLazy();

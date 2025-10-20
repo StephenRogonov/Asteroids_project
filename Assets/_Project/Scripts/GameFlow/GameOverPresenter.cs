@@ -1,20 +1,26 @@
 using System;
-using Zenject;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class GameOverPresenter : IInitializable, IDisposable
+    public class GameOverPresenter : IDisposable
     {
         private GameOverModel _model;
         private GameOverView _view;
 
         public GameOverPresenter(
-            GameOverModel model,
-            GameOverView view
+            GameOverModel model
             )
         {
             _model = model;
-            _view = view;
+        }
+
+        public void Init(GameOverView gameOverView)
+        {
+            _view = gameOverView;
+
+            _model.GameOverTriggered += EnableView;
+            _view.RestartClicked += RestartGame;
+            _view.ContinueClicked += ContinueGame;
         }
 
         public void RestartGame()
@@ -30,13 +36,6 @@ namespace _Project.Scripts.GameFlow
         public void EnableView()
         {
             _view.EnableObject();
-        }
-
-        public void Initialize()
-        {
-            _model.GameOverTriggered += EnableView;
-            _view.RestartClicked += RestartGame;
-            _view.ContinueClicked += ContinueGame;
         }
 
         public void Dispose()

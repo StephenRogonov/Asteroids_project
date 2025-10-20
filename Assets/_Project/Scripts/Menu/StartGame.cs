@@ -1,7 +1,6 @@
 using _Project.Scripts.Common;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.Menu
 {
@@ -10,14 +9,10 @@ namespace _Project.Scripts.Menu
         private Button _startButton;
         private SceneSwitcher _sceneSwitcher;
 
-        [Inject]
-        private void Construct(SceneSwitcher sceneSwitcher)
+        public void Init(SceneSwitcher sceneSwitcher)
         {
             _sceneSwitcher = sceneSwitcher;
-        }
 
-        private void OnEnable()
-        {
             _startButton = GetComponent<Button>();
             _startButton.onClick.AddListener(_sceneSwitcher.LoadGame);
         }

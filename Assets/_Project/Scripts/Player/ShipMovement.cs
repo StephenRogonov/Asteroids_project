@@ -3,14 +3,13 @@ using _Project.Scripts.DataPersistence;
 using _Project.Scripts.GameFlow;
 using System;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Player
 {
     public class ShipMovement : MonoBehaviour, IPause
     {
         private GameConfig _gameConfig;
-        private PauseHandler _pauseHandler;
+        private PauseSwitcher _pauseSwitcher;
 
         private float _acceleration;
         private float _maxSpeed;
@@ -30,15 +29,11 @@ namespace _Project.Scripts.Player
 
         public event Action GameStarted;
 
-        [Inject]
-        private void Construct(
-            DataPersistenceHandler dataPersistenceHandler, 
-            PauseHandler pauseHandler
-            )
+        public void Init(DataPersistenceHandler dataPersistenceHandler, PauseSwitcher pauseSwitcher)
         {
             _gameConfig = dataPersistenceHandler.GameConfig;
-            _pauseHandler = pauseHandler;
-            _pauseHandler.Add(this);
+            _pauseSwitcher = pauseSwitcher;
+            _pauseSwitcher.Add(this);
 
             _acceleration = _gameConfig.ShipAcceleration;
             _maxSpeed = _gameConfig.ShipMaxSpeed;
@@ -103,6 +98,11 @@ namespace _Project.Scripts.Player
         public void ActivateObject()
         {
             gameObject.SetActive(true);
-        }    
+        }
+
+        public void DeactivateObject()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

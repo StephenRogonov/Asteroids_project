@@ -15,7 +15,7 @@ namespace _Project.Scripts.UI
         private HudView _view;
         private GameConfig _gameConfig;
         private ShipMovement _shipMovement;
-        private PauseHandler _pauseHandler;
+        private PauseSwitcher _pauseHandler;
 
         private CountdownTimer _timer;
 
@@ -24,20 +24,23 @@ namespace _Project.Scripts.UI
         private float _shipSpeed;
 
         private bool _isPaused;
+        private bool _isInitialized;
 
         public HudPresenter(
             HudModel model, 
-            HudView view, 
-            DataPersistenceHandler dataPersistenceHandler, 
-            ShipMovement shipMovement, 
-            PauseHandler pauseHandler
+            DataPersistenceHandler dataPersistenceHandler,
+            PauseSwitcher pauseHandler
             )
         {
             _model = model;
-            _view = view;
             _gameConfig = dataPersistenceHandler.GameConfig;
-            _shipMovement = shipMovement;
             _pauseHandler = pauseHandler;
+        }
+
+        public void Init(HudView hudView, ShipMovement shipMovement)
+        {
+            _view = hudView;
+            _shipMovement = shipMovement;
 
             _pauseHandler.Add(this);
 
@@ -45,10 +48,17 @@ namespace _Project.Scripts.UI
             _timer.Reset(_gameConfig.LaserShotRestorationTime);
 
             LaserShotsChanged(_gameConfig.LaserShotsStartCount);
+
+            _isInitialized = true;
         }
 
         public void Tick()
         {
+            if (_isInitialized == false)
+            {
+                return;
+            }
+
             if (_isPaused == false)
             {
                 CalculateShipStats();

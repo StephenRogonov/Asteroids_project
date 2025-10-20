@@ -1,9 +1,9 @@
+using _Project.Scripts.AddressablesHandling;
 using _Project.Scripts.Bootstrap.Configs;
 using _Project.Scripts.Common;
 using _Project.Scripts.DataPersistence;
 using _Project.Scripts.Obstacles;
 using _Project.Scripts.Player;
-using _Project.Scripts.ScriptableObjects;
 using System;
 using UnityEngine;
 using Zenject;
@@ -12,7 +12,7 @@ namespace _Project.Scripts.PlayerWeapons
 {
     public class MissilesFactory
     {
-        private ShipMissilesConfig _shipMissilesSettings;
+        private ILocalAssetLoader _assetLoader;
         private GameConfig _gameConfig;
         private Transform _shipShootingPoint;
         private Pool<Missile> _missilesPool;
@@ -22,19 +22,30 @@ namespace _Project.Scripts.PlayerWeapons
         public event Action EnemyDestroyed;
 
         public MissilesFactory(
-            ShipMissilesConfig shipMissilesSettings,
+            ILocalAssetLoader assetLoader,
             DataPersistenceHandler dataPersistenceHandler,
-            ShipMovement shipMovement,
             IInstantiator instantiator
             )
         {
-            _shipMissilesSettings = shipMissilesSettings;
+            _assetLoader = assetLoader;
             _gameConfig = dataPersistenceHandler.GameConfig;
-            _shipShootingPoint = shipMovement.transform.GetComponentInChildren<ShootingPoint>().transform;
             _instantiator = instantiator;
 
+            CreatePool();
+        }
+
+        public void Init(ShipMovement shipMovement)
+        {
+            _shipShootingPoint = shipMovement.transform.GetComponentInChildren<ShootingPoint>().transform;
+        }
+
+        private async void CreatePool()
+        {
             _missilesPool = _instantiator.Instantiate<Pool<Missile>>(new object[]
-            { _shipMissilesSettings.MissilePrefab, _gameConfig.MissilesPoolInitialSize });
+            { 
+                await _assetLoader.LoadInternalAsset<Missile>(LocalAssetsIDs.MISSILE), _gameConfig.MissilesPoolInitialSize 
+            });
+            _assetLoader.UnloadInternalAsset();
         }
 
         public Missile GetMissile()

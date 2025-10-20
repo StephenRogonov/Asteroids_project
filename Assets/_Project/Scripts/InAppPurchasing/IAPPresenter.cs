@@ -30,7 +30,6 @@ namespace _Project.Scripts.InAppPurchasing
 #endif
 
             InitializeServices();
-            Debug.Log("IAPController constructed");
         }
 
         private async void InitializeServices()

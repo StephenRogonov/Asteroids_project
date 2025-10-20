@@ -16,7 +16,7 @@ namespace _Project.Scripts.Obstacles.Enemy
         private Transform _player;
         private Vector2 _playerDirection;
         private ObstacleType _obstacleType;
-        private PauseHandler _pauseHandler;
+        private PauseSwitcher _pauseHandler;
 
         private bool _isPaused;
 
@@ -25,10 +25,14 @@ namespace _Project.Scripts.Obstacles.Enemy
         public event Action<EnemyMovement> Destroyed;
 
         [Inject]
-        private void Construct(ShipMovement shipMovement, PauseHandler pauseHandler)
+        private void Construct(PauseSwitcher pauseHandler)
+        {
+            _pauseHandler = pauseHandler;
+        }
+
+        public void Init(ShipMovement shipMovement)
         {
             _player = shipMovement.transform;
-            _pauseHandler = pauseHandler;
         }
 
         private void Awake()

@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.InAppPurchasing
 {
@@ -20,10 +19,9 @@ namespace _Project.Scripts.InAppPurchasing
 
         private Product _product;
 
-        [Inject]
-        private void Construct(IAPPresenter iAPController)
+        public void Init(IAPPresenter iAPPresenter)
         {
-            _iAPpresenter = iAPController;
+            _iAPpresenter = iAPPresenter;
         }
 
         private void OnEnable()
@@ -36,6 +34,11 @@ namespace _Project.Scripts.InAppPurchasing
         {
             _purchaseButton.onClick.RemoveAllListeners();
             _backgroundButton.onClick.RemoveAllListeners();
+        }
+
+        public void EnableObject()
+        {
+            gameObject.SetActive(true);
         }
 
         private void ClosePopup()

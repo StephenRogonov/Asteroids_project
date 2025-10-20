@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace _Project.Scripts.GameFlow
 {
-    public class PauseHandler
+    public class PauseSwitcher
     {
         private List<IPause> _pausableObjects = new();
 

@@ -1,20 +1,22 @@
-using _Project.Scripts.Common;
+using _Project.Scripts.AddressablesHandling;
 using _Project.Scripts.Bootstrap.Configs;
-using _Project.Scripts.Obstacles.Enemy;
+using _Project.Scripts.Common;
+using _Project.Scripts.DataPersistence;
 using _Project.Scripts.Obstacles.Asteroids;
+using _Project.Scripts.Obstacles.Enemy;
+using _Project.Scripts.Player;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
-using _Project.Scripts.DataPersistence;
-using _Project.Scripts.ScriptableObjects;
 
 namespace _Project.Scripts.Obstacles
 {
     public class ObstaclesFactory
     {
-        private ObstacleSpawnerSettings _spawnerSettings;
+        private ILocalAssetLoader _assetLoader;
         private GameConfig _gameConfig;
         private IInstantiator _instantiator;
+        private ShipMovement _shipMovement;
         private Pool<Asteroid> _asteroidsPool;
         private Pool<EnemyMovement> _enemiesPool;
 
@@ -22,24 +24,36 @@ namespace _Project.Scripts.Obstacles
         private List<EnemyMovement> _enemiesSpawned = new();
 
         public ObstaclesFactory(
-            ObstacleSpawnerSettings settings,
+            ILocalAssetLoader assetLoader,
             DataPersistenceHandler dataPersistence,
             IInstantiator instantiator
             )
         {
-            _spawnerSettings = settings;
+            _assetLoader = assetLoader;
             _gameConfig = dataPersistence.GameConfig;
             _instantiator = instantiator;
 
             CreatePools();
         }
 
-        public void CreatePools()
+        public void Init(ShipMovement shipMovement)
         {
-            _asteroidsPool = _instantiator.Instantiate<Pool<Asteroid>>(new object[] { _spawnerSettings.AsteroidPrefab,
-                _gameConfig.AsteroidsPoolInitialSize });
-            _enemiesPool = _instantiator.Instantiate<Pool<EnemyMovement>>(new object[] { _spawnerSettings.EnemyPrefab,
-                _gameConfig.EnemiesPoolInitialSize });
+            _shipMovement = shipMovement;
+        }
+
+        public async void CreatePools()
+        {
+            _asteroidsPool = _instantiator.Instantiate<Pool<Asteroid>>(new object[] 
+            { 
+                await _assetLoader.LoadInternalAsset<Asteroid>(LocalAssetsIDs.ASTEROID), _gameConfig.AsteroidsPoolInitialSize 
+            });
+            _assetLoader.UnloadInternalAsset();
+            
+            _enemiesPool = _instantiator.Instantiate<Pool<EnemyMovement>>(new object[] 
+            { 
+                await _assetLoader.LoadInternalAsset<EnemyMovement>(LocalAssetsIDs.ENEMY), _gameConfig.EnemiesPoolInitialSize 
+            });
+            _assetLoader.UnloadInternalAsset();
         }
 
         public void GetAsteroid()
@@ -84,6 +98,7 @@ namespace _Project.Scripts.Obstacles
 
             Vector3 spawnOffset = GetRandomSpawnPosition();
             enemy.transform.position = spawnOffset;
+            enemy.Init(_shipMovement);
             enemy.gameObject.SetActive(true);
         }
 

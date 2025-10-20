@@ -1,6 +1,5 @@
 using _Project.Scripts.PlayerWeapons;
 using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Player
 {
@@ -10,8 +9,7 @@ namespace _Project.Scripts.Player
 
         private MissilesFactory _missilesFactory;
 
-        [Inject]
-        private void Construct(MissilesFactory missilesFactory)
+        public void Init(MissilesFactory missilesFactory)
         {
             _missilesFactory = missilesFactory;
         }

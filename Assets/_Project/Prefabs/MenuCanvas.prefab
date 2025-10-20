@@ -839,4 +839,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fedc8b6a622341341b3e9f6454f6a21d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startGame: {fileID: 7452589393344756432}
   _noAdsButton: {fileID: 4435211454551148873}
