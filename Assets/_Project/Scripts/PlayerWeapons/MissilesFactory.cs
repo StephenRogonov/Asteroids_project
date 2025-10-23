@@ -16,6 +16,7 @@ namespace _Project.Scripts.PlayerWeapons
         private GameConfig _gameConfig;
         private Transform _shipShootingPoint;
         private Pool<Missile> _missilesPool;
+        private GameObject _missilePrefab;
         private IInstantiator _instantiator;
 
         public event Action AsteroidDestroyed;
@@ -41,11 +42,12 @@ namespace _Project.Scripts.PlayerWeapons
 
         private async void CreatePool()
         {
+            _missilePrefab = await _assetLoader.LoadAsset<Missile>(LocalAssetsIDs.MISSILE);
             _missilesPool = _instantiator.Instantiate<Pool<Missile>>(new object[]
             { 
-                await _assetLoader.LoadInternalAsset<Missile>(LocalAssetsIDs.MISSILE), _gameConfig.MissilesPoolInitialSize 
+                _missilePrefab.GetComponent<Missile>(), _gameConfig.MissilesPoolInitialSize 
             });
-            _assetLoader.UnloadInternalAsset();
+            _assetLoader.UnloadAsset(_missilePrefab);
         }
 
         public Missile GetMissile()

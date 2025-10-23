@@ -41,6 +41,7 @@ public class GameLoader : MonoBehaviour
 
     [Inject]
     private void Construct(
+        ILocalAssetLoader assetLoader,
         HudPresenter hudPresenter,
         PauseModel pauseModel,
         GameOverModel gameOverModel,
@@ -56,6 +57,7 @@ public class GameLoader : MonoBehaviour
         PauseSwitcher pauseSwitcher
         )
     {
+        _assetLoader = assetLoader;
         _hudPresenter = hudPresenter;
         _pauseModel = pauseModel;
         _gameOverModel = gameOverModel;
@@ -71,11 +73,6 @@ public class GameLoader : MonoBehaviour
         _pauseSwitcher = pauseSwitcher;
     }
 
-    private void Awake()
-    {
-        _assetLoader = new LocalAssetLoader();
-    }
-
     private async void Start()
     {
         await InstantiateAddressables();
@@ -86,11 +83,11 @@ public class GameLoader : MonoBehaviour
 
     private async UniTask InstantiateAddressables()
     {
-        _hudView = await _assetLoader.InstantiateInternalAsset<HudView>(LocalAssetsIDs.HUD);
-        _mobileControls = await _assetLoader.InstantiateInternalAsset<MobileControls>(LocalAssetsIDs.MOBILE_CONTROLS);
-        _pauseView = await _assetLoader.InstantiateInternalAsset<PauseView>(LocalAssetsIDs.PAUSE_MENU);
-        _gameOverView = await _assetLoader.InstantiateInternalAsset<GameOverView>(LocalAssetsIDs.GAME_OVER_MENU);
-        _shipMovement = await _assetLoader.InstantiateInternalAsset<ShipMovement>(LocalAssetsIDs.PLAYER_SHIP);
+        _hudView = await _assetLoader.InstantiateAsset<HudView>(LocalAssetsIDs.HUD);
+        _mobileControls = await _assetLoader.InstantiateAsset<MobileControls>(LocalAssetsIDs.MOBILE_CONTROLS);
+        _pauseView = await _assetLoader.InstantiateAsset<PauseView>(LocalAssetsIDs.PAUSE_MENU);
+        _gameOverView = await _assetLoader.InstantiateAsset<GameOverView>(LocalAssetsIDs.GAME_OVER_MENU);
+        _shipMovement = await _assetLoader.InstantiateAsset<ShipMovement>(LocalAssetsIDs.PLAYER_SHIP);
     }
 
     private void PositionShip()
